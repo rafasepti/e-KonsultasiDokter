@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('percakapan', function (Blueprint $table) {
             $table->id();
-            $table->inteher('user_id');
-            $table->inteher('dokter_id');
+            $table->integer('user_id');
+            $table->integer('dokter_id');
             $table->timestamps();
         });
     }
