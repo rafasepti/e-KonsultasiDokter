@@ -23,7 +23,7 @@
                 <div class="col-12 col-xl-4">
                  <div class="justify-content-end d-flex">
                   <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
-                    <a href="" class="btn btn-primary btn-rounded btn-fw">Tambah Data</a>
+                    <a href="spesialisasi/tambah" class="btn btn-primary btn-rounded btn-fw">Tambah Data</a>
                   </div>
                  </div>
                 </div>
@@ -53,22 +53,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          Herman Beck
-                        </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </td>
-                        <td>
-                          $ 77.99
-                        </td>
-                        <td>
-                          May 15, 2015
-                        </td>
-                      </tr>
+                      
                     </tbody>
                   </table>
                 </div>
@@ -98,7 +83,7 @@
           ajax: "{{ url('spesialisasi/list') }}",
           columns: [
               {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-              {data: 'spesialisasi', name: 'spesialisasi'},
+              {data: 'nama_spesialisasi', name: 'spesialisasi'},
               {data: 'gelar', name: 'gelar'},
               {
                   data: 'action', 

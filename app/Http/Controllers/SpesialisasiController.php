@@ -6,6 +6,8 @@ use App\Models\Spesialisasi;
 use App\Http\Requests\StoreSpesialisasiRequest;
 use App\Http\Requests\UpdateSpesialisasiRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class SpesialisasiController extends Controller
 {
@@ -25,11 +27,11 @@ class SpesialisasiController extends Controller
                 ->addColumn('action', function($b){
                     $actionBtn = 
                     '
-                        <a href="/spesialisasi/edit/'.$b->id.'" class="btn btn-outline-success">
-                            <i class="bi bi-pencil-square"></i>
+                        <a href="/spesialisasi/edit/'.$b->id.'" class="btn btn-info btn-sm">
+                            Edit
                         </a>
-                        <a href="/spesialisasi/hapus/'.$b->id.'" class="btn btn-outline-danger" onclick="return confirm(`Apakah anda yakin?`)">
-                            <i class="bi bi-trash-fill"></i>
+                        <a href="/spesialisasi/hapus/'.$b->id.'" class="btn btn-danger btn-sm" onclick="return confirm(`Apakah anda yakin?`)">
+                            Hapus
                         </a>
                     ';
                     return $actionBtn;
@@ -44,15 +46,19 @@ class SpesialisasiController extends Controller
      */
     public function create()
     {
-        //
+        return view('spesialisasi/tambah_spesialis');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSpesialisasiRequest $request)
+    public function store(Request $request)
     {
-        //
+        Spesialisasi::create([
+            'nama_spesialisasi' => $request->nama_spesialisasi,
+            'gelar' => $request->gelar,
+        ]);
+        return redirect('/spesialisasi');
     }
 
     /**
@@ -66,24 +72,31 @@ class SpesialisasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Spesialisasi $spesialisasi)
+    public function edit($id)
     {
-        //
+        $spesialisasi = Spesialisasi::where('id',$id)->first();
+        return view('spesialisasi/edit_spesialis',
+        compact('spesialisasi'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSpesialisasiRequest $request, Spesialisasi $spesialisasi)
+    public function update(Request $request)
     {
-        //
+        Spesialisasi::where('id', $request->id)->update([
+            'nama_spesialisasi' => $request->nama_spesialisasi,
+            'gelar' => $request->gelar,
+        ]);
+        return redirect('/spesialisasi');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Spesialisasi $spesialisasi)
+    public function destroy($id)
     {
-        //
+       Spesialisasi::where('id',$id)->delete();
+       return redirect('/spesialisasi');
     }
 }

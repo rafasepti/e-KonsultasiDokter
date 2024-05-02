@@ -21,6 +21,11 @@ Route::middleware('auth', 'checkRole:admin')->group(function () {
 Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/spesialisasi', [SpesialisasiController::class, 'index'])->name('spesialisasi');
     Route::get('/spesialisasi/list', [SpesialisasiController::class, 'spesialisasiGet']);
+    Route::get('/spesialisasi/tambah', [SpesialisasiController::class, 'create']);
+    Route::post('/spesialisasi/store', [SpesialisasiController::class, 'store']);
+    Route::get('/spesialisasi/edit/{id}', [SpesialisasiController::class, 'edit']);
+    Route::post('/spesialisasi/update', [SpesialisasiController::class, 'update']);
+    Route::get('/spesialisasi/hapus/{id}', [SpesialisasiController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';
