@@ -32,5 +32,11 @@
           <span class="menu-title">Spesialisasi</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link {{ Request::is('petugas') ? 'active' : '' }}" href="{{ route('petugas') }}">
+          <i class="mdi mdi-account-outline menu-icon"></i>
+          <span class="menu-title">Petugas</span>
+        </a>
+      </li>
     </ul>
   </nav>

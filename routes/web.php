@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SpesialisasiController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,14 @@ Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/dokter/edit/{id}', [DokterController::class, 'edit']);
     Route::post('/dokter/update', [DokterController::class, 'update']);
     Route::get('/dokter/hapus/{id}', [DokterController::class, 'destroy']);
+
+    Route::get('/petugas', [PetugasController::class, 'index'])->name('petugas');
+    Route::get('/petugas/list', [PetugasController::class, 'petugasGet']);
+    Route::get('/petugas/tambah', [PetugasController::class, 'create']);
+    Route::post('/petugas/store', [PetugasController::class, 'store']);
+    Route::get('/petugas/edit/{id}', [PetugasController::class, 'edit']);
+    Route::post('/petugas/update', [PetugasController::class, 'update']);
+    Route::get('/petugas/hapus/{id}', [PetugasController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';
