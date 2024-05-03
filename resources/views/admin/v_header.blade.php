@@ -92,21 +92,29 @@
             </a>
           </div>
         </li>
-        <li class="nav-item nav-profile dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-            <img src="{{  asset('assets') }}/images/faces/face28.jpg" alt="profile"/>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-            <a class="dropdown-item">
-              <i class="ti-settings text-primary"></i>
-              Settings
+        @if (auth()->check())
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="{{  asset('assets') }}/images/faces/face28.jpg" alt="profile"/>
             </a>
-            <a class="dropdown-item">
-              <i class="ti-power-off text-primary"></i>
-              Logout
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item">
+                <i class="ti-settings text-primary"></i>
+                Settings
+              </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="dropdown-item"><i class="ti-power-off text-primary"></i> Logout</button>
+                </form>
+            </div>
+          </li>
+        @else
+          <li class="nav-item nav-profile ">
+            <a href="{{ route('login') }}" class="dropdown-item">
+              Login
             </a>
-          </div>
-        </li>
+          </li>
+        @endif
         <li class="nav-item nav-settings d-none d-lg-flex">
           <a class="nav-link" href="#">
             <i class="icon-ellipsis"></i>
