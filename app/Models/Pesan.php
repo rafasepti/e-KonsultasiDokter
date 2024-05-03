@@ -9,4 +9,5 @@ class Pesan extends Model
 {
     use HasFactory;
     protected $table = "pesan";
+    protected $guarded = ['created_at', 'updated_at'];
 }

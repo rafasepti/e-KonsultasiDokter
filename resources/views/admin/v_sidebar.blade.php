@@ -21,6 +21,12 @@
         </div>
       </li>
       <li class="nav-item">
+        <a class="nav-link {{ Request::is('dokter') ? 'active' : '' }}" href="{{ route('dokter') }}">
+          <i class="mdi mdi-account-box menu-icon"></i>
+          <span class="menu-title">Dokter</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link {{ Request::is('spesialisasi') ? 'active' : '' }}" href="{{ route('spesialisasi') }}">
           <i class="icon-paper menu-icon"></i>
           <span class="menu-title">Spesialisasi</span>

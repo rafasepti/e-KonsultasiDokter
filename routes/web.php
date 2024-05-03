@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DokterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SpesialisasiController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,14 @@ Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/spesialisasi/edit/{id}', [SpesialisasiController::class, 'edit']);
     Route::post('/spesialisasi/update', [SpesialisasiController::class, 'update']);
     Route::get('/spesialisasi/hapus/{id}', [SpesialisasiController::class, 'destroy']);
+
+    Route::get('/dokter', [DokterController::class, 'index'])->name('dokter');
+    Route::get('/dokter/list', [DokterController::class, 'dokterGet']);
+    Route::get('/dokter/tambah', [DokterController::class, 'create']);
+    Route::post('/dokter/store', [DokterController::class, 'store']);
+    Route::get('/dokter/edit/{id}', [DokterController::class, 'edit']);
+    Route::post('/dokter/update', [DokterController::class, 'update']);
+    Route::get('/dokter/hapus/{id}', [DokterController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';

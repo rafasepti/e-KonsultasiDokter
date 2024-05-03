@@ -9,4 +9,5 @@ class Janji extends Model
 {
     use HasFactory;
     protected $table = "janji";
+    protected $guarded = ['created_at', 'updated_at'];
 }

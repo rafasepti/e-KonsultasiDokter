@@ -9,4 +9,5 @@ class JadwalDokter extends Model
 {
     use HasFactory;
     protected $table = "jadwal_dokter";
+    protected $guarded = ['created_at', 'updated_at'];
 }
