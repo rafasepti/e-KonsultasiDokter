@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dokter;
 use App\Http\Requests\StoreDokterRequest;
 use App\Http\Requests\UpdateDokterRequest;
+use App\Models\JadwalDokter;
 use App\Models\Spesialisasi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -27,6 +28,9 @@ class DokterController extends Controller
                 ->addColumn('action', function($b){
                     $actionBtn = 
                     '
+                        <a href="/dokter/jadwal/'.$b->id.'" class="btn btn-success btn-sm">
+                            Jadwal
+                        </a>
                         <a href="/dokter/edit/'.$b->id.'" class="btn btn-info btn-sm">
                             Edit
                         </a>
@@ -48,6 +52,13 @@ class DokterController extends Controller
     {
         $spesialisasi = Spesialisasi::all();
         return view('dokter/tambah_dokter', compact('spesialisasi'));
+    }
+
+    public function jadwal($id)
+    {
+        $jadwal = JadwalDokter::where('id', $id)->first();
+        $dokter = Dokter::where('id', $id)->first();
+        return view('dokter/jadwal_dokter', compact('jadwal', 'dokter'));
     }
 
     /**

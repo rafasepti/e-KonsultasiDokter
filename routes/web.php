@@ -31,6 +31,7 @@ Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/dokter', [DokterController::class, 'index'])->name('dokter');
     Route::get('/dokter/list', [DokterController::class, 'dokterGet']);
     Route::get('/dokter/tambah', [DokterController::class, 'create']);
+    Route::get('/dokter/jadwal/{id}', [DokterController::class, 'jadwal']);
     Route::post('/dokter/store', [DokterController::class, 'store']);
     Route::get('/dokter/edit/{id}', [DokterController::class, 'edit']);
     Route::post('/dokter/update', [DokterController::class, 'update']);
