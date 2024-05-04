@@ -66,7 +66,9 @@ class DokterController extends Controller
      */
     public function store(Request $request)
     {
+        $kode = Dokter::kodeDokter();
         Dokter::create([
+            'kode_dokter' => $kode,
             'nama_dokter' => $request->nama_dokter,
             'no_hp' => $request->no_hp,
             'jk' => $request->jk,

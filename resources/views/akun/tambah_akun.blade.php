@@ -33,32 +33,35 @@
                       </div>
                       <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <div class="input-group has-validation">
+                          <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                          <button class="input-group-text" type="button" id="show-password"><i class="mdi mdi-eye"></i></button>
+                        </div>
                       </div>
                       <div class="form-group">
                         <label>Hak Akses</label>
-                        <select class="js-example-basic-single w-100" name="hak_akses" required>
+                        <select class="form-control" name="hak_akses" id="hak_akses" required>
                           <option value="">Pilih Hak Akses</option>
                           <option value="admin">Admin</option>
                           <option value="petugas">Petugas</option>
                           <option value="dokter">Dokter</option>
                         </select>
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" id="dokterField" style="display: none;">
                         <label>Dokter</label>
-                        <select class="js-example-basic-single w-100" name="spesialisasi_id" >
-                          <option value="">Pilih Spesialisasi</option>
-                          @foreach ($spesialisasi as $s)
-                            <option value="{{ $s->id }}">{{ $s->nama_spesialisasi }}</option>
+                        <select class="form-control" name="user_id" id="kode_dokter">
+                          <option value="">Pilih Dokter</option>
+                          @foreach ($dokter as $d)
+                            <option value="{{ $d->kode_dokter }}">{{ $d->nama_dokter }}</option>
                           @endforeach
                         </select>
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" id="petugasField" style="display: none;">
                         <label>Petugas</label>
-                        <select class="js-example-basic-single w-100" name="spesialisasi_id">
-                          <option value="">Pilih Spesialisasi</option>
-                          @foreach ($spesialisasi as $s)
-                            <option value="{{ $s->id }}">{{ $s->nama_spesialisasi }}</option>
+                        <select class="form-control" name="user_id" id="kode_petugas">
+                          <option value="">Pilih Petugas</option>
+                          @foreach ($petugas as $p)
+                            <option value="{{ $p->kode_petugas }}">{{ $p->nama_petugas }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -81,4 +84,31 @@
   <!-- container-scroller -->
 </body>
 </html>
+
+<script>
+  document.getElementById('show-password').addEventListener('click', function() {
+      var passwordInput = document.getElementById('password');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.innerHTML = '<i class="mdi mdi-eye-off"></i>';
+      } else {
+        passwordInput.type = 'password';
+        this.innerHTML = '<i class="mdi mdi-eye"></i>';
+      }
+    });
+
+  document.getElementById('hak_akses').addEventListener('change', function() {
+      var hakAkses = this.value;
+      if (hakAkses === 'dokter') {
+          document.getElementById('dokterField').style.display = 'block';
+          document.getElementById('petugasField').style.display = 'none';
+      } else if (hakAkses === 'petugas' || hakAkses === 'admin') {
+          document.getElementById('dokterField').style.display = 'none';
+          document.getElementById('petugasField').style.display = 'block';
+      } else {
+          document.getElementById('dokterField').style.display = 'none';
+          document.getElementById('petugasField').style.display = 'none';
+      }
+  });
+</script>
 

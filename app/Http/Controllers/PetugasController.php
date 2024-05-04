@@ -53,7 +53,9 @@ class PetugasController extends Controller
      */
     public function store(Request $request)
     {
+        $kode = Petugas::kodePetugas();
         Petugas::create([
+            'kode_petugas' => $kode,
             'nama_petugas' => $request->nama_petugas,
             'no_hp' => $request->no_hp,
             'jk' => $request->jk,
