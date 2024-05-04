@@ -4,6 +4,7 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SpesialisasiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -45,6 +46,14 @@ Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/petugas/edit/{id}', [PetugasController::class, 'edit']);
     Route::post('/petugas/update', [PetugasController::class, 'update']);
     Route::get('/petugas/hapus/{id}', [PetugasController::class, 'destroy']);
+
+    Route::get('/akun', [UserController::class, 'index'])->name('akun');
+    Route::get('/akun/list', [UserController::class, 'userGet']);
+    Route::get('/akun/tambah', [UserController::class, 'create']);
+    Route::post('/akun/store', [UserController::class, 'store']);
+    Route::get('/akun/edit/{id}', [UserController::class, 'edit']);
+    Route::post('/akun/update', [UserController::class, 'update']);
+    Route::get('/akun/hapus/{id}', [UserController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';

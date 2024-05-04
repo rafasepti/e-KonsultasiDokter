@@ -38,5 +38,11 @@
           <span class="menu-title">Petugas</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link {{ Request::is('akun') ? 'active' : '' }}" href="{{ route('akun') }}">
+          <i class="mdi mdi-account-multiple-outline menu-icon"></i>
+          <span class="menu-title">Akun</span>
+        </a>
+      </li>
     </ul>
   </nav>
