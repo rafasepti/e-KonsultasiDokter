@@ -6,6 +6,8 @@ use App\Models\Dokter;
 use App\Models\Petugas;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -42,8 +44,16 @@ class UserController extends Controller
      */
     public function create()
     {
-        $dokter = Dokter::whereDoesntHave('user')->get();
-        $petugas = Petugas::whereDoesntHave('user')->get();
+        $dokter = Dokter::whereNotExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('users')
+                  ->whereColumn('dokter.kode_dokter', '=', 'users.user_id');
+        })->get();
+        $petugas = Petugas::whereNotExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('users')
+                  ->whereColumn('petugas.kode_petugas', '=', 'users.user_id');
+        })->get();
         return view('akun/tambah_akun', compact('dokter', 'petugas'));
     }
 
@@ -52,13 +62,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'user_id' => $request->user_id,
-            'hak_akses' => $request->hak_akses,
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
         ]);
+
+        if($request->hak_akses == "dokter"){
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->input('password')),
+                'user_id' => $request->kode_dokter,
+                'hak_akses' => $request->hak_akses,
+            ]);
+        }else{
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->input('password')),
+                'hak_akses' => $request->hak_akses,
+                'user_id' => $request->kode_petugas,
+            ]);
+        }
         return redirect('/akun');
     }
 
@@ -67,9 +91,20 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('id', $id)->first();
-        return view('akun/edit_akun',
-        compact('user'));
+        $user = User::findOrFail($id);
+
+        $kode = $user->user_id;
+
+        $dokter = null;
+        $petugas = null;
+
+        if ($user->hak_akses === 'dokter') {
+            $dokter = Dokter::where('kode_dokter', $kode)->first();
+        } elseif ($user->hak_akses === 'petugas' || $user->hak_akses === 'admin') {
+            $petugas = Petugas::where('kode_petugas', $kode)->first();
+        }
+
+        return view('akun/edit_akun', compact('user', 'dokter', 'petugas'));
     }
 
     /**
@@ -77,13 +112,25 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        User::where('id', $request->id)->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'user_id' => $request->user_id,
-            'hak_akses' => $request->hak_akses,
+        $request->validate([
+            'email' => 'required|email|unique:users,email,' . $request->id, // validasi unique, tetapi melewati validasi untuk record yang diubah
+            // tambahkan validasi lain sesuai kebutuhan Anda
         ]);
+        if($request->hak_akses == "dokter"){
+            User::where('id', $request->id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'hak_akses' => $request->hak_akses,
+                'user_id' => $request->kode_dokter,
+            ]);
+        }else{
+            User::where('id', $request->id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'hak_akses' => $request->hak_akses,
+                'user_id' => $request->kode_petugas,
+            ]);
+        }
         return redirect('/akun');
     }
 

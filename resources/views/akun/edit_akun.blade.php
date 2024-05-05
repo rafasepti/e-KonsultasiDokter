@@ -17,39 +17,48 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Data Petugas</h4>
+                    <h4 class="card-title">Data Pengguna</h4>
                     <p class="card-description">
-                      Edit Data Petugas
+                      Edit Data Pengguna
                     </p>
-                    <form class="forms-sample" action="/petugas/update" method="post">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $petugas->id }}">
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                  @endif
+                    <form class="forms-sample" action="/akun/update" method="post">
+                      <input type="hidden" name="id" id="id" value="{{ $user->id }}">
+                      @csrf
+                      @if ($user->hak_akses == "dokter")
                       <div class="form-group">
-                        <label for="nama_petugas">Name Petugas</label>
-                        <input type="text" class="form-control" id="nama_petugas" name="nama_petugas" placeholder="Nama Petugas" value="{{ $petugas->nama_petugas }}" required>
+                        <label>Hak Akses</label>
+                        <input type="text" class="form-control" id="hak_akses" name="hak_akses" placeholder="Hak Akses" value="{{ $user->hak_akses }}" readonly required>
                       </div>
+                      <div class="form-group" id="dokterField">
+                        <label>Dokter</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama Dokter" value="{{ $dokter->nama_dokter }}" readonly required>
+                      </div>
+                      @else
+                      <div class="form-group" id="petugasField">
+                        <div class="form-group">
+                          <label>Hak Akses</label>
+                          <select class="form-control" name="hak_akses" id="hak_akses" required>
+                            <option value="">Pilih Hak Akses</option>
+                            <option value="admin" {{ $user->hak_akses == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="petugas" {{ $user->hak_akses == 'petugas' ? 'selected' : '' }}>Petugas</option>
+                          </select>
+                        </div>
+                        <label>Petugas</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama Petugas" value="{{ $petugas->nama_petugas }}" readonly required>
+                      </div>
+                      @endif
                       <div class="form-group">
-                        <label for="no_hp">No. HP</label>
-                        <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="No. Hp" value="{{ $petugas->no_hp }}" required>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Jenis Kelamin</label>
-                        <div class="col-sm-4">
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input type="radio" class="form-check-input" name="jk" id="jk" value="Perempuan" {{ $petugas->jk=='Perempuan' ? 'checked' : '' }} required>
-                              Perempuan
-                            </label>
-                          </div>
-                        </div>
-                        <div class="col-sm-5">
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input type="radio" class="form-check-input" name="jk" id="jk" value="Laki-Laki" {{ $petugas->jk=='Laki-Laki' ? 'checked' : '' }} required>
-                              Laki-Laki
-                            </label>
-                          </div>
-                        </div>
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ $user->email }}" required>
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <button type="reset" class="btn btn-light">Cancel</button>
@@ -70,4 +79,3 @@
   <!-- container-scroller -->
 </body>
 </html>
-

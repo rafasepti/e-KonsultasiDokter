@@ -21,15 +21,51 @@
                     <p class="card-description">
                       Masukan Data Pengguna
                     </p>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form class="forms-sample" action="/akun/store" method="post">
                         @csrf
+                        <div class="form-group">
+                          <label>Hak Akses</label>
+                          <select class="form-control" name="hak_akses" id="hak_akses" required>
+                            <option value="">Pilih Hak Akses</option>
+                            <option value="admin">Admin</option>
+                            <option value="petugas">Petugas</option>
+                            <option value="dokter">Dokter</option>
+                          </select>
+                        </div>
+                        <div class="form-group" id="dokterField" style="display: none;">
+                          <label>Dokter</label>
+                          <select class="form-control" name="kode_dokter" id="kode_dokter">
+                            <option value="">Pilih Dokter</option>
+                            @foreach ($dokter as $d)
+                              <option value="{{ $d->kode_dokter }}">{{ $d->nama_dokter }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="form-group" id="petugasField" style="display: none;">
+                          <label>Petugas</label>
+                          <select class="form-control" name="kode_petugas" id="kode_petugas">
+                            <option value="">Pilih Petugas</option>
+                            @foreach ($petugas as $p)
+                              <option value="{{ $p->kode_petugas }}">{{ $p->nama_petugas }}</option>
+                            @endforeach
+                          </select>
+                        </div>
                       <div class="form-group">
                         <label for="name">Name Pengguna</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama Pengguna" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama Pengguna" readonly required>
                       </div>
                       <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
                       </div>
                       <div class="form-group">
                         <label for="password">Password</label>
@@ -37,33 +73,6 @@
                           <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                           <button class="input-group-text" type="button" id="show-password"><i class="mdi mdi-eye"></i></button>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label>Hak Akses</label>
-                        <select class="form-control" name="hak_akses" id="hak_akses" required>
-                          <option value="">Pilih Hak Akses</option>
-                          <option value="admin">Admin</option>
-                          <option value="petugas">Petugas</option>
-                          <option value="dokter">Dokter</option>
-                        </select>
-                      </div>
-                      <div class="form-group" id="dokterField" style="display: none;">
-                        <label>Dokter</label>
-                        <select class="form-control" name="user_id" id="kode_dokter">
-                          <option value="">Pilih Dokter</option>
-                          @foreach ($dokter as $d)
-                            <option value="{{ $d->kode_dokter }}">{{ $d->nama_dokter }}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                      <div class="form-group" id="petugasField" style="display: none;">
-                        <label>Petugas</label>
-                        <select class="form-control" name="user_id" id="kode_petugas">
-                          <option value="">Pilih Petugas</option>
-                          @foreach ($petugas as $p)
-                            <option value="{{ $p->kode_petugas }}">{{ $p->nama_petugas }}</option>
-                          @endforeach
-                        </select>
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <button type="reset" class="btn btn-light">Cancel</button>
@@ -102,13 +111,28 @@
       if (hakAkses === 'dokter') {
           document.getElementById('dokterField').style.display = 'block';
           document.getElementById('petugasField').style.display = 'none';
+          document.getElementById('kode_dokter').setAttribute('required', 'required');
+          document.getElementById('kode_petugas').removeAttribute('required');
       } else if (hakAkses === 'petugas' || hakAkses === 'admin') {
           document.getElementById('dokterField').style.display = 'none';
           document.getElementById('petugasField').style.display = 'block';
+          document.getElementById('kode_petugas').setAttribute('required', 'required');
+          document.getElementById('kode_dokter').removeAttribute('required');
       } else {
           document.getElementById('dokterField').style.display = 'none';
           document.getElementById('petugasField').style.display = 'none';
+          document.getElementById('kode_dokter').removeAttribute('required');
+          document.getElementById('kode_petugas').removeAttribute('required');
       }
   });
+
+  // Mengubah nilai input 'name' berdasarkan pilihan hak akses
+  document.getElementById('kode_dokter').addEventListener('change', function() {
+        document.getElementById('name').value = this.options[this.selectedIndex].text;
+    });
+
+    document.getElementById('kode_petugas').addEventListener('change', function() {
+        document.getElementById('name').value = this.options[this.selectedIndex].text;
+    });
 </script>
 
