@@ -40,6 +40,7 @@
                       </div>
                       <div class="form-group" id="dokterField">
                         <label>Dokter</label>
+                        <input type="hidden" class="form-control" id="kode_dokter" name="kode_dokter" value="{{ $dokter->kode_dokter }}">
                         <input type="text" class="form-control" id="name" name="name" placeholder="Nama Dokter" value="{{ $dokter->nama_dokter }}" readonly required>
                       </div>
                       @else
@@ -53,6 +54,7 @@
                           </select>
                         </div>
                         <label>Petugas</label>
+                        <input type="hidden" class="form-control" id="kode_petugas" name="kode_petugas" value="{{ $dokter->kode_petugas }}">
                         <input type="text" class="form-control" id="name" name="name" placeholder="Nama Petugas" value="{{ $petugas->nama_petugas }}" readonly required>
                       </div>
                       @endif
