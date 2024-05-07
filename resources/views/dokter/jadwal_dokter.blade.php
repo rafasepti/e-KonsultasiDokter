@@ -21,6 +21,15 @@
                     <p class="card-description">
                       Masukan Data Jadwal Dokter
                     </p>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form class="forms-sample" action="/dokter/jadwalStore" method="post">
                         @csrf
                         <input type="hidden" name="dokter_id" value="{{ $dokter->id }}">
@@ -30,7 +39,7 @@
                       </div>
                       <h6>Pilih Jadwal</h6>
                       <div class="container">
-                        @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $hari)
+                        {{-- @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $hari)
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="form-group">
@@ -43,7 +52,7 @@
                             <div class="col-md-10">
                                 <div class="form-group jam-select" id="jam-{{ strtolower($hari) }}">
                                     <label>Jam {{ $hari }}</label>
-                                    <select class="js-example-basic-multiple w-100" multiple="multiple" name="jam[{{ strtolower($hari) }}]" disabled>
+                                    <select class="js-example-basic-multiple w-100" multiple="multiple" name="jam_{{ strtolower($hari) }}[]" disabled>
                                         @foreach(['08.00', '10.00', '13.00', '15.00', '17.00', '19.00'] as $jam)
                                         <option>{{ $jam }}</option>
                                         @endforeach
@@ -51,8 +60,37 @@
                                 </div>
                             </div>
                         </div>
-                        @endforeach
-                    </div>
+                        @endforeach --}}
+                        @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $hari)
+                          <div class="row">
+                              <div class="col-md-2">
+                                  <div class="form-group">
+                                      <div class="form-check">
+                                          <input type="checkbox" class="form-check-input hari-checkbox" name="hari[]" value="{{ strtolower($hari) }}" {{ $jadwalDokter->contains('hari', $hari) ? 'checked' : '' }}>
+                                          <label class="form-check-label">{{ $hari }}</label>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-10">
+                                <div class="form-group jam-select" id="jam-{{ strtolower($hari) }}">
+                                    <label>Jam {{ $hari }}</label>
+                                    <select class="js-example-basic-multiple w-100" multiple="multiple" name="jam_{{ strtolower($hari) }}[]" {{ $jadwalDokter->contains('hari', $hari) ? '' : 'disabled' }}>
+                                        @foreach(['08.00', '10.00', '13.00', '15.00', '17.00', '19.00'] as $jam)
+                                            @php
+                                                 $selected = false;
+                                                  if ($jadwalDokter->contains('hari', $hari)) {
+                                                      $jams = $jadwalDokter->where('hari', $hari)->pluck('jam')->toArray();
+                                                      $selected = in_array($jam, $jams);
+                                                  }
+                                            @endphp
+                                            <option {{ $selected ? 'selected' : '' }}>{{ $jam }}</option>
+                                        @endforeach
+                                    </select>
+                                  </div>
+                              </div>
+                          </div>
+                      @endforeach
+                      </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <button type="reset" class="btn btn-light">Cancel</button>
                     </form>
@@ -80,6 +118,7 @@
               $('#jam-' + hari).find('select').prop('disabled', false);
           } else {
               $('#jam-' + hari).find('select').prop('disabled', true);
+              $('#jam-' + hari).find('select').val(null).trigger('change');
           }
       });
   });

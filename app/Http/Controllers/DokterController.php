@@ -58,7 +58,12 @@ class DokterController extends Controller
     {
         $jadwal = JadwalDokter::where('id', $id)->first();
         $dokter = Dokter::where('id', $id)->first();
-        return view('dokter/jadwal_dokter', compact('jadwal', 'dokter'));
+        $jadwalDokter = JadwalDokter::where('dokter_id', $id)->get();
+        return view('dokter/jadwal_dokter', compact(
+            'jadwal', 
+            'dokter',
+            'jadwalDokter'
+        ));
     }
 
     /**
@@ -81,22 +86,69 @@ class DokterController extends Controller
 
     public function jadwalStore(Request $request)
     {
-        // Validasi data yang diterima dari form
-        $validatedData = $request->validate([
+        
+        $rules = [
             'hari' => 'required|array',
             'hari.*' => 'required|string',
-        ]);
+        ];
+
+        foreach ($request->hari as $hari) {
+            $rules['jam_' . strtolower($hari)] = 'required|array';
+            $rules['jam_' . strtolower($hari) . '.*'] = 'required|string';
+        }
+        $validatedData = $request->validate($rules);
 
         $dokter_id = $request->dokter_id;
 
-        foreach ($validatedData['hari'] as $key => $hari) {
-                JadwalDokter::create([
-                    'hari' => $hari,
-                    'dokter_id' => $dokter_id,
-                ]);
+        foreach ($request->hari as $hari) {
+            $existingJadwal = JadwalDokter::where('hari', ucfirst($hari))
+            ->where('dokter_id', $dokter_id)
+            ->exists();
+    
+            if ($existingJadwal) {
+                // Ambil semua hari yang mungkin ada dalam jadwal
+                $allDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+
+                // Hapus jadwal lama yang tidak ada dalam permintaan
+                foreach ($allDays as $day) {
+                    if (!in_array($day, $request->hari)) {
+                        JadwalDokter::where('dokter_id', $dokter_id)
+                            ->where('hari', ucfirst($day))
+                            ->delete();
+                    }
+                }
+
+                // Tambahkan jadwal baru
+                foreach ($request->hari as $day) {
+                    // Hapus jadwal lama untuk hari tersebut
+                    JadwalDokter::where('dokter_id', $dokter_id)
+                        ->where('hari', ucfirst($day))
+                        ->delete();
+
+                    // Tambahkan jadwal baru untuk hari tersebut
+                    foreach ($request->input('jam_' . strtolower($day)) as $jam) {
+                        JadwalDokter::create([
+                            'hari' => ucfirst($day), // Pastikan hari diawali dengan huruf besar
+                            'jam' => $jam,
+                            'dokter_id' => $dokter_id, // ID dokter sesuai dengan dokter yang bersangkutan
+                        ]);
+                    }
+                }
+
+                return redirect()->back()->with('success', 'Jadwal berhasil diperbarui.');
+            }else{
+                //Buat data baru
+                foreach ($request->input('jam_' . strtolower($hari)) as $jam) {
+                    JadwalDokter::create([
+                        'hari' => ucfirst($hari), // Pastikan hari diawali dengan huruf besar
+                        'jam' => $jam,
+                        'dokter_id' => $dokter_id, // ID dokter sesuai dengan dokter yang bersangkutan
+                    ]);
+                }
+            }
         }
 
-        return redirect('/dokter');
+        return redirect('/dokter')->with('success', 'Jadwal dokter berhasil disimpan.');
     }
 
     /**
