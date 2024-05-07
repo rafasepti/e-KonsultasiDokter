@@ -79,6 +79,26 @@ class DokterController extends Controller
         return redirect('/dokter');
     }
 
+    public function jadwalStore(Request $request)
+    {
+        // Validasi data yang diterima dari form
+        $validatedData = $request->validate([
+            'hari' => 'required|array',
+            'hari.*' => 'required|string',
+        ]);
+
+        $dokter_id = $request->dokter_id;
+
+        foreach ($validatedData['hari'] as $key => $hari) {
+                JadwalDokter::create([
+                    'hari' => $hari,
+                    'dokter_id' => $dokter_id,
+                ]);
+        }
+
+        return redirect('/dokter');
+    }
+
     /**
      * Display the specified resource.
      */

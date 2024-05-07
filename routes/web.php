@@ -35,6 +35,7 @@ Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/dokter/tambah', [DokterController::class, 'create']);
     Route::get('/dokter/jadwal/{id}', [DokterController::class, 'jadwal']);
     Route::post('/dokter/store', [DokterController::class, 'store']);
+    Route::post('/dokter/jadwalStore', [DokterController::class, 'jadwalStore']);
     Route::get('/dokter/edit/{id}', [DokterController::class, 'edit']);
     Route::post('/dokter/update', [DokterController::class, 'update']);
     Route::get('/dokter/hapus/{id}', [DokterController::class, 'destroy']);

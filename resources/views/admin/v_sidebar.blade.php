@@ -20,29 +20,33 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item {{ Request::is('dokter*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('dokter') }}">
-          <i class="mdi mdi-account-box menu-icon"></i>
-          <span class="menu-title">Dokter</span>
-        </a>
-      </li>
-      <li class="nav-item {{ Request::is('spesialisasi*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('spesialisasi') }}">
-          <i class="icon-paper menu-icon"></i>
-          <span class="menu-title">Spesialisasi</span>
-        </a>
-      </li>
-      <li class="nav-item {{ Request::is('petugas*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('petugas') }}">
-          <i class="mdi mdi-account-outline menu-icon"></i>
-          <span class="menu-title">Petugas</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {{ Request::is('akun*') ? 'active' : '' }}" href="{{ route('akun') }}">
-          <i class="mdi mdi-account-multiple-outline menu-icon"></i>
-          <span class="menu-title">Akun</span>
-        </a>
-      </li>
+      @auth
+        @if (auth()->user()->hak_akses == "admin")
+          <li class="nav-item {{ Request::is('dokter*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dokter') }}">
+              <i class="mdi mdi-account-box menu-icon"></i>
+              <span class="menu-title">Dokter</span>
+            </a>
+          </li>
+          <li class="nav-item {{ Request::is('spesialisasi*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('spesialisasi') }}">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Spesialisasi</span>
+            </a>
+          </li>
+          <li class="nav-item {{ Request::is('petugas*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('petugas') }}">
+              <i class="mdi mdi-account-outline menu-icon"></i>
+              <span class="menu-title">Petugas</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ Request::is('akun*') ? 'active' : '' }}" href="{{ route('akun') }}">
+              <i class="mdi mdi-account-multiple-outline menu-icon"></i>
+              <span class="menu-title">Akun</span>
+            </a>
+          </li>
+        @endif
+      @endauth
     </ul>
   </nav>
