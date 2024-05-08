@@ -3,6 +3,7 @@
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileRSController;
 use App\Http\Controllers\SpesialisasiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,10 @@ Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/akun/edit/{id}', [UserController::class, 'edit']);
     Route::post('/akun/update', [UserController::class, 'update']);
     Route::get('/akun/hapus/{id}', [UserController::class, 'destroy']);
+
+    Route::get('/profile-rs', [ProfileRSController::class, 'index'])->name('profile-rs');
+    Route::post('/profile-rs/store', [ProfileRSController::class, 'store']);
+    Route::post('/profile-rs/update', [ProfileRSController::class, 'update']);
 });
 
 require __DIR__.'/auth.php';

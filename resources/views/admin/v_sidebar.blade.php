@@ -22,6 +22,12 @@
       </li>
       @auth
         @if (auth()->user()->hak_akses == "admin")
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('profile-rs*') ? 'active' : '' }}" href="{{ route('profile-rs') }}">
+            <i class="mdi mdi-hospital-building menu-icon"></i>
+            <span class="menu-title">Profile Rumah Sakit</span>
+          </a>
+        </li>
           <li class="nav-item {{ Request::is('dokter*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('dokter') }}">
               <i class="mdi mdi-account-box menu-icon"></i>
