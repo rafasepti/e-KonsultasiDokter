@@ -8,8 +8,14 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('admin/v_admin');
+    return view('pengguna/v_pengguna');
 })->name('index');
+
+Route::middleware('auth', 'checkRole:admin')->group(function () {
+    Route::get('/admin', function () {
+        return view('admin/v_admin');
+    })->name('index.admin');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
