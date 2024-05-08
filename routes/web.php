@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('pengguna/v_pengguna');
 })->name('index');
+Route::get('/profile-rs/pengguna', [ProfileRSController::class, 'pengguna'])->name('profile-rs.pengguna');
 
 Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/admin', function () {

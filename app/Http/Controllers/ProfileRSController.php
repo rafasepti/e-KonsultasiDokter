@@ -22,6 +22,12 @@ class ProfileRSController extends Controller
             return view('profile_rs/edit_profile_rs' , compact('profile'));
         }
     }
+
+    public function pengguna(){
+        $profile = ProfileRS::first();
+        
+        return view('pengguna/profile_rs' , compact('profile'));
+    }
     /**
      * Store a newly created resource in storage.
      */

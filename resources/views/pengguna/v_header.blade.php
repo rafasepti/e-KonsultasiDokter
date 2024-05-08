@@ -37,7 +37,7 @@
         </li>
         <li class="nav-item d-none d-lg-block" style="
           margin-left: 0px; margin-right: 0px;">
-          <a href="{{ route('index') }}" class="dropdown-item">
+          <a href="{{ route('profile-rs.pengguna') }}" class="dropdown-item">
             Profile
           </a>
         </li>
