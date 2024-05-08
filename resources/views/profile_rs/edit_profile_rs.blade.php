@@ -21,8 +21,9 @@
                     <p class="card-description">
                       Masukan Data Rumah Sakit
                     </p>
-                    <form class="forms-sample" action="/profile-rs/update" method="post">
+                    <form class="forms-sample" action="/profile-rs/update" method="post" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="id" value="{{ $profile->id }}">
                       <div class="form-group">
                         <label for="nama_rs">Name Rumah Sakit</label>
                         <input type="text" class="form-control" id="nama_rs" name="nama_rs" placeholder="Nama" value="{{ $profile->nama_rs }}" required>
@@ -37,21 +38,25 @@
                       </div>
                       <div class="form-group">
                         <label for="alamat">Alamat Rumah Sakit</label>
-                        <textarea class="form-control" id="alamat" name="alamat" rows="4" placeholder="Alamat">{{ $profile->alamat }}</textarea>
+                        <textarea class="form-control" id="alamat" name="alamat" rows="4" placeholder="Alamat" required>{{ $profile->alamat }}</textarea>
                       </div>
                       <div class="form-group">
                         <label for="informasi_rs">Informasi Rumah Sakit</label>
-                        <textarea class="form-control" id="informasi_rs" name="informasi_rs" rows="10" style="height:100%;" placeholder="Informasi">{{ $profile->informasi_rs }}</textarea>
+                        <textarea class="form-control" id="informasi_rs" name="informasi_rs" rows="10" style="height:100%;" placeholder="Informasi" required>{{ $profile->informasi_rs }}</textarea>
                       </div>
                       <div class="form-group">
                         <label for="informasi_rs">Upload Logo Rumah Sakit</label>
-                        <input type="file" name="img[]" class="file-upload-default">
+                        <input type="file" name="logo_app" class="file-upload-default">
                         <div class="input-group col-xs-12">
                           <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                           <span class="input-group-append">
                             <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                           </span>
                         </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="logo_app">Logo Rumah Sakit</label>
+                        <img id="previewLogo" src="{{ asset($profile->logo_app) }}" alt="Preview Logo" class="img-thumbnail" style="max-width: 200px;">
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <button type="reset" class="btn btn-light">Cancel</button>

@@ -21,7 +21,7 @@
                     <p class="card-description">
                       Masukan Data Rumah Sakit
                     </p>
-                    <form class="forms-sample" action="/profile-rs/store" method="post">
+                    <form class="forms-sample" action="/profile-rs/store" method="post" enctype="multipart/form-data">
                         @csrf
                       <div class="form-group">
                         <label for="nama_rs">Name Rumah Sakit</label>
@@ -37,15 +37,15 @@
                       </div>
                       <div class="form-group">
                         <label for="alamat">Alamat Rumah Sakit</label>
-                        <textarea class="form-control" id="alamat" name="alamat" rows="4" placeholder="Alamat"></textarea>
+                        <textarea class="form-control" id="alamat" name="alamat" rows="4" placeholder="Alamat" required></textarea>
                       </div>
                       <div class="form-group">
                         <label for="informasi_rs">Informasi Rumah Sakit</label>
-                        <textarea class="form-control" id="informasi_rs" name="informasi_rs" rows="10" style="height:100%;" placeholder="Informasi"></textarea>
+                        <textarea class="form-control" id="informasi_rs" name="informasi_rs" rows="10" style="height:100%;" placeholder="Informasi" required></textarea>
                       </div>
                       <div class="form-group">
                         <label for="informasi_rs">Upload Logo Rumah Sakit</label>
-                        <input type="file" name="img[]" class="file-upload-default">
+                        <input type="file" name="logo_app" class="file-upload-default">
                         <div class="input-group col-xs-12">
                           <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                           <span class="input-group-append">
