@@ -32,7 +32,7 @@
         <li class="nav-item d-none d-lg-block" style="
           margin-left: 0px; margin-right: 0px;">
           <a href="{{ route('index') }}" class="dropdown-item">
-            Beranda
+            Home
           </a>
         </li>
         <li class="nav-item d-none d-lg-block" style="
@@ -43,7 +43,7 @@
         </li>
         <li class="nav-item d-none d-lg-block" style="
           margin-left: 0px; margin-right: 0px;">
-          <a href="{{ route('index') }}" class="dropdown-item">
+          <a href="{{ route('contact-rs.pengguna') }}" class="dropdown-item">
             Contact
           </a>
         </li>

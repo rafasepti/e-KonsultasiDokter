@@ -28,6 +28,12 @@ class ProfileRSController extends Controller
         
         return view('pengguna/profile_rs' , compact('profile'));
     }
+
+    public function contact(){
+        $profile = ProfileRS::first();
+        
+        return view('pengguna/contact_rs' , compact('profile'));
+    }
     /**
      * Store a newly created resource in storage.
      */
