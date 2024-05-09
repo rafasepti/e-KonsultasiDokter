@@ -48,13 +48,21 @@
                         <div class="col-md-6 grid-margin stretch-card">
                           <div class="card">
                             <div class="card-body">
+                                @if (session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                @endif
                               <h4 class="card-title">Send us A Message</h4>
-                              <form class="forms-sample" method="POST" action="contact/send">
+                              <form class="forms-sample" method="POST" action="{{ route('contact-rs.send') }}">
                                 @csrf
                                 <div class="form-group row">
                                   <label for="nama" class="col-sm-3 col-form-label">Name</label>
                                   <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="nama" name="nama" placeholder="Name" required>
+                                    <input type="text" class="form-control" id="nama" name="name" placeholder="Name" required>
                                   </div>
                                 </div>
                                 <div class="form-group row">

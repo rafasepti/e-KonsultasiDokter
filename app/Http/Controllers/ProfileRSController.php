@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\ProfileRS;
 use App\Http\Requests\StoreProfileRSRequest;
 use App\Http\Requests\UpdateProfileRSRequest;
+use App\Mail\MailSend;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ProfileRSController extends Controller
 {
@@ -33,6 +35,20 @@ class ProfileRSController extends Controller
         $profile = ProfileRS::first();
         
         return view('pengguna/contact_rs' , compact('profile'));
+    }
+
+    public function send(Request $request){
+        $details = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'message' => $request->message
+        ];
+
+        $profile = ProfileRS::first();
+
+        Mail::to($profile->email)->send(new MailSend($details));
+
+        return redirect()->back()->with('success', 'Pesan anda telah Dikirim!');
     }
     /**
      * Store a newly created resource in storage.

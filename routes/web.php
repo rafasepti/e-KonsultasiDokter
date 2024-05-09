@@ -14,6 +14,7 @@ Route::get('/', function () {
 
 Route::get('/profile-rs/pengguna', [ProfileRSController::class, 'pengguna'])->name('profile-rs.pengguna');
 Route::get('/contact-rs/pengguna', [ProfileRSController::class, 'contact'])->name('contact-rs.pengguna');
+Route::post('/contact-rs/send', [ProfileRSController::class, 'send'])->name('contact-rs.send');
 
 Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/admin', function () {
