@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileRSController;
@@ -8,9 +9,7 @@ use App\Http\Controllers\SpesialisasiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pengguna/v_pengguna');
-})->name('index');
+Route::get('/', [IndexController::class, 'pengguna'])->name('index');
 
 Route::get('/profile-rs/pengguna', [ProfileRSController::class, 'pengguna'])->name('profile-rs.pengguna');
 Route::get('/contact-rs/pengguna', [ProfileRSController::class, 'contact'])->name('contact-rs.pengguna');
