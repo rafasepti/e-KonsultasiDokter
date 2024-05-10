@@ -64,7 +64,7 @@
                                 <h2 class="mb-0 mt-2 font-weight-normal"><i class="mdi mdi-comment-text-outline mr-2"></i></h2>
                               </div>
                               <div class="ml-2 mt-2">
-                                <a href="" class="link-offset-2 link-underline-opacity-0 text-light">
+                                <a href="{{ route('chat-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
                                   <h4 class="location font-weight-normal mb-1">Chat dengan</h4>
                                   <h6 class="location font-weight-normal">Dokter</h6>
                                 </a>
