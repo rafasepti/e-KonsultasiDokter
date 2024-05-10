@@ -35,33 +35,32 @@
           <div class="row">
             @foreach ($dokter as $d)
               <div class="col-md-3 grid-margin stretch-card">
-                <div class="card card-light-blue">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <h4 class="card-title text-light text-center"><a href="" class="text-light">{{ $d->nama_dokter }}</a></h4>
-                        <div class="media">
-                            <div class="media-body">
-                                <a href=""><img src="" alt="" style="width: 100px;"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </div>
-              <div class="col-md-3 grid-margin stretch-card">
-                <div class="card card-light-blue">
+                <div class="card card-light-blue border">
                   <div class="row no-gutters">
-                    <div class="col-md-4">
-                      <img src="..." class="card-img" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                      <div class="card-body">
-                        <h5 class="card-title text-light">{{ $d->nama_dokter }}</h5>
-                        <h6 class="card-subtitle text-light">Card subtitle</h6>
-                        <p class="card-text text-light">{{ $d->harga_chat }}</p>
-                        <p class="card-text"><small class="text-light">Last updated 3 mins ago</small></p>
+                      <div class="col-md-4">
+                          @if ($d->foto)
+                              <img src="{{ asset($d->foto) }}" class="card-img" alt="{{ $d->nama_dokter }}" style=" width: 100%;
+                              height: 15vw;
+                              object-fit: cover;">
+                          @else 
+                              <img src="{{  asset('assets/images/foto_dokter/default.png') }}" class="card-img" alt="{{ $d->nama_dokter }}" style=" width: 100%;
+                              height: 15vw;
+                              object-fit: cover;">
+                          @endif
                       </div>
-                    </div>
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <h5 class="card-title text-light">{{ $d->nama_dokter }}</h5>
+                              <h6 class="card-subtitle text-light">Dokter {{ $d->spesialisasi->nama_spesialisasi }}</h6>
+                              <p class="card-text text-light">Rp.{{ number_format($d->harga_chat, 0, ',', '.') }}</p>
+                              <div class="text-right">
+                                <a href="" class="btn btn-primary">Chat</a>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
+              </div>
+              
               </div>
             @endforeach
           </div>
