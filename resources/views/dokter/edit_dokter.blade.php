@@ -21,7 +21,7 @@
                     <p class="card-description">
                       Edit Data Dokter
                     </p>
-                    <form class="forms-sample" action="/dokter/update" method="post">
+                    <form class="forms-sample" action="/dokter/update" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{ $dokter->id }}">
                       <div class="form-group">
@@ -67,6 +67,22 @@
                             <option value="{{ $s->id }}" {{ $dokter->spesialisasi_id==$s->id ? 'selected' : '' }}>{{ $s->nama_spesialisasi }}</option>
                           @endforeach
                         </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="informasi_rs">Upload Foto Dokter</label>
+                        <input type="file" name="foto" class="file-upload-default">
+                        <div class="input-group col-xs-12">
+                          <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                          <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="logo_app">Foto Dokter</label>
+                        @if ($dokter->foto)
+                          <img id="previewLogo" src="{{ asset($dokter->foto) }}" alt="Preview Logo" class="img-thumbnail" style="max-width: 200px;">
+                        @endif
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <button type="reset" class="btn btn-light">Cancel</button>

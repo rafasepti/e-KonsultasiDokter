@@ -46,6 +46,23 @@
                     </div>
                 </div>
               </div>
+              <div class="col-md-3 grid-margin stretch-card">
+                <div class="card card-light-blue">
+                  <div class="row no-gutters">
+                    <div class="col-md-4">
+                      <img src="..." class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title text-light">{{ $d->nama_dokter }}</h5>
+                        <h6 class="card-subtitle text-light">Card subtitle</h6>
+                        <p class="card-text text-light">{{ $d->harga_chat }}</p>
+                        <p class="card-text"><small class="text-light">Last updated 3 mins ago</small></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             @endforeach
           </div>
         </div>

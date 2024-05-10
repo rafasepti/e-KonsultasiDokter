@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('harga_chat');
             $table->integer('harga_janji');
             $table->integer('spesialisasi_id');
+            $table->text('foto');
             $table->timestamps();
         });
     }

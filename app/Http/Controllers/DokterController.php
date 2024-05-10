@@ -71,6 +71,20 @@ class DokterController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:3048', // Sesuaikan dengan kebutuhan Anda
+        ]);
+        
+		// menyimpan data file yang diupload ke variabel $file
+		$file = $request->file('foto');
+ 
+		$nama_file = time()."_".$file->getClientOriginalName();
+ 
+      	// isi dengan nama folder tempat kemana file diupload
+		$tujuan_upload = 'assets/images/foto_dokter';
+		$file->move($tujuan_upload,$nama_file);
+        $gambarPath = 'assets/images/foto_dokter/' . $nama_file;
+
         $kode = Dokter::kodeDokter();
         Dokter::create([
             'kode_dokter' => $kode,
@@ -80,6 +94,7 @@ class DokterController extends Controller
             'harga_chat' => $request->harga_chat,
             'harga_janji' => $request->harga_janji,
             'spesialisasi_id' => $request->spesialisasi_id,
+            'foto' => $gambarPath,
         ]);
         return redirect('/dokter');
     }
@@ -175,6 +190,20 @@ class DokterController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:3048', // Sesuaikan dengan kebutuhan Anda
+        ]);
+        
+		// menyimpan data file yang diupload ke variabel $file
+		$file = $request->file('foto');
+ 
+		$nama_file = time()."_".$file->getClientOriginalName();
+ 
+      	// isi dengan nama folder tempat kemana file diupload
+		$tujuan_upload = 'assets/images/foto_dokter';
+		$file->move($tujuan_upload,$nama_file);
+        $gambarPath = 'assets/images/foto_dokter/' . $nama_file;
+
         Dokter::where('id', $request->id)->update([
             'nama_dokter' => $request->nama_dokter,
             'no_hp' => $request->no_hp,
@@ -182,6 +211,7 @@ class DokterController extends Controller
             'harga_chat' => $request->harga_chat,
             'harga_janji' => $request->harga_janji,
             'spesialisasi_id' => $request->spesialisasi_id,
+            'foto' => $gambarPath,
         ]);
         return redirect('/dokter');
     }
