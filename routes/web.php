@@ -17,6 +17,7 @@ Route::get('/contact-rs/pengguna', [ProfileRSController::class, 'contact'])->nam
 Route::post('/contact-rs/send', [ProfileRSController::class, 'send'])->name('contact-rs.send');
 
 Route::get('/chat-rs', [PercakapanController::class, 'index'])->name('chat-rs');
+Route::get('/chat-rs/{id}', [PercakapanController::class, 'spesialisasi'])->name('chat-rs.spesialisasi');
 
 Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/admin', function () {

@@ -17,7 +17,7 @@
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Chat Dokter</h3>
+                  <h3 class="font-weight-bold">Chat Dokter {{ $spesialisasi->nama_spesialisasi }}</h3>
                   <h6 class="font-weight-normal mb-0">Layanan telemedisin yang siap siaga untuk bantu kamu hidup lebih sehat</h6>
                 </div>
                 <div class="col-12 col-xl-4">
@@ -33,14 +33,14 @@
             </div>
           </div>
           <div class="row">
-            @foreach ($spesialisasi as $s)
+            @foreach ($dokter as $d)
               <div class="col-md-3 grid-margin stretch-card">
                 <div class="card card-light-blue">
                     <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <h4 class="card-title text-light text-center"><a href="{{ route('chat-rs.spesialisasi', ['id' => $s->id]) }}" class="text-light">{{ $s->nama_spesialisasi }}</a></h4>
+                        <h4 class="card-title text-light text-center"><a href="" class="text-light">{{ $d->nama_dokter }}</a></h4>
                         <div class="media">
                             <div class="media-body">
-                                <a href="{{ route('chat-rs.spesialisasi', ['id' => $s->id]) }}"><img src="{{ $s->logo }}" alt="" style="width: 100px;"></a>
+                                <a href=""><img src="" alt="" style="width: 100px;"></a>
                             </div>
                         </div>
                     </div>

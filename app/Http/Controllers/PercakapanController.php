@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Percakapan;
 use App\Http\Requests\StorePercakapanRequest;
 use App\Http\Requests\UpdatePercakapanRequest;
+use App\Models\Dokter;
+use App\Models\Spesialisasi;
 
 class PercakapanController extends Controller
 {
@@ -13,7 +15,14 @@ class PercakapanController extends Controller
      */
     public function index()
     {
-        return view('chat/v_chat');
+        $spesialisasi = Spesialisasi::all();
+        return view('chat/v_chat', compact('spesialisasi'));
+    }
+
+    public function spesialisasi($id){
+        $spesialisasi = Spesialisasi::where('id', $id)->first();
+        $dokter = Dokter::where('spesialisasi_id', $id)->get();
+        return view('chat/chat_spesialisasi', compact('dokter', 'spesialisasi'));
     }
 
     /**
