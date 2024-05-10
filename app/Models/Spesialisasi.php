@@ -12,5 +12,6 @@ class Spesialisasi extends Model
     protected $fillable = [
         'nama_spesialisasi',
         'gelar',
+        'logo',
     ];
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\PercakapanController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileRSController;
@@ -14,6 +15,8 @@ Route::get('/', [IndexController::class, 'pengguna'])->name('index');
 Route::get('/profile-rs/pengguna', [ProfileRSController::class, 'pengguna'])->name('profile-rs.pengguna');
 Route::get('/contact-rs/pengguna', [ProfileRSController::class, 'contact'])->name('contact-rs.pengguna');
 Route::post('/contact-rs/send', [ProfileRSController::class, 'send'])->name('contact-rs.send');
+
+Route::get('/chat-rs', [PercakapanController::class, 'index'])->name('chat-rs');
 
 Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/admin', function () {

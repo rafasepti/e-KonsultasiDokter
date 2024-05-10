@@ -13,7 +13,7 @@ class PercakapanController extends Controller
      */
     public function index()
     {
-        //
+        return view('chat/v_chat');
     }
 
     /**

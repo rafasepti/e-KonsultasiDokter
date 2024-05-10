@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_spesialisasi', 40);
             $table->string('gelar', 20);
+            $table->text('logo');
             $table->timestamps();
         });
     }

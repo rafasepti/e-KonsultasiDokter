@@ -54,10 +54,26 @@ class SpesialisasiController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan kebutuhan Anda
+        ]);
+        
+		// menyimpan data file yang diupload ke variabel $file
+		$file = $request->file('logo');
+ 
+		$nama_file = time()."_".$file->getClientOriginalName();
+ 
+      	// isi dengan nama folder tempat kemana file diupload
+		$tujuan_upload = 'assets/images/logo_spesialisasi';
+		$file->move($tujuan_upload,$nama_file);
+        $gambarPath = 'assets/images/logo_spesialisasi/' . $nama_file;
+        
         Spesialisasi::create([
             'nama_spesialisasi' => $request->nama_spesialisasi,
             'gelar' => $request->gelar,
+            'logo' => $gambarPath,
         ]);
+
         return redirect('/spesialisasi');
     }
 
@@ -84,9 +100,24 @@ class SpesialisasiController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan kebutuhan Anda
+        ]);
+        
+		// menyimpan data file yang diupload ke variabel $file
+		$file = $request->file('logo');
+ 
+		$nama_file = time()."_".$file->getClientOriginalName();
+ 
+        // isi dengan nama folder tempat kemana file diupload
+		$tujuan_upload = 'assets/images/logo_spesialisasi';
+		$file->move($tujuan_upload,$nama_file);
+        $gambarPath = 'assets/images/logo_spesialisasi/' . $nama_file;
+        
         Spesialisasi::where('id', $request->id)->update([
             'nama_spesialisasi' => $request->nama_spesialisasi,
             'gelar' => $request->gelar,
+            'logo' => $gambarPath,
         ]);
         return redirect('/spesialisasi');
     }

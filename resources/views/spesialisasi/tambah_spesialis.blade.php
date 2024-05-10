@@ -21,7 +21,7 @@
                     <p class="card-description">
                       Masukan Data Spesialisasi
                     </p>
-                    <form class="forms-sample" action="/spesialisasi/store" method="post">
+                    <form class="forms-sample" action="/spesialisasi/store" method="post" enctype="multipart/form-data">
                         @csrf
                       <div class="form-group">
                         <label for="nama_spesialisasi">Name Spesialisasi</label>
@@ -30,6 +30,16 @@
                       <div class="form-group">
                         <label for="nama_spesialisasi">Gelar Spesialisasi</label>
                         <input type="text" class="form-control" id="gelar" name="gelar" placeholder="Gelar" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="informasi_rs">Upload Logo Spesialisasi</label>
+                        <input type="file" name="logo" class="file-upload-default">
+                        <div class="input-group col-xs-12">
+                          <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                          <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                          </span>
+                        </div>
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <button type="reset" class="btn btn-light">Cancel</button>

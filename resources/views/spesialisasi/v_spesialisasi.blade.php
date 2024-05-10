@@ -42,6 +42,9 @@
                           No.
                         </th>
                         <th>
+                          Logo
+                        </th>
+                        <th>
                           Spesialisasi
                         </th>
                         <th>
@@ -83,6 +86,13 @@
           ajax: "{{ url('spesialisasi/list') }}",
           columns: [
               {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+              {
+                data: 'logo',
+                name: 'logo',
+                render: function(data, type, full, meta) {
+                  return '<img src="' + data + '" alt="Logo" style="max-width:100px;max-height:100px;">';
+                }
+              },
               {data: 'nama_spesialisasi', name: 'spesialisasi'},
               {data: 'gelar', name: 'gelar'},
               {

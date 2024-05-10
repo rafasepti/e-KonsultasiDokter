@@ -21,7 +21,7 @@
                     <p class="card-description">
                       Update Data Spesialisasi
                     </p>
-                    <form class="forms-sample" action="/spesialisasi/update" method="post">
+                    <form class="forms-sample" action="/spesialisasi/update" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{ $spesialisasi->id }}">
                       <div class="form-group">
@@ -31,6 +31,22 @@
                       <div class="form-group">
                         <label for="nama_spesialisasi">Gelar Spesialisasi</label>
                         <input type="text" class="form-control" id="gelar" name="gelar" placeholder="Gelar" value="{{ $spesialisasi->gelar }}" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="informasi_rs">Upload Logo Spesialisasi</label>
+                        <input type="file" name="logo" class="file-upload-default">
+                        <div class="input-group col-xs-12">
+                          <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                          <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="logo_app">Logo Spesialisasi</label>
+                        @if ($spesialisasi->logo)
+                          <img id="previewLogo" src="{{ asset($spesialisasi->logo) }}" alt="Preview Logo" class="img-thumbnail" style="max-width: 200px;">
+                        @endif
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <button type="reset" class="btn btn-light">Cancel</button>
