@@ -6,7 +6,9 @@ use App\Models\Percakapan;
 use App\Http\Requests\StorePercakapanRequest;
 use App\Http\Requests\UpdatePercakapanRequest;
 use App\Models\Dokter;
+use App\Models\Pasien;
 use App\Models\Spesialisasi;
+use Illuminate\Support\Facades\Auth;
 
 class PercakapanController extends Controller
 {
@@ -23,6 +25,12 @@ class PercakapanController extends Controller
         $spesialisasi = Spesialisasi::where('id', $id)->first();
         $dokter = Dokter::where('spesialisasi_id', $id)->get();
         return view('chat/chat_spesialisasi', compact('dokter', 'spesialisasi'));
+    }
+
+    public function order($id)
+    {
+        $pasien = Pasien::where('user_id', Auth::id())->get();
+        return view('chat/chat_order', compact('pasien'));
     }
 
     /**

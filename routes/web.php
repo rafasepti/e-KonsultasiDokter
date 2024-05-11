@@ -19,10 +19,8 @@ Route::post('/contact-rs/send', [ProfileRSController::class, 'send'])->name('con
 Route::get('/chat-rs', [PercakapanController::class, 'index'])->name('chat-rs');
 Route::get('/chat-rs/{id}', [PercakapanController::class, 'spesialisasi'])->name('chat-rs.spesialisasi');
 
-Route::middleware('auth', 'checkRole:admin')->group(function () {
-    Route::get('/admin', function () {
-        return view('admin/v_admin');
-    })->name('index.admin');
+Route::middleware('auth', 'checkRole:pasien')->group(function () {
+    Route::get('/chat-rs/order/{id}', [PercakapanController::class, 'order'])->name('chat-rs.order');
 });
 
 Route::get('/dashboard', function () {
@@ -30,6 +28,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth', 'checkRole:admin')->group(function () {
+    Route::get('/admin', function () {return view('admin/v_admin');})->name('index.admin');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -54,7 +54,7 @@
                               <h6 class="card-subtitle text-light">Dokter {{ $d->spesialisasi->nama_spesialisasi }}</h6>
                               <p class="card-text text-light">Rp.{{ number_format($d->harga_chat, 0, ',', '.') }}</p>
                               <div class="text-right">
-                                <a href="" class="btn btn-primary">Chat</a>
+                                <a href="{{ route('chat-rs.order', ['id' => $d->id]) }}" class="btn btn-primary">Chat</a>
                               </div>
                           </div>
                       </div>
