@@ -30,7 +30,9 @@ class PercakapanController extends Controller
     public function order($id)
     {
         $pasien = Pasien::where('user_id', Auth::id())->get();
-        return view('chat/chat_order', compact('pasien'));
+        $dokter = Dokter::where('id', $id)->first();
+        $total_chat = $dokter->harga_chat + 2000;
+        return view('chat/chat_order', compact('pasien', 'dokter', 'total_chat'));
     }
 
     /**

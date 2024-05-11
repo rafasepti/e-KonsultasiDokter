@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PercakapanController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +22,8 @@ Route::get('/chat-rs/{id}', [PercakapanController::class, 'spesialisasi'])->name
 
 Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::get('/chat-rs/order/{id}', [PercakapanController::class, 'order'])->name('chat-rs.order');
+
+    Route::post('/pasien/store', [PasienController::class, 'store'])->name('pasien.store');
 });
 
 Route::get('/dashboard', function () {

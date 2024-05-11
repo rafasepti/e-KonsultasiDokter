@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pasien;
 use App\Http\Requests\StorePasienRequest;
 use App\Http\Requests\UpdatePasienRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
 {
@@ -27,9 +29,19 @@ class PasienController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePasienRequest $request)
+    public function store(Request $request)
     {
-        //
+        //dd($request->all());
+        Pasien::create([
+            'user_id' => Auth::id(),
+            'nama_pasien' => $request->nama_pasien,
+            'bb' => $request->bb,
+            'tb' => $request->tb,
+            'jk' => $request->jk,
+            'tgl_lahir' => $request->tgl_lahir,
+            'relasi' => $request->relasi,
+        ]);
+        return back()->with('status', 'Pasien baru berhasil disimpan!');
     }
 
     /**

@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('nama_pasien', 50);
             $table->string('no_hp', 20);
-            $table->text('alamat');
+            $table->integer('bb');
+            $table->integer('tb');
             $table->string('jk', 20);
             $table->integer('usia');
             $table->string('tempat_lahir', 20);
