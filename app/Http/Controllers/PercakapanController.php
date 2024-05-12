@@ -61,7 +61,7 @@ class PercakapanController extends Controller
 
     public function chat()
     {
-        return view('chat/chat_dokter');
+        return view('chat/status_chat');
     }
 
     /**
