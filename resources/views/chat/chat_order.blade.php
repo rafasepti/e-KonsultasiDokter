@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <form class="forms-sample" action="" method="POST">
+                    <form class="forms-sample" id="x-submit-form" action="{{ route('midtrans.proses-bayar') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md-6 grid-margin stretch-card">
@@ -100,6 +100,8 @@
                                                 <div class="col-md-8 text-right">
                                                     <div class="card-body d-flex flex-column justify-content-center"
                                                         style="height: 100%;">
+                                                        <input type="hidden" name="dokter_id" id="dokter_id" value="{{ $dokter->id }}">
+                                                        <input type="hidden" name="total_bayar" id="total_bayar" value="{{ $total_chat }}">
                                                         <h5 class="card-title text-light">{{ $dokter->nama_dokter }}</h5>
                                                         <p class="card-text">Dokter
                                                             {{ $dokter->spesialisasi->nama_spesialisasi }}</p>
@@ -123,6 +125,15 @@
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" id="x_json" name="x_json">
+
+                        <br>
+                        <!-- untuk tombol simpan -->
+                        
+                        <input class="col-sm-1 btn btn-success btn-sm" value="Bayar" id="pay-button">
+
+                        <!-- untuk tombol batal simpan -->
+                        <a class="col-sm-1 btn btn-dark  btn-sm" href="" role="button">Batal</a>
                     </form>
                 </div>
                 <!-- content-wrapper ends -->
@@ -213,6 +224,7 @@
     </div>
     <!-- container-scroller -->
 </body>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js"></script>
 <script>
   $(document).ready(function(){
       $('#pasien_id').change(function(){
@@ -230,5 +242,43 @@
           }
       });
   });
+
+  // For example trigger on button clicked, or any time you need
+  var payButton = document.getElementById('pay-button');
+      payButton.addEventListener('click', function () {
+        // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+        // window.snap.pay('TRANSACTION_TOKEN_HERE');
+        window.snap.pay('{{$snapToken}}',
+            {
+                    onSuccess: function(result){
+                        /* You may add your own implementation here */
+                        // alert("payment success!"); console.log(result);
+                        isi_formulir(result);
+                    },
+                    onPending: function(result){
+                        /* You may add your own implementation here */
+                        // alert("wating your payment!"); console.log(result);
+                        isi_formulir(result);
+                    },
+                    onError: function(result){
+                        /* You may add your own implementation here */
+                        // alert("payment failed!"); console.log(result);
+                        isi_formulir(result);
+                    },
+                    onClose: function(){
+                        /* You may add your own implementation here */
+                        alert('you closed the popup without finishing the payment');
+                    }
+            }
+        );
+        // customer will be redirected after completing payment pop-up
+      });
+
+    //   fungsi untuk mengirim response call back
+        function isi_formulir(result){
+            document.getElementById('x_json').value = JSON.stringify(result);
+            //alert(document.getElementById('x_json').value);
+            $('#x-submit-form').submit();
+        }
 </script>
 </html>

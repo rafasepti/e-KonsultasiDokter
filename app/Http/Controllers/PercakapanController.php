@@ -32,7 +32,36 @@ class PercakapanController extends Controller
         $pasien = Pasien::where('user_id', Auth::id())->get();
         $dokter = Dokter::where('id', $id)->first();
         $total_chat = $dokter->harga_chat + 2000;
-        return view('chat/chat_order', compact('pasien', 'dokter', 'total_chat'));
+
+            \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = false;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
+
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => rand(), //idpesanan ini nanti dpt diambil dari no_pesanan
+                    'gross_amount' => $total_chat, //gross amount diisi total tagihan
+                ),
+                'customer_details' => array(
+                    'first_name' => Auth::user()->name,
+                    'last_name' => '',
+                    'email' => Auth::user()->email,
+                    'phone' => '',
+                ),
+            );
+            
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+        return view('chat/chat_order', compact('pasien', 'dokter', 'total_chat', 'snapToken'));
+    }
+
+    public function chat()
+    {
+        return view('chat/chat_dokter');
     }
 
     /**
