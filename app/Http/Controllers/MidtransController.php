@@ -137,6 +137,6 @@ class MidtransController extends Controller
             'status_code' => $status_code,
         ]);
 
-        return redirect('/chat-dokter');
+        return redirect('/ChatDokter');
     }
 }
