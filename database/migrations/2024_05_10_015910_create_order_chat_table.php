@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pesan', function (Blueprint $table) {
+        Schema::create('order_chat', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_chat_id');
-            $table->integer('sender_id');
-            $table->integer('recepient_id');
-            $table->text('message');
+            $table->integer('user_id');
+            $table->integer('pasien_id');
+            $table->integer('dokter_id');
+            $table->integer('total_bayar');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pesan');
+        Schema::dropIfExists('order_chat');
     }
 };
