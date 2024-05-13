@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrderChat;
+use App\Models\Pasien;
 use App\Models\PGPenjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +47,7 @@ class MidtransController extends Controller
     }
 
     // // cek status
-    public function cekstatus(){
-    
+    public function cekstatus(){    
         //query data transaksi yang masih pending	
 		//$hasil = Pembayaran::viewstatusPGAll();
         $hasil = OrderChat::viewstatusPGAll();
@@ -108,6 +108,15 @@ class MidtransController extends Controller
 
     // proses bayar
     public function prosesBayar(Request $request){
+        $pasien = Pasien::where('id', $request->pasien_id)->first();
+        if($pasien->jk || $pasien->tgl_lahir || $pasien->bb || $pasien->tb){
+            Pasien::where('id', $request->pasien_id)->update([
+                'jk' => $request->jk1,
+                'tgl_lahir' => $request->tgl_lahir1,
+                'bb' => $request->bb1,
+                'tb' => $request->tb1,
+            ]);
+        }
         $order_chat = OrderChat::create([
             'user_id' => Auth::id(),
             'pasien_id' => $request->pasien_id,

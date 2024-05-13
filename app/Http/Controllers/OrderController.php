@@ -40,6 +40,11 @@ class OrderController extends Controller
         OrderChat::where('id', $id)->update([
             'status_chat' => 'accepted'
         ]);
-        return redirect()->back();
+        $order = OrderChat::where('id', $id)->first();
+        
+        if ($order) {
+            $user_id = $order->user_id; // Ganti 'user_id' dengan nama kolom yang sesuai di tabel OrderChat
+            return redirect('/ChatDokter/'.$user_id);
+        }
     }
 }

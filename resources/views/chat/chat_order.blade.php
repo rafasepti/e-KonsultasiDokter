@@ -61,20 +61,40 @@
                                             <select class="js-example-basic-single w-100" name="pasien_id" id="pasien_id" required>
                                               <option value="" selected disabled>Pilih Pasien</option>  
                                               @foreach ($pasien as $p)
-                                                    <option value="{{ $p->id }}" data-jk="{{ $p->jk }}" data-tgl="{{ date('d/m/Y', strtotime($p->tgl_lahir)) }}">( {{ $p->relasi }} )
-                                                        {{ $p->nama_pasien }}</option>
+                                                    <option value="{{ $p->id }}" data-jk="{{ $p->jk }}"
+                                                        data-bb="{{ $p->bb }}"
+                                                        data-tb="{{ $p->tb }}"    
+                                                        data-tgl="{{ date('d/m/Y', strtotime($p->tgl_lahir)) }}
+                                                    ">
+                                                        ( {{ $p->relasi }} ){{ $p->nama_pasien }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                          <label for="jk1">Jenis Kelamin</label>
-                                          <input type="text" class="form-control" id="jk1" name="jk1"
-                                              placeholder="Jenis Kelamin" disabled required>
-                                        </div>
-                                        <div class="form-group">
-                                          <label for="tgl_lahir1">Tanggal Lahir</label>
-                                          <input type="text" class="form-control" id="tgl_lahir1" name="tgl_lahir1"
-                                              placeholder="Tanggal Lahir" disabled required>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="jk1">Jenis Kelamin</label>
+                                                    <input type="text" class="form-control" id="jk1" name="jk1"
+                                                        placeholder="Jenis Kelamin" disabled required>
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="bb1">Berat Badam</label>
+                                                    <input type="text" class="form-control" id="bb1" name="bb1"
+                                                        placeholder="Berat Badan" disabled required>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tgl_lahir1">Tanggal Lahir</label>
+                                                    <input type="text" class="form-control" id="tgl_lahir1" name="tgl_lahir1"
+                                                        placeholder="Tanggal Lahir" disabled required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="tb1">Tinggi Badan</label>
+                                                    <input type="text" class="form-control" id="tb1" name="tb1"
+                                                        placeholder="Tinggi Badan" disabled required>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -232,13 +252,24 @@
           
           var jk = selectedOption.data('jk');
           var tgl_lahir = selectedOption.data('tgl');
+          var tb = selectedOption.data('tb');
+          var bb = selectedOption.data('bb');
 
           if(jk == ''){
-            $('#jk1').val('-');
-            $('#tgl_lahir1').val('-');
+            $('#jk1').prop('disabled', false);
+            $('#tgl_lahir1').prop('disabled', false);
+            $('#bb1').prop('disabled', false);
+            $('#tb1').prop('disabled', false);
           }else{
             $('#jk1').val(jk);
             $('#tgl_lahir1').val(tgl_lahir);
+            $('#bb1').val(bb + ' KG');
+            $('#tb1').val(tb + ' CM');
+
+            $('#jk1').prop('disabled', true);
+            $('#tgl_lahir1').prop('disabled', true);
+            $('#bb1').prop('disabled', true);
+            $('#tb1').prop('disabled', true);
           }
       });
   });
