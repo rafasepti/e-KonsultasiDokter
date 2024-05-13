@@ -22,6 +22,11 @@ class Dokter extends Model
         return $this->hasOne(User::class, 'user_id');
     }
 
+    public function orderChat()
+    {
+        return $this->hasOne(OrderChat::class, 'dokter_id');
+    }
+
     public static function kodeDokter(){
         $sql = "SELECT IFNULL(MAX(kode_dokter), 'D00000')
             AS kode_dokter FROM dokter";

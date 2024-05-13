@@ -27,4 +27,19 @@ class OrderChat extends Model
 
         return $list;
     }
+
+    public function pasien()
+    {
+        return $this->belongsTo(Pasien::class, 'pasien_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'dokter_id');
+    }
 }

@@ -55,4 +55,14 @@ class User extends Authenticatable
             ->where('id', $userId)
             ->update(['active_status' => $status]);
     }
+
+    public function pasien()
+    {
+        return $this->hasMany(Pasien::class, 'user_id');
+    }
+
+    public function orderChat()
+    {
+        return $this->hasOne(OrderChat::class, 'user_id');
+    }
 }
