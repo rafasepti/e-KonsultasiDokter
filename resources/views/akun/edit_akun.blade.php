@@ -22,14 +22,14 @@
                       Edit Data Pengguna
                     </p>
                     @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                  @endif
+                      <div class="alert alert-danger">
+                          <ul>
+                              @foreach ($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                    @endif
                     <form class="forms-sample" action="/akun/update" method="post">
                       <input type="hidden" name="id" id="id" value="{{ $user->id }}">
                       @csrf

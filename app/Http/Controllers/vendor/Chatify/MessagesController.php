@@ -44,28 +44,6 @@ class MessagesController extends Controller
      */
     public function index( $id = null)
     {
-        $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
-        $orderChat = OrderChat::where('dokter_id', $dokter_id->id)
-            ->where('status_chat', 'accepted')
-            ->first();
-        if ($orderChat) {
-            // Add a message "Chat time is 30 minutes"
-            $message = Chatify::newMessage([
-                'from_id' => Auth::id(),
-                'to_id' => $orderChat->user_id,
-                'body' => 'Chat time is 30 minutes',
-                'attachment' => null,
-            ]);
-            $messageData = Chatify::parseMessage($message);
-            if (Auth::user()->id != $orderChat->user_id) {
-                Chatify::push("private-chatify.".$orderChat->user_id, 'messaging', [
-                    'from_id' => Auth::user()->id,
-                    'to_id' => $orderChat->user_id,
-                    'message' => Chatify::messageCard($messageData, true)
-                ]);
-            }
-        }
-
         $messenger_color = Auth::user()->messenger_color;
         return view('Chatify::pages.app', [
             'id' => $id ?? 0,

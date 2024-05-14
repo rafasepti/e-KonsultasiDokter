@@ -109,8 +109,15 @@ class MidtransController extends Controller
     // proses bayar
     public function prosesBayar(Request $request){
         $pasien = Pasien::where('id', $request->pasien_id)->first();
-        if($pasien->jk || $pasien->tgl_lahir || $pasien->bb || $pasien->tb){
-            Pasien::where('id', $request->pasien_id)->update([
+        if($pasien->jk == '' || $pasien->tgl_lahir == '' || $pasien->bb == '' || $pasien->tb == ''){
+            $request->validate([
+                'jk1' => 'required',
+                'tgl_lahir1' => 'required',
+                'bb1' => 'required',
+                'tb1' => 'required',
+            ]);
+
+            $data_pasien = Pasien::where('id', $request->pasien_id)->update([
                 'jk' => $request->jk1,
                 'tgl_lahir' => $request->tgl_lahir1,
                 'bb' => $request->bb1,
