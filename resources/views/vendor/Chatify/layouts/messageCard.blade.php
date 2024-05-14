@@ -29,7 +29,11 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
         <div class="image-wrapper" style="text-align: {{$isSender ? 'end' : 'start'}}">
             @php
                 $image = Chatify::getAttachmentUrl($attachment->file);
-                $image = str_replace('http://localhost', 'http://127.0.0.1:8000', $image);
+                // Dapatkan URL dasar dari aplikasi yang sedang dijalankan
+                $currentBaseUrl = url('/'); // atau request()->getSchemeAndHttpHost()
+
+                // Ganti URL dasar lama dengan URL dasar yang baru
+                $image = str_replace('http://localhost', $currentBaseUrl, $image);
             @endphp
             <div class="image-file chat-image" style="background-image: url('{{ $image }}')">
                 <div>{{ $attachment->title }}</div>

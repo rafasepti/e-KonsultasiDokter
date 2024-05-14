@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dokter;
 use App\Models\OrderChat;
 use App\Models\Pasien;
 use App\Models\PGPenjualan;
@@ -153,6 +154,9 @@ class MidtransController extends Controller
             'status_code' => $status_code,
         ]);
 
-        return redirect('/ChatDokter');
+        $dokter = Dokter::with('user')
+            ->where('id', $request->dokter_id)
+            ->first();
+        return redirect('/ChatDokter/'.$dokter->user->id);
     }
 }

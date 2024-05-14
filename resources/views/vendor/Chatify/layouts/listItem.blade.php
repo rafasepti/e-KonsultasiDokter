@@ -85,7 +85,11 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
 {{-- -------------------- Shared photos Item -------------------- --}}
 @if($get == 'sharedPhoto')
 @php
-    $image = str_replace('http://localhost', 'http://127.0.0.1:8000', $image);
+    // Dapatkan URL dasar dari aplikasi yang sedang dijalankan
+    $currentBaseUrl = url('/'); // atau request()->getSchemeAndHttpHost()
+
+    // Ganti URL dasar lama dengan URL dasar yang baru
+    $image = str_replace('http://localhost', $currentBaseUrl, $image);
 @endphp
 <div class="shared-photo chat-image" style="background-image: url('{{ asset($image) }}')"></div>
 @endif
