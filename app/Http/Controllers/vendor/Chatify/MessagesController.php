@@ -135,6 +135,7 @@ class MessagesController extends Controller
             $order = OrderChat::where('user_id', auth()->user()->id)
             ->where('dokter_id', $request['id'])
             ->where('status_chat', 'accepted')
+            ->orderBy('created_at', 'desc')
             ->first();
             if (!$order) {
                 // If the user hasn't ordered a chat with this doctor, return an error
@@ -142,10 +143,12 @@ class MessagesController extends Controller
                 $error->message = "You are not authorized to chat with this doctor.";
             }
         }
-        if(auth()->user()->hak_akses == "pasien"){
-            $order = OrderChat::where('dokter_id', auth()->user()->id)
+        if(auth()->user()->hak_akses == "dokter"){
+            $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
+            $order = OrderChat::where('dokter_id', $dokter_id->id)
             ->where('user_id', $request['id'])
             ->where('status_chat', 'accepted')
+            ->orderBy('created_at', 'desc')
             ->first();
             if (!$order) {
                 // If the user hasn't ordered a chat with this doctor, return an error

@@ -188,9 +188,9 @@ function attachmentTemplate(fileType, fileName, imgURL = null) {
       `
 <div class="attachment-preview">
  <span class="fas fa-times cancel"></span>
- <div class="image-file chat-image" style="background-image: url('` +
+ <div class="image-file chat-image" style="background-image: url(' {{  asset(` + 
       imgURL +
-      `');"></div>
+      `) }}');"></div>
  <p><span class="fas fa-file-image"></span> ` +
       escapeHtml(fileName) +
       `</p>
@@ -1239,6 +1239,7 @@ function endedMessage(id) {
         console.error("Error occurred, message can not be ended!");
 
       sendMessageEndedEvent(id);
+      fetchMessages(id);
 
       // Hide waiting alert modal
       app_modal({

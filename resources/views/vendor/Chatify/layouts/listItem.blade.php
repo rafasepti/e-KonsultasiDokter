@@ -84,7 +84,10 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
 
 {{-- -------------------- Shared photos Item -------------------- --}}
 @if($get == 'sharedPhoto')
-<div class="shared-photo chat-image" style="background-image: url('{{ $image }}')"></div>
+@php
+    $image = str_replace('http://localhost', 'http://127.0.0.1:8000', $image);
+@endphp
+<div class="shared-photo chat-image" style="background-image: url('{{ asset($image) }}')"></div>
 @endif
 
 
