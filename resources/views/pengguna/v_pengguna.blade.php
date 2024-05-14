@@ -44,20 +44,24 @@
                       </div>
                       <div class="ml-2">
                         <h3 class="font-weight-normal mb-2">Selamat Datang,</h3>
-                        <h4 class="font-weight-normal">Guest</h4>
+                        @if (auth())
+                          <h3 class="font-weight-normal">{{ auth()->user()->name }}</h3>
+                        @else
+                          <h3 class="font-weight-normal">Guest</h3>
+                        @endif
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-6 grid-margin transparent">
+            <div class="col-md-6 transparent">
               <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                   <div class="card card-light-blue">
                     <div class="card-people mt-auto">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-12 col-sm-6 d-flex align-items-center">
                           <div class="weather-info">
                             <div class="d-flex">
                               <div>
@@ -72,8 +76,10 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <img src="{{ asset('assets') }}/images/dashboard/chat.png" alt="people" style="width: 150px;" class="float-right mr-5">
+                        <div class="col-12 col-sm-6 d-flex justify-content-center align-items-center">
+                          <a href="" class="link-offset-2 link-underline-opacity-0 text-light">
+                            <img src="{{ asset('assets') }}/images/dashboard/chat.png" alt="people" style="width: 150px;" class="float-right mr-5">
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -81,11 +87,11 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12 stretch-card">
+                <div class="col-md-12 grid-margin stretch-card">
                   <div class="card card-dark-blue">
                     <div class="card-people mt-auto">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-12 col-sm-6 d-flex align-items-center">
                           <div class="weather-info">
                             <div class="d-flex">
                               <div>
@@ -100,8 +106,10 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <img src="{{ asset('assets') }}/images/dashboard/periksa.png" alt="people" style="width: 200px;" class="float-right mr-4">
+                        <div class="col-12 col-sm-6 d-flex justify-content-center align-items-center">
+                          <a href="" class="link-offset-2 link-underline-opacity-0 text-light">
+                            <img src="{{ asset('assets') }}/images/dashboard/periksa.png" alt="people" style="width: 200px;" class="float-right mr-4">
+                          </a>
                         </div>
                       </div>
                     </div>
