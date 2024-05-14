@@ -132,17 +132,36 @@ class MessagesController extends Controller
         }
 
         if(auth()->user()->hak_akses == "pasien"){
-            $order = OrderChat::where('user_id', auth()->user()->id)
-            ->where('dokter_id', $request['id'])
-            ->where('status_chat', 'accepted')
-            ->orderBy('created_at', 'desc')
-            ->first();
-            if (!$order) {
-                // If the user hasn't ordered a chat with this doctor, return an error
-                $error->status = 1;
-                $error->message = "You are not authorized to chat with this doctor.";
+            $user = User::with('dokter')
+                ->where('id', $request['id'])
+                ->where('user_id', 'like', 'D%')
+                ->first();
+
+            // Memastikan user ditemukan
+            if ($user) {
+                // Menggunakan optional untuk mengakses properti id dari dokter
+                $dokterId = optional($user->dokter)->id;
+
+                if ($dokterId) {
+                    $order = OrderChat::where('user_id', auth()->user()->id)
+                    ->where('dokter_id', $dokterId)
+                    ->where('status_chat', 'accepted')
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+                    
+                    if (!$order) {
+                        // If the user hasn't ordered a chat with this doctor, return an error
+                        $error->status = 1;
+                        $error->message = "You are not authorized to chat with this doctor.";
+                    }
+                } else {
+                    return response()->json(['error' => 'Relasi Dokter tidak ditemukan untuk user ini'], 404);
+                }
+            } else {
+                return response()->json(['error' => 'User tidak ditemukan'], 404);
             }
         }
+
         if(auth()->user()->hak_akses == "dokter"){
             $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
             $order = OrderChat::where('dokter_id', $dokter_id->id)

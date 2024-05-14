@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->hasMany(Pasien::class, 'user_id');
     }
 
+    public function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'user_id', 'kode_dokter');
+    }
+
     public function orderChat()
     {
         return $this->hasOne(OrderChat::class, 'user_id');

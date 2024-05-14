@@ -1239,7 +1239,6 @@ function endedMessage(id) {
         console.error("Error occurred, message can not be ended!");
 
       sendMessageEndedEvent(id);
-      fetchMessages(id);
 
       // Hide waiting alert modal
       app_modal({
