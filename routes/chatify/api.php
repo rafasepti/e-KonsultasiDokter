@@ -63,6 +63,16 @@ Route::post('/shared', 'MessagesController@sharedPhotos')->name('api.shared');
 Route::post('/deleteConversation', 'MessagesController@deleteConversation')->name('api.conversation.delete');
 
 /**
+ * Ended Conversation
+ */
+// Route::post('/endedConversation', 'MessagesController@endedConversation')->name('api.conversation.ended');
+
+/**
+ * Ended Message
+ */
+Route::post('/endedMessage', 'MessagesController@endedMessage')->name('api.message.ended');
+
+/**
  * Delete Conversation
  */
 Route::post('/updateSettings', 'MessagesController@updateSettings')->name('api.avatar.update');

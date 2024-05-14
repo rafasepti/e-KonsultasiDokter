@@ -102,7 +102,7 @@
                             return `<label class="badge badge-info">Diterima</label>`
                         }
 
-                        if (data == "selesai") {
+                        if (data == "ended") {
                             return `<label class="badge badge-success">Selesai</label>`
                         }
                     }

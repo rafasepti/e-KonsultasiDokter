@@ -17,6 +17,19 @@
           </div>
       </div>
   </div>
+    {{-- ---------------------- end Modal ---------------------- --}}
+    <div class="app-modal" data-name="ended">
+        <div class="app-modal-container">
+            <div class="app-modal-card" data-name="ended" data-modal='0'>
+                <div class="app-modal-header">Apakah anda yakin mengakhiri sesi ini?</div>
+                <div class="app-modal-body">Anda tidak bisa mengembalikan aksi ini</div>
+                <div class="app-modal-footer">
+                    <a href="javascript:void(0)" class="app-btn cancel">Cancel</a>
+                    <a href="javascript:void(0)" class="app-btn a-btn-danger ended">Akhiri sesi</a>
+                </div>
+            </div>
+        </div>
+    </div>
   {{-- ---------------------- Alert Modal ---------------------- --}}
   <div class="app-modal" data-name="alert">
       <div class="app-modal-container">

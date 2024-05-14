@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------
  */
 
+use App\Http\Controllers\vendor\Chatify\MessagesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,6 +86,16 @@ Route::post('/deleteConversation', 'MessagesController@deleteConversation')->nam
  * Delete Message
  */
 Route::post('/deleteMessage', 'MessagesController@deleteMessage')->name('message.delete');
+
+/**
+ * Ended Conversation
+ */
+// Route::post('/endedConversation', [MessagesController::class, 'endedConversation'])->name('conversation.ended');
+
+/**
+ * Ended Message
+ */
+Route::post('/endedMessage', 'MessagesController@endedMessage')->name('message.ended');
 
 /**
  * Update setting

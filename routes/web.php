@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileRSController;
 use App\Http\Controllers\SpesialisasiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\vendor\Chatify\MessagesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IndexController::class, 'pengguna'])->name('index');
@@ -44,6 +45,8 @@ Route::middleware('auth', 'checkRole:dokter')->group(function () {
     Route::get('/status-chat', [OrderController::class, 'viewStatus'])->name('pembayaran.view-status');
     Route::get('/status-chat/list', [OrderController::class, 'statusGet']);
     Route::get('/status-chat/konfirmasi/{id}', [OrderController::class, 'update']);
+
+    Route::post('/ChatDokter/endedConversation', [MessagesController::class, 'endedConversation']);
 });
 
 Route::get('/dashboard', function () {

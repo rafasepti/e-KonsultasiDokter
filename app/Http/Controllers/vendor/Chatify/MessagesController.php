@@ -418,6 +418,40 @@ class MessagesController extends Controller
         ], 200);
     }
 
+    public function endedConversation(Request $request)
+    {
+        // Add a message "Chat time is 30 minutes"
+        $message = Chatify::newMessage([
+            'from_id' => Auth::id(),
+            'to_id' => $request['id'],
+            'body' => 'Chat telah berakhir, terima kasih',
+            'attachment' => null,
+        ]);
+        $messageData = Chatify::parseMessage($message);
+        if (Auth::user()->id != $request['id']) {
+            Chatify::push("private-chatify.".$request['id'], 'messaging', [
+                'from_id' => Auth::user()->id,
+                'to_id' => $request['id'],
+                'message' => Chatify::messageCard($messageData, true)
+            ]);
+        }
+
+        // Cari record terakhir berdasarkan created_at
+        $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
+        $orderChat = OrderChat::where('user_id', $request['id'])
+            ->where('dokter_id', $dokter_id->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if ($orderChat) {
+            // Update status_chat
+            $orderChat->status_chat = 'ended'; // Sesuaikan nilai status_chat sesuai kebutuhan Anda
+            $orderChat->save(); 
+        } 
+        return Response::json([
+            'ended' => $message ? 1 : 0,
+        ], 200);
+    }
+
     /**
      * Delete message
      *

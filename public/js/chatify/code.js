@@ -406,6 +406,7 @@ function IDinfo(id) {
         );
         // Show shared and actions
         $(".messenger-infoView-btns .delete-conversation").show();
+        $(".messenger-infoView-btns .ended-conversation").show();
         $(".messenger-infoView-shared").show();
         // fetch messages
         fetchMessages(id, true);
@@ -803,6 +804,28 @@ function sendDeleteConversationEvent() {
 
 /**
  *-------------------------------------------------------------
+ * Trigger message delete
+ *-------------------------------------------------------------
+ */
+ function sendMessageEndedEvent(messageId) {
+  return clientSendChannel.trigger("client-messageEnded", {
+    id: messageId,
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Trigger delete conversation
+ *-------------------------------------------------------------
+ */
+function sendEndedConversationEvent() {
+  return clientSendChannel.trigger("client-endedConversation", {
+    from: auth_id,
+    to: getMessengerId(),
+  });
+}
+
+/**
+ *-------------------------------------------------------------
  * Check internet connection using pusher states
  *-------------------------------------------------------------
  */
@@ -1165,6 +1188,74 @@ function deleteMessage(id) {
 
 /**
  *-------------------------------------------------------------
+ * Ended Conversation
+ *-------------------------------------------------------------
+ */
+ function endedConversation(id) {
+  $.ajax({
+    url: url + "/endedConversation",  // URL rute Laravel Anda
+    type: "POST",
+    data: { _token: csrfToken, id: id },
+    success: function(response) {
+        console.log('Success:', response);
+        // Tambahkan logika setelah sesi chat berakhir
+        alert('Sesi telah berakhir');
+        // Tutup modal atau redirect jika diperlukan
+        $('.app-modal').hide();
+    },
+    error: function(error) {
+        console.error('Error:', error);
+    }
+  });
+}
+
+/**
+ *-------------------------------------------------------------
+ * Delete Message By ID
+ *-------------------------------------------------------------
+ */
+function endedMessage(id) {
+  $.ajax({
+    url: url + "/EndedMessage",
+    method: "POST",
+    data: { _token: csrfToken, id: id },
+    dataType: "JSON",
+    beforeSend: () => {
+      // hide delete modal
+      app_modal({
+        show: false,
+        name: "ended",
+      });
+      // Show waiting alert modal
+      app_modal({
+        show: true,
+        name: "alert",
+        buttons: false,
+        body: loadingSVG("32px", null, "margin:auto"),
+      });
+    },
+    success: (data) => {
+      if (!data.deleted)
+        console.error("Error occurred, message can not be ended!");
+
+      sendMessageEndedEvent(id);
+
+      // Hide waiting alert modal
+      app_modal({
+        show: false,
+        name: "alert",
+        buttons: true,
+        body: "",
+      });
+    },
+    error: () => {
+      console.error("Server error, check your response");
+    },
+  });
+}
+
+/**
+ *-------------------------------------------------------------
  * Update Settings
  *-------------------------------------------------------------
  */
@@ -1510,6 +1601,47 @@ $(document).ready(function () {
       app_modal({
         show: false,
         name: "delete",
+      });
+    });
+
+  // Ended Conversation button
+  $(".messenger-infoView-btns .ended-conversation").on("click", function () {
+    app_modal({
+      name: "ended",
+    });
+  });
+  // ended Message Button
+  $("body").on("click", ".message-card .actions .ended-btn", function () {
+    app_modal({
+      name: "ended",
+      data: $(this).data("id"),
+    });
+  });
+  // Delete modal [on delete button click]
+  $(".app-modal[data-name=ended]")
+    .find(".app-modal-footer .ended")
+    .on("click", function () {
+      const id = $("body")
+        .find(".app-modal[data-name=ended]")
+        .find(".app-modal-card")
+        .attr("data-modal");
+      if (id == 0) {
+        endedConversation(getMessengerId());
+      } else {
+        endedMessage(id);
+      }
+      app_modal({
+        show: false,
+        name: "ended",
+      });
+    });
+  // delete modal [cancel button]
+  $(".app-modal[data-name=ended]")
+    .find(".app-modal-footer .cancel")
+    .on("click", function () {
+      app_modal({
+        show: false,
+        name: "ended",
       });
     });
 
