@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateDokterRequest;
 use App\Models\JadwalDokter;
 use App\Models\Spesialisasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class DokterController extends Controller
@@ -190,6 +191,12 @@ class DokterController extends Controller
      */
     public function update(Request $request)
     {
+        $dokter = Dokter::where('id', $request->id)->first();
+
+        if($dokter->foto != null){
+            Storage::delete($dokter->foto);
+        }
+
         $request->validate([
             'foto' => 'image|mimes:jpeg,png,jpg,gif|max:3048', // Sesuaikan dengan kebutuhan Anda
         ]);
@@ -221,6 +228,11 @@ class DokterController extends Controller
      */
     public function destroy($id)
     {
+        $dokter = Dokter::where('id', $id)->first();
+
+        if($dokter->foto != null){
+            Storage::delete($dokter->foto);
+        }
         Dokter::where('id',$id)->delete();
         return redirect('/dokter');
     }

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProfileRSRequest;
 use App\Mail\MailSend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileRSController extends Controller
 {
@@ -83,6 +84,11 @@ class ProfileRSController extends Controller
 
     public function update(Request $request)
     {
+        $profile = ProfileRS::where('id', $request->id)->first();
+
+        if($profile->logo_app != null){
+            Storage::delete($profile->logo_app);
+        }
         $request->validate([
             'logo_app' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan kebutuhan Anda
         ]);

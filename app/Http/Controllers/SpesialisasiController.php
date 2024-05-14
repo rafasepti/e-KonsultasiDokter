@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSpesialisasiRequest;
 use App\Http\Requests\UpdateSpesialisasiRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class SpesialisasiController extends Controller
@@ -100,6 +101,12 @@ class SpesialisasiController extends Controller
      */
     public function update(Request $request)
     {
+        $spesialisasi = Spesialisasi::where('id', $request->id)->first();
+
+        if($spesialisasi->logo != null){
+            Storage::delete($spesialisasi->logo);
+        }
+
         $request->validate([
             'logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan kebutuhan Anda
         ]);
@@ -127,6 +134,12 @@ class SpesialisasiController extends Controller
      */
     public function destroy($id)
     {
+        $spesialisasi = Spesialisasi::where('id', $id)->first();
+
+        if($spesialisasi->logo != null){
+            Storage::delete($spesialisasi->logo);
+        }
+
        Spesialisasi::where('id',$id)->delete();
        return redirect('/spesialisasi');
     }
