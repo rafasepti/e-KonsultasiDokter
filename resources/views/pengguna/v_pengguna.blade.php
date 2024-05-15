@@ -68,11 +68,18 @@
                                 <h2 class="mb-0 mt-2 font-weight-normal"><i class="mdi mdi-comment-text-outline mr-2"></i></h2>
                               </div>
                               <div class="ml-2 mt-2">
-                                @if (auth()->user()->hak_akses === "dokter")
-                                  <a href="{{ route('pembayaran.view-status') }}" class="link-offset-2 link-underline-opacity-0 text-light">
-                                    <h4 class="location font-weight-normal mb-1">Status chat</h4>
-                                    <h6 class="location font-weight-normal">dengan pasien</h6>
-                                  </a>
+                                @if (auth()->check())
+                                  @if (auth()->user()->hak_akses === "dokter")
+                                    <a href="{{ route('pembayaran.view-status') }}" class="link-offset-2 link-underline-opacity-0 text-light">
+                                      <h4 class="location font-weight-normal mb-1">Status chat</h4>
+                                      <h6 class="location font-weight-normal">dengan pasien</h6>
+                                    </a>
+                                  @else
+                                    <a href="{{ route('chat-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
+                                      <h4 class="location font-weight-normal mb-1">Chat dengan</h4>
+                                      <h6 class="location font-weight-normal">Dokter</h6>
+                                    </a>
+                                  @endif
                                 @else
                                   <a href="{{ route('chat-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
                                     <h4 class="location font-weight-normal mb-1">Chat dengan</h4>
@@ -84,10 +91,16 @@
                           </div>
                         </div>
                         <div class="col-12 col-sm-6 d-flex justify-content-center align-items-center">
-                          @if (auth()->user()->hak_akses === "dokter")
-                            <a href="{{ route('pembayaran.view-status') }}" class="link-offset-2 link-underline-opacity-0 text-light">
-                              <img src="{{ asset('assets') }}/images/dashboard/chat.png" alt="people" style="width: 150px;" class="float-right mr-5">
-                            </a>
+                          @if (auth()->check())
+                            @if (auth()->user()->hak_akses === "dokter")
+                              <a href="{{ route('pembayaran.view-status') }}" class="link-offset-2 link-underline-opacity-0 text-light">
+                                <img src="{{ asset('assets') }}/images/dashboard/chat.png" alt="people" style="width: 150px;" class="float-right mr-5">
+                              </a>
+                            @else
+                              <a href="{{ route('chat-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
+                                <img src="{{ asset('assets') }}/images/dashboard/chat.png" alt="people" style="width: 150px;" class="float-right mr-5">
+                              </a>
+                            @endif
                           @else
                             <a href="{{ route('chat-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
                               <img src="{{ asset('assets') }}/images/dashboard/chat.png" alt="people" style="width: 150px;" class="float-right mr-5">
