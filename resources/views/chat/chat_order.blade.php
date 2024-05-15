@@ -128,8 +128,12 @@
                                         <div class="card card-tale">
                                             <div class="row no-gutters">
                                                 <div class="col-md-4">
-                                                    <img src="{{ asset($dokter->foto) }}" class="card-img"
-                                                        alt="Foto Dokter" style="width: 170px">
+                                                    @if ($dokter->foto != null)
+                                                        <img src="{{ asset($dokter->foto) }}" class="card-img"
+                                                    alt="Foto Dokter" style="width: 170px">
+                                                    @else
+                                                        <img src="{{  asset('assets/images/foto_dokter/default.png') }}" class="card-img" alt="Foto Dokter" style="width: 170px">
+                                                    @endif
                                                 </div>
                                                 <div class="col-md-8 text-right">
                                                     <div class="card-body d-flex flex-column justify-content-center"
