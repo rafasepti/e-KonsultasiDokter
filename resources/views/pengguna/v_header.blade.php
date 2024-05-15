@@ -14,12 +14,13 @@
     <link rel="stylesheet" type="text/css" href="{{  asset('assets') }}/js/select.dataTables.min.css">
     <link rel="stylesheet" href="{{  asset('assets') }}/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="{{  asset('assets') }}/vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="{{  asset('assets') }}/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="{{  asset('assets') }}/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{  asset('assets') }}/css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{  asset('assets') }}/images/favicon.png" />
+    @vite('resources/js/app.js')
 </head>
 
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">

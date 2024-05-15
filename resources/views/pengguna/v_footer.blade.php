@@ -30,4 +30,5 @@
  <script src="{{  asset('assets') }}/js/dashboard.js"></script>
  <script src="{{  asset('assets') }}/js/Chart.roundedBarCharts.js"></script>
  <script src="{{  asset('assets') }}/js/select2.js"></script>
+ <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.16.1/echo.min.js"></script>
  <!-- End custom js for this page--> 

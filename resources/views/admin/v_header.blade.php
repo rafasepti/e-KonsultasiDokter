@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{  asset('assets') }}/css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{  asset('assets') }}/images/favicon.png" />
+    @vite('resources/js/app.js')
 </head>
 
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">

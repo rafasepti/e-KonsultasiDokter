@@ -43,6 +43,7 @@ Route::middleware('auth', 'checkRole:pasien')->group(function () {
 
 Route::middleware('auth', 'checkRole:dokter')->group(function () {
     Route::get('/status-chat', [OrderController::class, 'viewStatus'])->name('pembayaran.view-status');
+    Route::get('/check-for-new-data', [OrderController::class, 'checkData'])->name('check-for-new-data');
     Route::get('/status-chat/list', [OrderController::class, 'statusGet']);
     Route::get('/status-chat/konfirmasi/{id}', [OrderController::class, 'update']);
 
