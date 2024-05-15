@@ -87,4 +87,10 @@ class OrderController extends Controller
             return redirect('/ChatDokter/'.$user_id);
         }
     }
+
+    public function checkData(Request $request)
+    {
+        $newData = OrderChat::latest()->first();
+        return response()->json(['hasNewData' => $newData ? true : false]);
+    }
 }

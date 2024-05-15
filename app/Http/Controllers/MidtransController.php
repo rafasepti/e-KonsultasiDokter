@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewDataCreated;
 use App\Models\Dokter;
 use App\Models\OrderChat;
 use App\Models\Pasien;
@@ -9,6 +10,7 @@ use App\Models\PGPenjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Pusher\Pusher;
 
 class MidtransController extends Controller
 {
@@ -132,6 +134,14 @@ class MidtransController extends Controller
             'total_bayar' => $request->total_bayar,
         ]);
         $newOrderId = $order_chat->id;
+
+        // Kirim data order ke Pusher
+        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'useTLS' => true
+        ]);
+
+        $pusher->trigger('orders-channel', 'new-order', $order_chat);
         // $json = json_decode($request->get('x_json'));
         $json  = json_decode($request->x_json);
 

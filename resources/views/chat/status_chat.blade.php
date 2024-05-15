@@ -70,11 +70,11 @@
 </body>
 
 </html>
-
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script type="text/javascript">
+    var table;
     $(function() {
-
-        var table = $('.yajra-datatable').DataTable({
+        table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('status-chat/list') }}",
@@ -117,4 +117,36 @@
         });
 
     });
+
+    $(document).ready(function() {
+        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+            encrypted: true
+        });
+
+        var channel = pusher.subscribe('orders-channel');
+        channel.bind('new-order', function(data) {
+            // Perbarui tabel atau tampilan dengan data pesanan baru
+            console.log('New Order: ', data);
+            // Contoh perbarui DOM
+            $('.yajra-datatable').DataTable().ajax.reload();
+        });
+    });
+
+    // function checkForNewData() {
+    //     $.ajax({
+    //         url: "{{ route('check-for-new-data') }}",
+    //         type: "GET",
+    //         success: function(response) {
+    //             if (response.hasNewData) {
+    //                 // Refresh DataTable jika ada data baru
+    //                 table.ajax.reload(null, false); // Set to false to maintain current paging position
+    //             }
+    //         }
+    //     });
+    // }
+
+    // // Panggil fungsi checkForNewData setiap 5 detik
+    // setInterval(checkForNewData, 5000);
 </script>
+
