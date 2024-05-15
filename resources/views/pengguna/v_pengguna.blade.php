@@ -124,7 +124,7 @@
                                 <h2 class="mb-0 mt-2 font-weight-normal"><i class="mdi mdi-content-paste mr-2"></i></h2>
                               </div>
                               <div class="ml-2 mt-2">
-                                <a href="" class="link-offset-2 link-underline-opacity-0 text-light">
+                                <a href="{{ route('janji-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
                                   <h4 class="location font-weight-normal mb-1">Buat Janji</h4>
                                   <h6 class="location font-weight-normal">Rumah Sakit</h6>
                                 </a>
@@ -133,7 +133,7 @@
                           </div>
                         </div>
                         <div class="col-12 col-sm-6 d-flex justify-content-center align-items-center">
-                          <a href="" class="link-offset-2 link-underline-opacity-0 text-light">
+                          <a href="{{ route('janji-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
                             <img src="{{ asset('assets') }}/images/dashboard/periksa.png" alt="people" style="width: 200px;" class="float-right mr-4">
                           </a>
                         </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\JanjiController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PasienController;
@@ -24,10 +25,11 @@ Route::get('/tes', [IndexController::class, 'sendData'])->name('contact-rs.send'
 Route::get('/chat-rs', [PercakapanController::class, 'index'])->name('chat-rs');
 Route::get('/chat-rs/{id}', [PercakapanController::class, 'spesialisasi'])->name('chat-rs.spesialisasi');
 
+Route::get('/janji-rs', [JanjiController::class, 'index'])->name('janji-rs');
+Route::get('/janji-rs/{id}', [JanjiController::class, 'spesialisasi'])->name('janji-rs.spesialisasi');
+
 Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::get('/chat-rs/order/{id}', [PercakapanController::class, 'order'])->name('chat-rs.order');
-    Route::get('/chat-rs/store', [PercakapanController::class, 'store'])->name('chat-rs.store');
-    
     
     Route::get('/pembayaran/status-bayar', [OrderController::class, 'viewStatus'])->name('pembayaran.view-status');
     Route::get('/chat-dokter', [PercakapanController::class, 'chat'])->name('chat-dokter');
@@ -39,6 +41,8 @@ Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::get('/midtrans/tes/{id}', [MidtransController::class, 'tes'])->name('midtrans.tes');
     Route::get('/midtrans/bayar', [MidtransController::class, 'bayar'])->name('midtrans.bayar');
     Route::post('/midtrans/proses_bayar', [MidtransController::class, 'prosesBayar'])->name('midtrans.proses-bayar');
+
+    Route::get('/janji-rs/order/{id}', [JanjiController::class, 'order'])->name('janji-rs.order');
 });
 
 Route::middleware('auth', 'checkRole:dokter')->group(function () {
