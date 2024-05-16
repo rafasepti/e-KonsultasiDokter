@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+    <style>
+        .day-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
 
+        .day-button.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .time-button {
+            margin: 5px;
+        }
+
+        .time-button.selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .day-button h6, .day-button span {
+            margin: 0;
+        }
+    </style>
 <body>
     <div class="container-scroller">
         <!-- partial:partials/_navbar.html -->
@@ -37,11 +68,11 @@
                             </div>
                         </div>
                     </div>
-                    <form class="forms-sample" id="x-submit-form" action="{{ route('midtrans.proses-bayar') }}"
+                    <form class="forms-sample" id="x-submit-form" action="{{ route('midtrans.proses-bayar-janji') }}"
                         method="POST">
                         @csrf
                         <div class="row">
-                            <div class="col-md-6 grid-margin stretch-card">
+                            <div class="col-md-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title">Pasien</h4>
@@ -110,15 +141,27 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="alamat">Alamat Pasien</label>
+                                            <textarea class="form-control" id="alamat" name="alamat" rows="4" placeholder="Alamat" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="penyakit_derita">Penyakit yang diderita</label>
+                                            <input type="text" class="form-control" id="penyakit_derita" name="penyakit_derita" placeholder="Penyakit Yang diderita" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="keterangan">Keterangan</label>
+                                            <textarea class="form-control" id="keterangan" name="keterangan" rows="4" placeholder="Keterangan" required></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 grid-margin stretch-card">
+                            <div class="col-md-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title">Dokter</h4>
                                         <p class="card-description">
-                                            Dokter yang akan dichat
+                                            Dokter yang akan ditemui
                                         </p>
                                         @if (session('status'))
                                             <div class="alert alert-success">
@@ -150,6 +193,41 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <h4 class="mt-3 mb-3">Pilih tanggal dan waktu kunjungan</h4>
+                                            @if($dokter->jadwalDokter->isEmpty())
+                                                <p>Jadwal tidak tersedia.</p>
+                                            @else
+                                                <div class="d-flex flex-wrap">
+                                                    @foreach($dokter->jadwalDokter->groupBy('hari') as $hari => $jadwals)
+                                                        @php
+                                                            $hariIndoToEng = [
+                                                                'Senin' => 'Monday',
+                                                                'Selasa' => 'Tuesday',
+                                                                'Rabu' => 'Wednesday',
+                                                                'Kamis' => 'Thursday',
+                                                                'Jumat' => 'Friday',
+                                                                'Sabtu' => 'Saturday',
+                                                                'Minggu' => 'Sunday'
+                                                            ];
+                                                            $nextDate = \Carbon\Carbon::now()->next($hariIndoToEng[$hari])->format('d M');
+                                                        @endphp
+                                                        <div class="day-button" data-day="{{ $hari }}" data-date="{{ $nextDate }}"> 
+                                                            <h6>{{ $hari }}</h6>
+                                                            <span>{{ $nextDate }}</span>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                        
+                                                <div class="mt-4">
+                                                    @foreach($dokter->jadwalDokter->groupBy('hari') as $hari => $jadwals)
+                                                        <div id="jadwal-{{ $hari }}" class="jadwal-group d-none">
+                                                            @foreach($jadwals as $jadwal)
+                                                                <button type="button" class="btn btn-outline-secondary time-button" data-time="{{ $jadwal->jam }}">{{ $jadwal->jam }}</button>
+                                                            @endforeach
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                         <div class="row">
                                             <div class="col-md-6 mt-3">
                                                 <h5>Biaya sesi 30 menit</h5>
@@ -268,6 +346,29 @@
 <script src="https://app.sandbox.midtrans.com/snap/snap.js"></script>
 <script>
     $(document).ready(function() {
+        // Handle day button click
+        $('.day-button').click(function() {
+            $('.day-button').removeClass('selected');
+            $(this).addClass('selected');
+
+            var selectedDay = $(this).data('day');
+            $('.jadwal-group').addClass('d-none');
+            $('#jadwal-' + selectedDay).removeClass('d-none');
+
+            var selectedDate = $(this).data('date');
+            console.log("Selected date: " + selectedDate);
+            console.log("Selected time: " + selectedDay);
+        });
+
+        // Handle time button click
+        $('.time-button').click(function() {
+            $('.time-button').removeClass('selected');
+            $(this).addClass('selected');
+
+            var selectedTime = $(this).data('time');
+            console.log("Selected time: " + selectedTime);  // Handle the selected time as needed
+        });
+        
         $('#pasien_id').change(function() {
             var selectedOption = $(this).find(':selected');
 
@@ -275,6 +376,7 @@
             var tgl_lahir = selectedOption.data('tgl');
             var tb = selectedOption.data('tb');
             var bb = selectedOption.data('bb');
+            var alamat = selectedOption.data('alamat');
 
             if (jk == '') {
                 // Mengubah tipe input dari text menjadi date
@@ -301,6 +403,10 @@
                 $('#tgl_lahir1').prop('disabled', true);
                 $('#bb1').prop('disabled', true);
                 $('#tb1').prop('disabled', true);
+            }
+
+            if(alamat != ''){
+                $('#alamat').val(alamat);
             }
         });
     });

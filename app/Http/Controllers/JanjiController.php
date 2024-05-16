@@ -30,7 +30,7 @@ class JanjiController extends Controller
     public function order($id)
     {
         $pasien = Pasien::where('user_id', Auth::id())->get();
-        $dokter = Dokter::where('id', $id)->first();
+        $dokter = Dokter::with('jadwalDokter')->where('id', $id)->first();
         $total_chat = $dokter->harga_chat + 2000;
 
             \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');

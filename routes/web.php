@@ -36,13 +36,11 @@ Route::middleware('auth', 'checkRole:pasien')->group(function () {
 
     Route::post('/pasien/store', [PasienController::class, 'store'])->name('pasien.store');
 
-    Route::get('/midtrans', [MidtransController::class, 'index'])->name('midtrans.index');
     Route::get('/midtrans/status', [MidtransController::class, 'cekStatus'])->name('midtrans.cek-status');
-    Route::get('/midtrans/tes/{id}', [MidtransController::class, 'tes'])->name('midtrans.tes');
-    Route::get('/midtrans/bayar', [MidtransController::class, 'bayar'])->name('midtrans.bayar');
     Route::post('/midtrans/proses_bayar', [MidtransController::class, 'prosesBayar'])->name('midtrans.proses-bayar');
 
     Route::get('/janji-rs/order/{id}', [JanjiController::class, 'order'])->name('janji-rs.order');
+    Route::post('/midtrans/proses_bayar_janji', [MidtransController::class, 'prosesBayarJanji'])->name('midtrans.proses-bayar-janji');
 });
 
 Route::middleware('auth', 'checkRole:dokter')->group(function () {

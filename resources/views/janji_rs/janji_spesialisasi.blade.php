@@ -52,7 +52,7 @@
                           <div class="card-body">
                               <h5 class="card-title text-light">{{ $d->nama_dokter }}</h5>
                               <h6 class="card-subtitle text-light">Dokter {{ $d->spesialisasi->nama_spesialisasi }}</h6>
-                              <p class="card-text text-light">Rp.{{ number_format($d->harga_chat, 0, ',', '.') }}</p>
+                              <p class="card-text text-light">Rp.{{ number_format($d->harga_janji, 0, ',', '.') }}</p>
                               <div class="text-right">
                                 <a href="{{ route('janji-rs.order', ['id' => $d->id]) }}" class="btn btn-primary">Buat Janji</a>
                               </div>

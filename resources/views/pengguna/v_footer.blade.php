@@ -27,6 +27,8 @@
  <script src="{{  asset('assets') }}/js/todolist.js"></script>
  <!-- endinject -->
  <!-- Custom js for this page-->
+ {{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script> --}}
  <script src="{{  asset('assets') }}/js/dashboard.js"></script>
  <script src="{{  asset('assets') }}/js/Chart.roundedBarCharts.js"></script>
  <script src="{{  asset('assets') }}/js/select2.js"></script>

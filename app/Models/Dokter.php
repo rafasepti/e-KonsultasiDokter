@@ -22,6 +22,11 @@ class Dokter extends Model
         return $this->hasOne(User::class, 'user_id', 'kode_dokter');
     }
 
+    public function jadwalDokter()
+    {
+        return $this->hasMany(JadwalDokter::class);
+    }
+
     public function orderChat()
     {
         return $this->hasOne(OrderChat::class, 'dokter_id');
