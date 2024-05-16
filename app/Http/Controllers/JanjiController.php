@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateJanjiRequest;
 use App\Models\Dokter;
 use App\Models\Pasien;
 use App\Models\Spesialisasi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class JanjiController extends Controller
@@ -57,6 +58,23 @@ class JanjiController extends Controller
             $snapToken = \Midtrans\Snap::getSnapToken($params);
 
         return view('janji_rs/janji_order', compact('pasien', 'dokter', 'total_chat', 'snapToken'));
+    }
+
+    public function tanggalHariIni()
+    {
+        // Ambil tanggal besok
+        $tomorrow = Carbon::tomorrow()->format('Y-m-d');
+
+        // Buat array untuk menyimpan tanggal-tanggal yang tersedia mulai dari besok
+        $availableDates = [];
+
+        // Loop untuk menghasilkan tanggal-tanggal yang tersedia mulai dari besok
+        for ($i = 0; $i < 30; $i++) { // Contoh: Ambil tanggal untuk 30 hari ke depan
+            $availableDates[] = $tomorrow;
+            $tomorrow = Carbon::parse($tomorrow)->addDay()->format('Y-m-d');
+        }
+
+        return response()->json(['dates' => $availableDates]);
     }
     /**
      * Show the form for creating a new resource.

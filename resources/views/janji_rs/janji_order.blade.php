@@ -216,6 +216,8 @@
                                                             <span>{{ $nextDate }}</span>
                                                         </div>
                                                     @endforeach
+                                                    <label for="date">Choose a date:</label>
+                                                    <input type="date" id="date" name="date" min="<?= date('Y-m-d', strtotime('+1 day')) ?>" required>
                                                 </div>
                                         
                                                 <div class="mt-4">
@@ -409,6 +411,42 @@
                 $('#alamat').val(alamat);
             }
         });
+
+        // Function to fetch available dates from server
+        function loadAvailableDates() {
+            $.ajax({
+                url: '{{ route("janji-rs.tgl") }}',
+                method: 'GET',
+                success: function(response) {
+                    // Ambil elemen input tanggal
+                    var dateInput = document.getElementById('date');
+                    
+                    // Loop melalui setiap tanggal dalam respons
+                    response.dates.forEach(function(date) {
+                        // Ubah tanggal dalam format YYYY-MM-DD menjadi objek Date
+                        var availableDate = new Date(date);
+                        
+                        // Konversi tanggal ke format YYYY-MM-DD
+                        var dateString = availableDate.toISOString().slice(0, 10);
+                        
+                        // Tentukan apakah tanggal tersedia atau tidak
+                        if (dateInput.value !== dateString) {
+                            // Atur tanggal yang tidak tersedia menjadi tidak dapat dipilih
+                            var option = dateInput.querySelector('option[value="' + dateString + '"]');
+                            if (option) {
+                                option.disabled = true;
+                            }
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        // Panggil fungsi untuk memuat tanggal-tanggal yang tersedia saat halaman dimuat
+        loadAvailableDates();
     });
 
     // For example trigger on button clicked, or any time you need

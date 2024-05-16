@@ -40,6 +40,7 @@ Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::post('/midtrans/proses_bayar', [MidtransController::class, 'prosesBayar'])->name('midtrans.proses-bayar');
 
     Route::get('/janji-rs/order/{id}', [JanjiController::class, 'order'])->name('janji-rs.order');
+    Route::get('/get-tanggal', [JanjiController::class, 'tanggalHariIni'])->name('janji-rs.tgl');
     Route::post('/midtrans/proses_bayar_janji', [MidtransController::class, 'prosesBayarJanji'])->name('midtrans.proses-bayar-janji');
 });
 
