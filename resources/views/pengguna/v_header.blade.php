@@ -48,6 +48,17 @@
             Contact
           </a>
         </li>
+        @if (auth()->check() && auth()->user()->hak_akses == 'pasien')
+        <li class="nav-item dropdown d-none d-lg-block" style="margin-left: 15px; margin-right: 0px;">
+          <a class="nav-link dropdown-toggle" href="#" id="historyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            History
+          </a>
+          <div class="dropdown-menu" aria-labelledby="historyDropdown">
+            <a class="dropdown-item" href="{{ route('historyJanji') }}">History Chat</a>
+            <a class="dropdown-item" href="{{ route('historyJanji') }}">Histori Janji Temu</a>
+          </div>
+        </li>
+        @endif
       </ul>
       <ul class="navbar-nav navbar-nav-right">
         <li class="nav-item dropdown">
@@ -104,9 +115,9 @@
               <img src="{{  asset('assets') }}/images/faces/face28.jpg" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-settings text-primary"></i>
-                Settings
+              <a href="{{ route('profile') }}" class="dropdown-item">
+                <i class="ti-user text-primary"></i>
+                Profile
               </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

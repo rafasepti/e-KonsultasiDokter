@@ -7,7 +7,6 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
-      @include('pengguna/v_setting')
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <!-- partial -->
