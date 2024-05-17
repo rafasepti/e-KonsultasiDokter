@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateJanjiRequest;
 use App\Models\Dokter;
 use App\Models\OrderChat;
 use App\Models\Pasien;
+use App\Models\ProfileRS;
 use App\Models\Spesialisasi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -86,7 +87,7 @@ class JanjiController extends Controller
 
     public function historyChatGet(Request $request){
         if ($request->ajax()) {
-            $orderChats = OrderChat::with(['pasien', 'dokter'])
+            $orderChats = OrderChat::with(['pasien', 'dokter.spesialisasi'])
                 ->where('user_id', Auth::id())
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -117,13 +118,29 @@ class JanjiController extends Controller
                 ->addColumn('action', function($b){
                     $actionBtn = 
                     '
-                       
+                        <a href="/history-janji/surat/'.$b->id.'" class="btn btn-primary">
+                            Surat Konfirmasi
+                        </a>
                     ';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function printSurat($id){
+        $profile_rs = ProfileRS::first();
+        $janji = Janji::with(['pasien', 'dokter'])
+            ->where('id', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        
+        Carbon::setLocale('id');
+        $tgl = $janji->tgl;
+        // Mengonversi tanggal ke format yang diinginkan
+        $tanggalBaru = Carbon::parse($tgl)->translatedFormat('l, d M Y');
+        return view('history.print_janji', compact('janji', 'profile_rs', 'tanggalBaru'));
     }
     
 }

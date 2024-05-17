@@ -42,6 +42,7 @@ Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::post('/midtrans/proses_bayar_janji', [MidtransController::class, 'prosesBayarJanji'])->name('midtrans.proses-bayar-janji');
 
     Route::get('/history-janji', [JanjiController::class, 'historyJanji'])->name('historyJanji');
+    Route::get('/history-janji/surat/{id}', [JanjiController::class, 'printSurat'])->name('historyJanji.surat');
     Route::get('/history-order/listChat', [JanjiController::class, 'historyChatGet'])->name('history.list-chat');
     Route::get('/history-order/listJanji', [JanjiController::class, 'historyJanjiGet'])->name('historyJanji.list-janji');
 });
