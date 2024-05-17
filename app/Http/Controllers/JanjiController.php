@@ -9,6 +9,7 @@ use App\Models\Dokter;
 use App\Models\Pasien;
 use App\Models\Spesialisasi;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class JanjiController extends Controller
@@ -60,21 +61,21 @@ class JanjiController extends Controller
         return view('janji_rs/janji_order', compact('pasien', 'dokter', 'total_chat', 'snapToken'));
     }
 
-    public function tanggalHariIni()
+    public function jadwalDokter(Request $request)
     {
-        // Ambil tanggal besok
-        $tomorrow = Carbon::tomorrow()->format('Y-m-d');
+        $selectedDay = $request->input('day');
+        $dokterId = $request->input('dokter_id');
 
-        // Buat array untuk menyimpan tanggal-tanggal yang tersedia mulai dari besok
-        $availableDates = [];
+        // Ambil jadwal dokter berdasarkan ID dokter dan hari yang dipilih
+        $dokter = Dokter::with(['jadwalDokter' => function ($query) use ($selectedDay) {
+            $query->where('hari', $selectedDay);
+        }])->find($dokterId);
 
-        // Loop untuk menghasilkan tanggal-tanggal yang tersedia mulai dari besok
-        for ($i = 0; $i < 30; $i++) { // Contoh: Ambil tanggal untuk 30 hari ke depan
-            $availableDates[] = $tomorrow;
-            $tomorrow = Carbon::parse($tomorrow)->addDay()->format('Y-m-d');
-        }
+        // Ambil jadwal dokter dari relasi
+        $jadwalDokter = $dokter->jadwalDokter;
 
-        return response()->json(['dates' => $availableDates]);
+        // Kembalikan jadwal dokter dalam bentuk JSON
+        return response()->json($jadwalDokter);
     }
     /**
      * Show the form for creating a new resource.

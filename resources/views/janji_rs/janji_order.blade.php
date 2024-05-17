@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
         .day-button {
             display: flex;
@@ -30,6 +31,23 @@
 
         .day-button h6, .day-button span {
             margin: 0;
+        }
+
+        .date-picker {
+            display: none;
+        }
+
+        .selected-date {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .selected-date.visible {
+            display: block;
+        }
+
+        .ui-datepicker {
+            z-index: 9999 !important;
         }
     </style>
 <body>
@@ -212,12 +230,16 @@
                                                             $nextDate = \Carbon\Carbon::now()->next($hariIndoToEng[$hari])->format('d M');
                                                         @endphp
                                                         <div class="day-button" data-day="{{ $hari }}" data-date="{{ $nextDate }}"> 
-                                                            <h6>{{ $hari }}</h6>
+                                                            <h6 class="mt-2">{{ $hari }}</h6>
                                                             <span>{{ $nextDate }}</span>
                                                         </div>
                                                     @endforeach
-                                                    <label for="date">Choose a date:</label>
-                                                    <input type="date" id="date" name="date" min="<?= date('Y-m-d', strtotime('+1 day')) ?>" required>
+                                                    
+                                                    <button class="btn btn-outline-primary" id="datePickerButton">
+                                                        <img src="https://img.icons8.com/fluency/48/000000/calendar.png" alt="Calendar Icon" style="width: 30px;">
+                                                        <p id="datePickerText">Pilih</p>
+                                                    </button>
+                                                    <input type="text" id="datepicker" class="date-picker">
                                                 </div>
                                         
                                                 <div class="mt-4">
@@ -228,6 +250,8 @@
                                                             @endforeach
                                                         </div>
                                                     @endforeach
+                                                    <div id="jadwal-date" class="jadwal-group-date d-none">
+                                                    </div>
                                                 </div>
                                             @endif
                                         <div class="row">
@@ -260,6 +284,7 @@
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
                 @include('pengguna/v_footer')
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->
@@ -347,6 +372,14 @@
 </body>
 <script src="https://app.sandbox.midtrans.com/snap/snap.js"></script>
 <script>
+    // Handle time button click using event delegation
+    $(document).on('click', '.time-button', function() {
+        $('.time-button').removeClass('selected');
+        $(this).addClass('selected');
+
+        var selectedTime = $(this).data('time');
+        console.log("Selected time: " + selectedTime);  // Handle the selected time as needed
+    });
     $(document).ready(function() {
         // Handle day button click
         $('.day-button').click(function() {
@@ -355,20 +388,13 @@
 
             var selectedDay = $(this).data('day');
             $('.jadwal-group').addClass('d-none');
+            $('.jadwal-group-date').addClass('d-none');
             $('#jadwal-' + selectedDay).removeClass('d-none');
 
             var selectedDate = $(this).data('date');
             console.log("Selected date: " + selectedDate);
             console.log("Selected time: " + selectedDay);
-        });
-
-        // Handle time button click
-        $('.time-button').click(function() {
             $('.time-button').removeClass('selected');
-            $(this).addClass('selected');
-
-            var selectedTime = $(this).data('time');
-            console.log("Selected time: " + selectedTime);  // Handle the selected time as needed
         });
         
         $('#pasien_id').change(function() {
@@ -412,41 +438,76 @@
             }
         });
 
-        // Function to fetch available dates from server
-        function loadAvailableDates() {
-            $.ajax({
-                url: '{{ route("janji-rs.tgl") }}',
-                method: 'GET',
-                success: function(response) {
-                    // Ambil elemen input tanggal
-                    var dateInput = document.getElementById('date');
-                    
-                    // Loop melalui setiap tanggal dalam respons
-                    response.dates.forEach(function(date) {
-                        // Ubah tanggal dalam format YYYY-MM-DD menjadi objek Date
-                        var availableDate = new Date(date);
-                        
-                        // Konversi tanggal ke format YYYY-MM-DD
-                        var dateString = availableDate.toISOString().slice(0, 10);
-                        
-                        // Tentukan apakah tanggal tersedia atau tidak
-                        if (dateInput.value !== dateString) {
-                            // Atur tanggal yang tidak tersedia menjadi tidak dapat dipilih
-                            var option = dateInput.querySelector('option[value="' + dateString + '"]');
-                            if (option) {
-                                option.disabled = true;
-                            }
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
+        const datePicker = $('#datepicker');
+        const datePickerButton = $('#datePickerButton');
+        const datePickerText = $('#datePickerText');
+
+        // Ensure the datepicker input is visible during initialization
+        datePicker.css('display', 'block').css('position', 'absolute').css('left', '-9999px');
+
+        // Initialize datepicker with minDate
+        const today = new Date();
+        today.setDate(today.getDate() + 1);
+
+        datePicker.datepicker({
+            minDate: today,
+            dateFormat: 'yy-mm-dd',
+            onSelect: function(dateText) {
+                const date = new Date(dateText);
+                const options = { weekday: 'long', month: 'long', day: 'numeric' };
+                const formattedDate = date.toLocaleDateString('id-ID', options);
+
+                datePickerText.text(formattedDate);
+                datePickerButton.parent().addClass('selected');
+
+                // Ambil hari dari tanggal yang dipilih
+                const selectedDay = date.toLocaleDateString('id-ID', { weekday: 'long' });
+                const dokterId = $('#dokter_id').val();
+
+                // Kirim permintaan ke server untuk mendapatkan jadwal dokter berdasarkan hari yang dipilih
+                $.ajax({
+                    url: '{{ route("janji-rs.jadwal") }}',
+                    method: 'GET',
+                    data: { 
+                        day: selectedDay,
+                        dokter_id: dokterId
+                     },
+                    success: function(response) {
+                        // Perbarui tampilan jadwal dokter
+                        updateJadwalDokter(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+
+        datePickerButton.click(function (e) {
+            e.preventDefault();
+            console.log("Button clicked");  // Tambahkan ini untuk debugging
+            datePicker.datepicker('show');
+        });
+
+        function updateJadwalDokter(data) {
+            // Hapus jadwal dokter yang sudah ada
+            $('#jadwal-date .time-button').remove();
+            $('.jadwal-group').addClass('d-none');
+            $('.day-button').removeClass('selected');
+            $('.time-button').removeClass('selected');
+            // Tampilkan jadwal dokter yang baru
+            data.forEach(function(jadwal) {
+                console.log(jadwal)
+                var button = $('<button/>', {
+                    type: 'button',
+                    class: 'btn btn-outline-secondary time-button',
+                    'data-time': jadwal.jam,
+                    text: jadwal.jam
+                });
+                $('#jadwal-date').removeClass('d-none');
+                $('#jadwal-date').append(button);
             });
         }
-
-        // Panggil fungsi untuk memuat tanggal-tanggal yang tersedia saat halaman dimuat
-        loadAvailableDates();
     });
 
     // For example trigger on button clicked, or any time you need
