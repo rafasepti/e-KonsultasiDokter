@@ -20,4 +20,9 @@ class Pasien extends Model
     {
         return $this->hasOne(OrderChat::class, 'pasien_id');
     }
+    
+    public function janji()
+    {
+        return $this->hasOne(Janji::class, 'pasien_id');
+    }
 }

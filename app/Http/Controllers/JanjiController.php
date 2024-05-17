@@ -6,11 +6,13 @@ use App\Models\Janji;
 use App\Http\Requests\StoreJanjiRequest;
 use App\Http\Requests\UpdateJanjiRequest;
 use App\Models\Dokter;
+use App\Models\OrderChat;
 use App\Models\Pasien;
 use App\Models\Spesialisasi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class JanjiController extends Controller
 {
@@ -33,7 +35,7 @@ class JanjiController extends Controller
     {
         $pasien = Pasien::where('user_id', Auth::id())->get();
         $dokter = Dokter::with('jadwalDokter')->where('id', $id)->first();
-        $total_chat = $dokter->harga_chat + 2000;
+        $total_janji = $dokter->harga_janji;
 
             \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -46,7 +48,7 @@ class JanjiController extends Controller
             $params = array(
                 'transaction_details' => array(
                     'order_id' => rand(), //idpesanan ini nanti dpt diambil dari no_pesanan
-                    'gross_amount' => $total_chat, //gross amount diisi total tagihan
+                    'gross_amount' => $total_janji, //gross amount diisi total tagihan
                 ),
                 'customer_details' => array(
                     'first_name' => Auth::user()->name,
@@ -58,7 +60,7 @@ class JanjiController extends Controller
             
             $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-        return view('janji_rs/janji_order', compact('pasien', 'dokter', 'total_chat', 'snapToken'));
+        return view('janji_rs/janji_order', compact('pasien', 'dokter', 'total_janji', 'snapToken'));
     }
 
     public function jadwalDokter(Request $request)
@@ -77,51 +79,51 @@ class JanjiController extends Controller
         // Kembalikan jadwal dokter dalam bentuk JSON
         return response()->json($jadwalDokter);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+
+    public function historyJanji(){
+        return view('history/history_janji');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreJanjiRequest $request)
-    {
-        //
+    public function historyChatGet(Request $request){
+        if ($request->ajax()) {
+            $orderChats = OrderChat::with(['pasien', 'dokter'])
+                ->where('user_id', Auth::id())
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return DataTables::of($orderChats)
+                ->addIndexColumn()
+                ->addColumn('action', function($b){
+                    $actionBtn = 
+                    '
+                        <a href="/status-chat/konfirmasi/'.$b->id.'" class="btn btn-primary">
+                            Konfirmasi
+                        </a>
+                    ';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Janji $janji)
-    {
-        //
+    public function historyJanjiGet(Request $request){
+        if ($request->ajax()) {
+            $orderJanji = Janji::with(['pasien', 'dokter'])
+                ->where('user_id', Auth::id())
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return DataTables::of($orderJanji)
+                ->addIndexColumn()
+                ->addColumn('action', function($b){
+                    $actionBtn = 
+                    '
+                       
+                    ';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Janji $janji)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateJanjiRequest $request, Janji $janji)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Janji $janji)
-    {
-        //
-    }
+    
 }

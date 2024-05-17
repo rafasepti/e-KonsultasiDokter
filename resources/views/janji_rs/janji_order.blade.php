@@ -202,7 +202,7 @@
                                                         <input type="hidden" name="dokter_id" id="dokter_id"
                                                             value="{{ $dokter->id }}">
                                                         <input type="hidden" name="total_bayar" id="total_bayar"
-                                                            value="{{ $total_chat }}">
+                                                            value="{{ $dokter->harga_janji }}">
                                                         <h5 class="card-title text-light">{{ $dokter->nama_dokter }}
                                                         </h5>
                                                         <p class="card-text">Dokter
@@ -261,11 +261,13 @@
                                                 <h5 class="mt-3">Total Pembayaran</h5>
                                             </div>
                                             <div class="col-md-6 mt-3 text-right">
-                                                <p>Rp.{{ number_format($dokter->harga_chat, 0, ',', '.') }}</p>
-                                                <p class="mt-2">Rp.2.000</p>
-                                                <p class="mt-2">Rp.{{ number_format($total_chat, 0, ',', '.') }}</p>
+                                                <p>Rp.{{ number_format($dokter->harga_janji, 0, ',', '.') }}</p>
+                                                <p class="mt-2">-</p>
+                                                <p class="mt-2">Rp.{{ number_format($dokter->harga_janji, 0, ',', '.') }}</p>
                                             </div>
                                         </div>
+                                        <input type="hidden" name="tgl" id="tgl" value="">
+                                        <input type="hidden" name="waktu" id="waktu" value="">
                                     </div>
                                 </div>
                             </div>
@@ -278,7 +280,7 @@
                         <input class="col-sm-1 btn btn-success btn-sm" disabled value="Bayar" id="pay-button">
 
                         <!-- untuk tombol batal simpan -->
-                        <a class="col-sm-1 btn btn-dark  btn-sm" href="" role="button">Batal</a>
+                        <a class="col-sm-1 btn btn-dark  btn-sm" href="{{ route('janji-rs') }}" role="button">Batal</a>
                     </form>
                 </div>
                 <!-- content-wrapper ends -->
@@ -381,6 +383,8 @@
         var selectedTime = $(this).data('time');
         console.log("Selected time: " + selectedTime);  // Handle the selected time as needed
 
+        $('#waktu').val(selectedTime);
+
         timeSelected = true;
         checkPaymentButtonStatus();
     });
@@ -412,6 +416,9 @@
             $('.time-button').removeClass('selected');
             timeSelected = false;
             checkPaymentButtonStatus();
+
+            var formattedDate = formatDateToYMD(selectedDate);
+            $('#tgl').val(formattedDate);
         });
         
         $('#pasien_id').change(function() {
@@ -465,9 +472,11 @@
         // Initialize datepicker with minDate
         const today = new Date();
         today.setDate(today.getDate() + 1);
+        const endOfYear = new Date(today.getFullYear(), 11, 31);
 
         datePicker.datepicker({
             minDate: today,
+            maxDate: endOfYear,
             dateFormat: 'yy-mm-dd',
             onSelect: function(dateText) {
                 const date = new Date(dateText);
@@ -476,6 +485,7 @@
 
                 datePickerText.text(formattedDate);
                 datePickerButton.parent().addClass('selected');
+                $('#tgl').val(dateText);
 
                 // Ambil hari dari tanggal yang dipilih
                 const selectedDay = date.toLocaleDateString('id-ID', { weekday: 'long' });
@@ -568,6 +578,25 @@
         document.getElementById('x_json').value = JSON.stringify(result);
         //alert(document.getElementById('x_json').value);
         $('#x-submit-form').submit();
+    }
+
+    function formatDateToYMD(dateStr) {
+        // Create a Date object from the input date string in format "d M"
+        var dateParts = dateStr.split(' ');
+        var day = parseInt(dateParts[0]);
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var month = monthNames.indexOf(dateParts[1]);
+        var year = new Date().getFullYear();
+
+        // Create a new Date object
+        var dateObj = new Date(year, month, day);
+
+        // Format the date to yyyy-mm-dd
+        var formattedDate = dateObj.getFullYear() + '-' + 
+                            ('0' + (dateObj.getMonth() + 1)).slice(-2) + '-' + 
+                            ('0' + dateObj.getDate()).slice(-2);
+
+        return formattedDate;
     }
 </script>
 

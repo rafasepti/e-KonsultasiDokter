@@ -70,4 +70,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(OrderChat::class, 'user_id');
     }
+
+    public function janji()
+    {
+        return $this->hasOne(Janji::class, 'user_id');
+    }
 }

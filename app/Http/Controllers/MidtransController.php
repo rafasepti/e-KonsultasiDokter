@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewDataCreated;
 use App\Models\Dokter;
+use App\Models\Janji;
 use App\Models\OrderChat;
 use App\Models\Pasien;
 use App\Models\PGPenjualan;
@@ -168,5 +169,73 @@ class MidtransController extends Controller
             ->where('id', $request->dokter_id)
             ->first();
         return redirect('/ChatDokter/'.$dokter->user->id);
+    }
+
+    public function prosesBayarJanji(Request $request){
+        $pasien = Pasien::where('id', $request->pasien_id)->first();
+        if($pasien->jk == '' || $pasien->tgl_lahir == '' || $pasien->bb == '' || $pasien->tb == ''){
+            $request->validate([
+                'jk1' => 'required',
+                'tgl_lahir1' => 'required',
+                'bb1' => 'required',
+                'tb1' => 'required',
+                'alamat' => 'required',
+                'penyakit_derita' => 'required',
+                'keterangan' => 'required',
+            ]);
+
+            $data_pasien = Pasien::where('id', $request->pasien_id)->update([
+                'jk' => $request->jk1,
+                'tgl_lahir' => $request->tgl_lahir1,
+                'bb' => $request->bb1,
+                'tb' => $request->tb1,
+                'alamat'=> $request->alamat,
+            ]);
+        }
+        $order_janji = Janji::create([
+            'user_id' => Auth::id(),
+            'pasien_id' => $request->pasien_id,
+            'dokter_id' => $request->dokter_id,
+            'harga' => $request->total_bayar,
+            'tgl' => $request->tgl,
+            'waktu' => $request->waktu,
+            'penyakit' => $request->penyakit_derita,
+            'ket' => $request->keterangan,
+        ]);
+        $newJanjiId = $order_janji->id;
+
+        // Kirim data order ke Pusher
+        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'useTLS' => true
+        ]);
+
+        $pusher->trigger('orders-channel', 'new-order-janji', $order_janji);
+        // $json = json_decode($request->get('x_json'));
+        $json  = json_decode($request->x_json);
+
+        $order_id = $json->order_id;
+        $order_dokter_id = $newJanjiId;
+        $gross_amount = $json->gross_amount;
+        $transaction_status = $json->transaction_status;
+        $transaction_id = $json->transaction_id;
+        $payment_type = $json->payment_type;
+        $status_code = $json->status_code;
+        //DB::insert('insert into pg_penjualan (id_penjualan, order_id, gross_amount, transaction_id, payment_type, status_code) values (?, ?, ?, ?, ?, ?)', [$id_penjualan, $order_id, $gross_amount, $transaction_id, $payment_type, $status_code]);
+        $pg_penjualan = PGPenjualan::create([
+            'order_dokter_id' => $order_dokter_id,
+            'jenis_order' => "janji_dokter",
+            'order_id' => $order_id,
+            'gross_amount' => $gross_amount,
+            'transaction_status' => $transaction_status,
+            'transaction_id' => $transaction_id,
+            'payment_type' => $payment_type,
+            'status_code' => $status_code,
+        ]);
+
+        $dokter = Dokter::with('user')
+            ->where('id', $request->dokter_id)
+            ->first();
+        return redirect('/history-janji');
     }
 }
