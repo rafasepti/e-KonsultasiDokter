@@ -275,7 +275,7 @@
                         <br>
                         <!-- untuk tombol simpan -->
 
-                        <input class="col-sm-1 btn btn-success btn-sm" value="Bayar" id="pay-button">
+                        <input class="col-sm-1 btn btn-success btn-sm" disabled value="Bayar" id="pay-button">
 
                         <!-- untuk tombol batal simpan -->
                         <a class="col-sm-1 btn btn-dark  btn-sm" href="" role="button">Batal</a>
@@ -372,6 +372,7 @@
 </body>
 <script src="https://app.sandbox.midtrans.com/snap/snap.js"></script>
 <script>
+    var timeSelected = false;
     // Handle time button click using event delegation
     $(document).on('click', '.time-button', function() {
         $('.time-button').removeClass('selected');
@@ -379,7 +380,21 @@
 
         var selectedTime = $(this).data('time');
         console.log("Selected time: " + selectedTime);  // Handle the selected time as needed
+
+        timeSelected = true;
+        checkPaymentButtonStatus();
     });
+
+    function checkPaymentButtonStatus() {
+        if (timeSelected) {
+            // Jika waktu telah dipilih, aktifkan tombol "Bayar"
+            $('#pay-button').prop('disabled', false);
+        } else {
+            // Jika waktu tidak dipilih, nonaktifkan tombol "Bayar"
+            $('#pay-button').prop('disabled', true);
+        }
+    }
+
     $(document).ready(function() {
         // Handle day button click
         $('.day-button').click(function() {
@@ -395,6 +410,8 @@
             console.log("Selected date: " + selectedDate);
             console.log("Selected time: " + selectedDay);
             $('.time-button').removeClass('selected');
+            timeSelected = false;
+            checkPaymentButtonStatus();
         });
         
         $('#pasien_id').change(function() {
@@ -491,6 +508,8 @@
 
         function updateJadwalDokter(data) {
             // Hapus jadwal dokter yang sudah ada
+            timeSelected = false;
+            checkPaymentButtonStatus();
             $('#jadwal-date .time-button').remove();
             $('.jadwal-group').addClass('d-none');
             $('.day-button').removeClass('selected');
