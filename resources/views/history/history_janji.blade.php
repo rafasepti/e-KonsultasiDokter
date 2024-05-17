@@ -18,44 +18,49 @@
                         <div class="col-md-12 grid-margin">
                             <div class="row">
                                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                                    <h3 class="font-weight-bold">History janji temu dokter</h3>
+                                    <h3 class="font-weight-bold">Janji Saya</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped yajra-datatable">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    No.
-                                                </th>
-                                                <th>
-                                                    Nama Pasien
-                                                </th>
-                                                
-                                                <th>
-                                                    Nama Dokter
-                                                </th>
-                                                <th>
-                                                    Status
-                                                </th>
-                                                <th>
-                                                    Aksi
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
+                    @php
+                      Carbon\Carbon::setLocale('id');
+                    @endphp
+                    @foreach ($janji as $j)
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="d-flex flex-column h-100">
+                                        <img src="{{ $j->dokter->foto }}" alt="{{ $j->dokter->nama_dokter }}" class="rounded-circle" style="width: 60%;">
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="d-flex flex-column h-100">
+                                        <h5 class="card-title">{{ $j->dokter->nama_dokter }}</h5>
+                                        <p class="card-text">Pasien {{ $j->pasien->nama_pasien }}</p>
+                                        <p class="card-text">{{ \Carbon\Carbon::parse($j->tgl)->translatedFormat('l, d M Y') }}</p>
+                                        <p class="card-text">Jam {{ $j->waktu }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            @if ($j->status == "dikonfirmasi")
+                                <button class="btn btn-info mt-auto" disabled>Dikonfirmasi</button>
+                            @endif
+                            @if ($j->status == "selesai")
+                                <button class="btn btn-success mt-auto" disabled>Selesai</button>
+                                <label class="badge badge-success">Selesai</label>
+                            @endif
+                            @if ($j->status == "dibatalkan")
+                                <button class="btn btn-danger mt-auto" disabled>Dibatalkan</button>
+                                <label class="badge badge-danger">Dibatalkan</label>
+                            @endif
+                            <a href="{{ route('historyJanji.surat', ['id' => $j->id]) }}" class="btn btn-primary mt-auto"> Surat Konfirmasi</a>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
@@ -70,67 +75,4 @@
 </body>
 
 </html>
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-<script type="text/javascript">
-    var table;
-    $(function() {
-        table = $('.yajra-datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('historyJanji.list-janji') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'pasien.nama_pasien',
-                    name: 'pasien.nama_pasien'
-                },
-                {
-                    data: 'dokter.nama_dokter',
-                    name: 'dokter.nama_dokter'
-                },
-                {
-                    data: 'status',
-                    name: 'status',
-                    render: function(data, type, full, meta) {
-                        if (data == "dikonfirmasi") {
-                            return `<label class="badge badge-info">Dikonfirmasi</label>`
-                        }
-
-                        if (data == "selesai") {
-                            return `<label class="badge badge-success">Selesai</label>`
-                        }
-
-                        if (data == "dibatalkan") {
-                            return `<label class="badge badge-danger">Dibatalkan</label>`
-                        }
-                    }
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: true,
-                    searchable: true
-                },
-            ]
-        });
-
-    });
-
-    $(document).ready(function() {
-        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-            encrypted: true
-        });
-
-        var channel = pusher.subscribe('orders-channel');
-        channel.bind('new-order-janji', function(data) {
-            // Perbarui tabel atau tampilan dengan data pesanan baru
-            console.log('New Order: ', data);
-            // Contoh perbarui DOM
-            $('.yajra-datatable').DataTable().ajax.reload();
-        });
-    });
-</script>
 

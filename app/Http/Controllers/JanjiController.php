@@ -82,7 +82,11 @@ class JanjiController extends Controller
     }
 
     public function historyJanji(){
-        return view('history/history_janji');
+        $janji = Janji::with(['pasien', 'dokter'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('history/history_janji', compact('janji'));
     }
 
     public function historyChatGet(Request $request){
