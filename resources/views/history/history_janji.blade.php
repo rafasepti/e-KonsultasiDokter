@@ -20,6 +20,12 @@
                                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                                     <h3 class="font-weight-bold">Janji Saya</h3>
                                 </div>
+                                <div class="col-12 col-xl-8 mb-4 mb-xl-0 mb-3">
+                                    <a href="{{ route('historyJanji') }}" class="btn btn-primary mt-auto {{ is_null($status) ? 'active' : '' }}">Semua</a>
+                                    <a href="{{ route('historyJanji', ['status' => 'dikonfirmasi']) }}" class="btn btn-primary mt-auto {{ $status == 'dikonfirmasi' ? 'active' : '' }}">Dikonfirmasi</a>
+                                    <a href="{{ route('historyJanji', ['status' => 'dibatalkan']) }}" class="btn btn-primary mt-auto {{ $status == 'dibatalkan' ? 'active' : '' }}">Dibatalkan</a>
+                                    <a href="{{ route('historyJanji', ['status' => 'selesai']) }}" class="btn btn-primary mt-auto {{ $status == 'selesai' ? 'active' : '' }}">Selesai</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -57,7 +63,10 @@
                                 <button class="btn btn-danger mt-auto" disabled>Dibatalkan</button>
                                 <label class="badge badge-danger">Dibatalkan</label>
                             @endif
-                            <a href="{{ route('historyJanji.surat', ['id' => $j->id]) }}" class="btn btn-primary mt-auto"> Surat Konfirmasi</a>
+                            <div class="ml-auto">
+                                <a href="{{ route('historyJanji.surat', ['id' => $j->id]) }}" class="btn btn-primary mt-auto">Surat Konfirmasi</a>
+                                <a href="{{ route('historyJanji.batal', ['id' => $j->id]) }}" class="btn btn-danger mt-auto" onclick="return confirm('Apakah Anda yakin ingin membatalkan janji ini?');">Batalkan</a>
+                            </div>
                         </div>
                     </div>
                     @endforeach

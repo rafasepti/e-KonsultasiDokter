@@ -81,12 +81,31 @@ class JanjiController extends Controller
         return response()->json($jadwalDokter);
     }
 
-    public function historyJanji(){
-        $janji = Janji::with(['pasien', 'dokter'])
+    public function historyJanji(Request $request){
+        $status = $request->query('status');
+    
+        if ($status) {
+            $janji = Janji::with(['pasien', 'dokter'])
+            ->where('user_id', Auth::id())
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        } else {
+            $janji = Janji::with(['pasien', 'dokter'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('history/history_janji', compact('janji'));
+        }
+        
+        return view('history/history_janji', compact('janji', 'status'));
+    }
+
+    public function batal($id){
+        Janji::where('id', $id)->update([
+            'status' => 'dibatalkan'
+        ]);
+
+        return redirect('/history-janji');
     }
 
     public function historyChatGet(Request $request){
