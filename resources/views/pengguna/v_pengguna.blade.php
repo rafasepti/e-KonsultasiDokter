@@ -123,10 +123,24 @@
                                 <h2 class="mb-0 mt-2 font-weight-normal"><i class="mdi mdi-content-paste mr-2"></i></h2>
                               </div>
                               <div class="ml-2 mt-2">
-                                <a href="{{ route('janji-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
-                                  <h4 class="location font-weight-normal mb-1">Buat Janji</h4>
-                                  <h6 class="location font-weight-normal">Rumah Sakit</h6>
-                                </a>
+                                @if (auth()->check())
+                                  @if (auth()->user()->hak_akses === "dokter")
+                                    <a href="{{ route('status-janji') }}" class="link-offset-2 link-underline-opacity-0 text-light">
+                                      <h4 class="location font-weight-normal mb-1">Janji dengan</h4>
+                                      <h6 class="location font-weight-normal">Pasien</h6>
+                                    </a>
+                                  @else
+                                    <a href="{{ route('janji-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
+                                      <h4 class="location font-weight-normal mb-1">Buat Janji</h4>
+                                      <h6 class="location font-weight-normal">Rumah Sakit</h6>
+                                    </a>
+                                  @endif
+                                @else
+                                  <a href="{{ route('janji-rs') }}" class="link-offset-2 link-underline-opacity-0 text-light">
+                                    <h4 class="location font-weight-normal mb-1">Buat Janji</h4>
+                                    <h6 class="location font-weight-normal">Rumah Sakit</h6>
+                                  </a>
+                                @endif
                               </div>
                             </div>
                           </div>

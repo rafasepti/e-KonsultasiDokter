@@ -45,7 +45,6 @@ Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::get('/history-janji/surat/{id}', [JanjiController::class, 'printSurat'])->name('historyJanji.surat');
     Route::post('/history-janji/batal/{id}', [JanjiController::class, 'batal'])->name('historyJanji.batal');
     Route::get('/history-order/listChat', [JanjiController::class, 'historyChatGet'])->name('history.list-chat');
-    Route::get('/history-order/listJanji', [JanjiController::class, 'historyJanjiGet'])->name('historyJanji.list-janji');
 });
 
 Route::middleware('auth', 'checkRole:dokter')->group(function () {
@@ -53,6 +52,10 @@ Route::middleware('auth', 'checkRole:dokter')->group(function () {
     Route::get('/check-for-new-data', [OrderController::class, 'checkData'])->name('check-for-new-data');
     Route::get('/status-chat/list', [OrderController::class, 'statusGet']);
     Route::get('/status-chat/konfirmasi/{id}', [OrderController::class, 'update']);
+
+    Route::get('/status-janji', [JanjiController::class, 'statusJanji'])->name('status-janji');
+    Route::get('/status-janji/list', [JanjiController::class, 'historyJanjiGet'])->name('status-janji.list-janji');
+    Route::get('/status-janji/print/{id}', [JanjiController::class, 'printJanji'])->name('status-janji.print-janji');
 
     Route::post('/ChatDokter/endedConversation', [MessagesController::class, 'endedConversation']);
 });

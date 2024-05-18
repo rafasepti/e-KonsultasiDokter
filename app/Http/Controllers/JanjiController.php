@@ -132,8 +132,9 @@ class JanjiController extends Controller
 
     public function historyJanjiGet(Request $request){
         if ($request->ajax()) {
-            $orderJanji = Janji::with(['pasien', 'dokter'])
-                ->where('user_id', Auth::id())
+            $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
+            $orderJanji = Janji::with(['pasien', 'user'])
+                ->where('dokter_id', $dokter_id->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
             return DataTables::of($orderJanji)
@@ -141,8 +142,8 @@ class JanjiController extends Controller
                 ->addColumn('action', function($b){
                     $actionBtn = 
                     '
-                        <a href="/history-janji/surat/'.$b->id.'" class="btn btn-primary">
-                            Surat Konfirmasi
+                        <a href="/status-janji/print/'.$b->id.'" class="btn btn-primary">
+                            Print
                         </a>
                     ';
                     return $actionBtn;
@@ -164,6 +165,24 @@ class JanjiController extends Controller
         // Mengonversi tanggal ke format yang diinginkan
         $tanggalBaru = Carbon::parse($tgl)->translatedFormat('l, d M Y');
         return view('history.print_janji', compact('janji', 'profile_rs', 'tanggalBaru'));
+    }
+
+    public function printJanji($id){
+        $profile_rs = ProfileRS::first();
+        $janji = Janji::with(['pasien', 'user'])
+            ->where('id', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        
+        Carbon::setLocale('id');
+        $tgl = $janji->tgl;
+        // Mengonversi tanggal ke format yang diinginkan
+        $tanggalBaru = Carbon::parse($tgl)->translatedFormat('l, d M Y');
+        return view('janji_rs.print', compact('janji', 'profile_rs', 'tanggalBaru'));
+    }
+
+    public function statusJanji(){
+        return view('janji_rs.status_janji');
     }
     
 }
