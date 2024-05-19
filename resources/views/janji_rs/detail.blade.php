@@ -16,11 +16,18 @@
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-md-12 grid-margin">
-                            <div class="row">
-                                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                                    <h3 class="font-weight-bold">Detail janji temu pasien</h3>
-                                </div>
+                          <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                              <h3 class="font-weight-bold">Detail Janji Temu Pasien</h3>
                             </div>
+                            <div class="col-12 col-xl-4">
+                             <div class="justify-content-end d-flex">
+                              <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
+                                <a href="{{ route('status-janji.print-janji', ['id' => $janji->id]) }}" class="btn btn-primary btn-rounded btn-fw">Print</a>
+                              </div>
+                             </div>
+                            </div>
+                          </div>
                         </div>
                     </div>
                     <div class="col-lg-12 grid-margin stretch-card">
@@ -108,6 +115,5 @@
     </div>
     <!-- container-scroller -->
 </body>
-
 </html>
 

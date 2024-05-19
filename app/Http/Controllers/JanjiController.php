@@ -171,6 +171,17 @@ class JanjiController extends Controller
         return view('history.print_janji', compact('janji', 'profile_rs', 'tanggalBaru'));
     }
 
+    public function laporan(){
+        $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
+        $janji = Janji::with(['pasien', 'user'])
+            ->where('dokter_id', $dokter_id->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $profile_rs = ProfileRS::first();
+        // dd($janji);
+        return view('janji_rs.laporan_janji', compact('janji', 'profile_rs'));
+    }
+
     //untuk dokter
     public function printJanji($id){
         $profile_rs = ProfileRS::first();

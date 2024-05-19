@@ -15,10 +15,21 @@
             <div class="main-panel" style="width:100%;">
                 <div class="content-wrapper">
                     <div class="row">
-                        <div class="col-md-12 grid-margin">
+                        <div class="col-md-12">
                             <div class="row">
-                                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                                    <h3 class="font-weight-bold">Status Janji</h3>
+                                <div class="col-md-12">
+                                  <div class="row">
+                                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                      <h3 class="font-weight-bold">Status Janji</h3>
+                                    </div>
+                                    <div class="col-12 col-xl-4">
+                                     <div class="justify-content-end d-flex">
+                                      <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
+                                        <a href="{{ route('status-janji.laporan') }}" class="btn btn-primary btn-rounded btn-fw">Print</a>
+                                      </div>
+                                     </div>
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
                         </div>
