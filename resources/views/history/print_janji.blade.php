@@ -121,7 +121,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <p>&copy; 2024 Nama Perusahaan Anda. Semua Hak Dilindungi.</p>
+                        <p>&copy; {{ now()->year }} {{ $profile_rs->nama_rs }}. Semua Hak Dilindungi.</p>
                     </div>
                 </div>
             </div>

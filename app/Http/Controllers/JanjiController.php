@@ -142,8 +142,11 @@ class JanjiController extends Controller
                 ->addColumn('action', function($b){
                     $actionBtn = 
                     '
-                        <a href="/status-janji/print/'.$b->id.'" class="btn btn-primary">
-                            Print
+                        <a href="/status-janji/detail/'.$b->id.'" class="btn btn-info">
+                            Detail
+                        </a>
+                        <a href="/status-janji/ubah-status/'.$b->id.'" class="btn btn-primary">
+                            Ubah Status
                         </a>
                     ';
                     return $actionBtn;
@@ -153,6 +156,7 @@ class JanjiController extends Controller
         }
     }
 
+    //untuk pasien
     public function printSurat($id){
         $profile_rs = ProfileRS::first();
         $janji = Janji::with(['pasien', 'dokter'])
@@ -167,9 +171,10 @@ class JanjiController extends Controller
         return view('history.print_janji', compact('janji', 'profile_rs', 'tanggalBaru'));
     }
 
+    //untuk dokter
     public function printJanji($id){
         $profile_rs = ProfileRS::first();
-        $janji = Janji::with(['pasien', 'user'])
+        $janji = Janji::with(['pasien', 'user','dokter'])
             ->where('id', $id)
             ->orderBy('created_at', 'desc')
             ->first();
@@ -179,6 +184,30 @@ class JanjiController extends Controller
         // Mengonversi tanggal ke format yang diinginkan
         $tanggalBaru = Carbon::parse($tgl)->translatedFormat('l, d M Y');
         return view('janji_rs.print', compact('janji', 'profile_rs', 'tanggalBaru'));
+    }
+
+    public function show($id){
+        $profile_rs = ProfileRS::first();
+        $janji = Janji::with(['pasien', 'user','dokter'])
+            ->where('id', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        
+        Carbon::setLocale('id');
+        $tgl = $janji->tgl;
+        // Mengonversi tanggal ke format yang diinginkan
+        $tanggalBaru = Carbon::parse($tgl)->translatedFormat('l, d M Y');
+        return view('janji_rs.detail', compact('janji', 'profile_rs', 'tanggalBaru'));
+    }
+
+    public function editStatus($id){
+        return view('janji_rs.ubah_status', compact('id'));
+    }
+
+    public function updateStatus(Request $request){
+        Janji::where('id', $request->id)
+            ->update(['status' => $request->status]);
+        return redirect('/status-janji');
     }
 
     public function statusJanji(){

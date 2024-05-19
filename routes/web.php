@@ -55,6 +55,9 @@ Route::middleware('auth', 'checkRole:dokter')->group(function () {
 
     Route::get('/status-janji', [JanjiController::class, 'statusJanji'])->name('status-janji');
     Route::get('/status-janji/list', [JanjiController::class, 'historyJanjiGet'])->name('status-janji.list-janji');
+    Route::get('/status-janji/detail/{id}', [JanjiController::class, 'show'])->name('status-janji.show');
+    Route::get('/status-janji/ubah-status/{id}', [JanjiController::class, 'editStatus'])->name('status-janji.ubah-status');
+    Route::get('/status-janji/update-status', [JanjiController::class, 'updateStatus'])->name('status-janji.update-status');
     Route::get('/status-janji/print/{id}', [JanjiController::class, 'printJanji'])->name('status-janji.print-janji');
 
     Route::post('/ChatDokter/endedConversation', [MessagesController::class, 'endedConversation']);
