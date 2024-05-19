@@ -54,7 +54,7 @@
             History
           </a>
           <div class="dropdown-menu" aria-labelledby="historyDropdown">
-            <a class="dropdown-item" href="{{ route('historyJanji') }}">Chat Saya</a>
+            <a class="dropdown-item" href="{{ route('historyChat') }}">Chat Saya</a>
             <a class="dropdown-item" href="{{ route('historyJanji') }}">Janji Saya</a>
           </div>
         </li>

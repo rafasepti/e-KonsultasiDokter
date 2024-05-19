@@ -29,13 +29,11 @@ class OrderController extends Controller
             return DataTables::of($orderChats)
                 ->addIndexColumn()
                 ->addColumn('action', function($b){
-                    $actionBtn = 
-                    '
-                        <a href="/status-chat/konfirmasi/'.$b->id.'" class="btn btn-primary">
-                            Konfirmasi
-                        </a>
-                    ';
-                    return $actionBtn;
+                    if ($b->status_chat == "not_accepted") {
+                        return '<a href="/status-chat/konfirmasi/'.$b->id.'" class="btn btn-primary">Konfirmasi</a>';
+                    } else {
+                        return '<a href="/ChatDokter/'.$b->user->id.'" class="btn btn-info">Chat</a>';
+                    }
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -92,5 +90,24 @@ class OrderController extends Controller
     {
         $newData = OrderChat::latest()->first();
         return response()->json(['hasNewData' => $newData ? true : false]);
+    }
+
+    public function historyChat(Request $request){
+        $status = $request->query('status');
+    
+        if ($status) {
+            $chat = OrderChat::with(['pasien', 'dokter'])
+            ->where('user_id', Auth::id())
+            ->where('status_chat', $status)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        } else {
+            $chat = OrderChat::with(['pasien', 'dokter'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+        }
+        
+        return view('history/history_chat', compact('chat', 'status'));
     }
 }

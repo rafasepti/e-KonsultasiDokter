@@ -112,13 +112,6 @@
                     name: 'action',
                     orderable: true,
                     searchable: true,
-                    render: function(data, type, full, meta) {
-                        if (full.status_chat == "not_accepted") {
-                            return `<button class="btn btn-primary">Action Button</button>`;
-                        } else {
-                            return '';
-                        }
-                    }
                 }
             ]
         });

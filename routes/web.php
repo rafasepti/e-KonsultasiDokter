@@ -45,6 +45,8 @@ Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::get('/history-janji/surat/{id}', [JanjiController::class, 'printSurat'])->name('historyJanji.surat');
     Route::post('/history-janji/batal/{id}', [JanjiController::class, 'batal'])->name('historyJanji.batal');
     Route::get('/history-order/listChat', [JanjiController::class, 'historyChatGet'])->name('history.list-chat');
+
+    Route::get('/history-chat', [OrderController::class, 'historyChat'])->name('historyChat');
 });
 
 Route::middleware('auth', 'checkRole:dokter')->group(function () {
