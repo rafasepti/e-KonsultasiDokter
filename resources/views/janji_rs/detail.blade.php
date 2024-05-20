@@ -103,6 +103,53 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-lg-12 grid-margin stretch-card">
+                      <div class="card">
+                          <div class="card-body">
+                              <h4 class="card-title">Detail Rekam Medis Pasien</h4>
+                              <form class="forms-sample">
+                                  <div class="form-group row">
+                                    <label for="riwayat_medis" class="col-sm-3 col-form-label">Riwayat Medis</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="riwayat_medis" id="riwayat_medis"
+                                            placeholder="Riwayat Medis" class="form-control" value="{{ $janji->riwayat_medis }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="gelaja_keluhan" class="col-sm-3 col-form-label">Gejala dan
+                                        Keluhan</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="gelaja_keluhan" id="gelaja_keluhan"
+                                            placeholder="Gejala dan Keluhan" class="form-control" value="{{ $janji->gelaja_keluhan }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="diagnosa" class="col-sm-3 col-form-label">Diagnosa</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="diagnosa" id="diagnosa" placeholder="Diagnosa"
+                                            class="form-control" value="{{ $janji->diagnosa }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="rencana_pengobatan" class="col-sm-3 col-form-label">Rencana
+                                        Pengobatan</label>
+                                    <div class="col-sm-9">
+                                        <textarea name="rencana_pengobatan" id="rencana_pengobatan" cols="30" rows="10"
+                                            placeholder="Rencana Pengobatan" class="form-control" disabled>{{ $janji->rencana_pengobatan }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="tindak_lanjut" class="col-sm-3 col-form-label">Tindak Lanjut</label>
+                                    <div class="col-sm-9">
+                                        <textarea name="tindak_lanjut" id="tindak_lanjut" cols="30" rows="10" placeholder="Tindak Lanjut"
+                                            class="form-control" disabled>{{ $janji->tindak_lanjut }}</textarea>
+                                    </div>
+                                </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->

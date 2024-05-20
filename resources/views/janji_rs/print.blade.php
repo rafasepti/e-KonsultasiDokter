@@ -68,6 +68,35 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Detail Janji Temu -->
+        <div class="mb-4">
+            <h2 class="h4">Data Rekam Medis Pasien</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Riwayat Medis</th>
+                        <td>{{ $janji->riwayat_medis }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gejala dan Keluhan</th>
+                        <td>{{ $janji->gelaja_keluhan }}</td>
+                    </tr>
+                    <tr>
+                      <th>Diagnosa</th>
+                      <td>{{ $janji->Diagnosa }}</td>
+                  </tr>
+                    <tr>
+                        <th>Rencana Pengobatan</th>
+                        <td>{{ $janji->rencana_pengobatan }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tindak Lanjut</th>
+                        <td>{{ $janji->tindak_lanjut }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 <script>

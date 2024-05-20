@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
         // Update active status to 1 when login is successful
         User::updateActiveStatus(Auth::id(),1);
 
-        if ($hak_akses === 'admin') {
+        if ($hak_akses === 'admin' || $hak_akses === 'petugas') {
             return redirect()->intended(route('index.admin', absolute: false));
             
         } else {

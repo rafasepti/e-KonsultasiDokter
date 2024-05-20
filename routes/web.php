@@ -55,15 +55,18 @@ Route::middleware('auth', 'checkRole:dokter')->group(function () {
     Route::get('/status-chat/list', [OrderController::class, 'statusGet']);
     Route::get('/status-chat/konfirmasi/{id}', [OrderController::class, 'update']);
 
+    Route::get('/status-janji/ubah-status/{id}', [JanjiController::class, 'editStatus'])->name('status-janji.ubah-status');
+    Route::post('/status-janji/update-status', [JanjiController::class, 'updateStatus'])->name('status-janji.update-status');
+
+    Route::post('/ChatDokter/endedConversation', [MessagesController::class, 'endedConversation']);
+});
+
+Route::middleware('auth', 'checkRole:petugas,dokter')->group(function () {
     Route::get('/status-janji', [JanjiController::class, 'statusJanji'])->name('status-janji');
     Route::get('/status-janji/laporan', [JanjiController::class, 'laporan'])->name('status-janji.laporan');
     Route::get('/status-janji/list', [JanjiController::class, 'historyJanjiGet'])->name('status-janji.list-janji');
     Route::get('/status-janji/detail/{id}', [JanjiController::class, 'show'])->name('status-janji.show');
-    Route::get('/status-janji/ubah-status/{id}', [JanjiController::class, 'editStatus'])->name('status-janji.ubah-status');
-    Route::get('/status-janji/update-status', [JanjiController::class, 'updateStatus'])->name('status-janji.update-status');
     Route::get('/status-janji/print/{id}', [JanjiController::class, 'printJanji'])->name('status-janji.print-janji');
-
-    Route::post('/ChatDokter/endedConversation', [MessagesController::class, 'endedConversation']);
 });
 
 Route::get('/dashboard', function () {
@@ -78,9 +81,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 });
 
-Route::middleware('auth', 'checkRole:admin')->group(function () {
+Route::middleware('auth', 'checkRole:admin,petugas')->group(function () {
     Route::get('/admin', function () {return view('admin/v_admin');})->name('index.admin');
+});
 
+Route::middleware('auth', 'checkRole:admin')->group(function () {
     Route::get('/spesialisasi', [SpesialisasiController::class, 'index'])->name('spesialisasi');
     Route::get('/spesialisasi/list', [SpesialisasiController::class, 'spesialisasiGet']);
     Route::get('/spesialisasi/tambah', [SpesialisasiController::class, 'create']);

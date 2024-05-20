@@ -131,24 +131,40 @@ class JanjiController extends Controller
     }
 
     public function historyJanjiGet(Request $request){
-        if ($request->ajax()) {
+        if(auth()->user()->hak_akses == "dokter"){
             $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
             $orderJanji = Janji::with(['pasien', 'user'])
                 ->where('dokter_id', $dokter_id->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
+        }else{
+            $orderJanji = Janji::with(['pasien', 'user', 'dokter'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        if ($request->ajax()) {
+            
             return DataTables::of($orderJanji)
                 ->addIndexColumn()
                 ->addColumn('action', function($b){
-                    $actionBtn = 
-                    '
-                        <a href="/status-janji/detail/'.$b->id.'" class="btn btn-info">
-                            Detail
-                        </a>
-                        <a href="/status-janji/ubah-status/'.$b->id.'" class="btn btn-primary">
-                            Ubah Status
-                        </a>
-                    ';
+                    if(auth()->user()->hak_akses == 'dokter'){
+                        $actionBtn = 
+                        '
+                            <a href="/status-janji/detail/'.$b->id.'" class="btn btn-info">
+                                Detail
+                            </a>
+                            <a href="/status-janji/ubah-status/'.$b->id.'" class="btn btn-primary">
+                                Edit
+                            </a>
+                        ';
+                    }else{
+                        $actionBtn = 
+                        '
+                            <a href="/status-janji/detail/'.$b->id.'" class="btn btn-info">
+                                Detail
+                            </a>
+                        ';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -172,11 +188,17 @@ class JanjiController extends Controller
     }
 
     public function laporan(){
-        $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
-        $janji = Janji::with(['pasien', 'user'])
-            ->where('dokter_id', $dokter_id->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        if(auth()->user()->hak_akses == "dokter"){
+            $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
+            $janji = Janji::with(['pasien', 'user'])
+                ->where('dokter_id', $dokter_id->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }else{
+            $janji = Janji::with(['pasien', 'user', 'dokter'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
         $profile_rs = ProfileRS::first();
         // dd($janji);
         return view('janji_rs.laporan_janji', compact('janji', 'profile_rs'));
@@ -212,17 +234,32 @@ class JanjiController extends Controller
     }
 
     public function editStatus($id){
-        return view('janji_rs.ubah_status', compact('id'));
+        $janji = Janji::with(['pasien', 'user','dokter'])
+            ->where('id', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        return view('janji_rs.ubah_status', compact('id', 'janji'));
     }
 
     public function updateStatus(Request $request){
         Janji::where('id', $request->id)
-            ->update(['status' => $request->status]);
+            ->update([
+                'status' => $request->status,
+                'riwayat_medis' => $request->riwayat_medis,
+                'gelaja_keluhan' => $request->gelaja_keluhan,
+                'diagnosa' => $request->diagnosa,
+                'rencana_pengobatan' => $request->rencana_pengobatan,
+                'tindak_lanjut' => $request->tindak_lanjut,
+            ]);
         return redirect('/status-janji');
     }
 
     public function statusJanji(){
-        return view('janji_rs.status_janji');
+        if(auth()->user()->hak_akses == "dokter"){
+            return view('janji_rs.status_janji');
+        }else{
+            return view('janji_rs.status_janji_petugas');
+        }
     }
     
 }
