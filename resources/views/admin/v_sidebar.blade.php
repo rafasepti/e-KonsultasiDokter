@@ -39,6 +39,14 @@
             </a>
           </li>
         @endif
+        @if (auth()->user()->hak_akses == "petugas")
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('status-janji*') ? 'active' : '' }}" href="{{ route('status-janji') }}">
+            <i class="mdi mdi-account-multiple-outline menu-icon"></i>
+            <span class="menu-title">Rekam Medis Pasien</span>
+          </a>
+        </li>
+        @endif
       @endauth
     </ul>
   </nav>

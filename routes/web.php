@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\JanjiController;
 use App\Http\Controllers\MidtransController;
@@ -82,7 +83,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth', 'checkRole:admin,petugas')->group(function () {
-    Route::get('/admin', function () {return view('admin/v_admin');})->name('index.admin');
+    Route::get('/admin', [HomeController::class, 'index'])->name('index.admin');
 });
 
 Route::middleware('auth', 'checkRole:admin')->group(function () {

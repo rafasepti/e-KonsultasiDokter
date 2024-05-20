@@ -2,7 +2,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Skydash Admin</title>
+    <title>E-Konsultasi Dokter</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{  asset('assets') }}/vendors/feather/feather.css">
     <link rel="stylesheet" href="{{  asset('assets') }}/vendors/ti-icons/css/themify-icons.css">
@@ -25,7 +25,7 @@
 
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-      <a class="navbar-brand brand-logo mr-5" href="{{ route('index.admin') }}"><img src="{{  asset('assets') }}/images/logo.svg" class="mr-2" alt="logo"/></a>
+      <a class="navbar-brand brand-logo mr-5 ml-2" style="font-size: 20px" href="{{ route('index.admin') }}">E-Konsultasi Dokter</a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
