@@ -21,7 +21,7 @@ Route::get('/', [IndexController::class, 'pengguna'])->name('index');
 Route::get('/profile-rs/pengguna', [ProfileRSController::class, 'pengguna'])->name('profile-rs.pengguna');
 Route::get('/contact-rs/pengguna', [ProfileRSController::class, 'contact'])->name('contact-rs.pengguna');
 Route::post('/contact-rs/send', [ProfileRSController::class, 'send'])->name('contact-rs.send');
-Route::get('/tes', [IndexController::class, 'sendData'])->name('contact-rs.send');
+Route::get('/tes', [IndexController::class, 'sendData'])->name('tes');
 
 Route::get('/chat-rs', [PercakapanController::class, 'index'])->name('chat-rs');
 Route::get('/chat-rs/{id}', [PercakapanController::class, 'spesialisasi'])->name('chat-rs.spesialisasi');

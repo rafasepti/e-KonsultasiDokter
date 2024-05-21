@@ -70,6 +70,7 @@
                 <i class="ti-user text-primary"></i>
                 Profile
               </a> --}}
+              <p  class="dropdown-item disabled"><i class="ti-user text-primary"></i>{{ auth()->user()->name }}</p>  
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item"><i class="ti-power-off text-primary"></i> Logout</button>

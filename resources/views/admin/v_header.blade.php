@@ -38,7 +38,8 @@
               <img src="{{  asset('assets') }}/images/logo/profile.png" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                <form action="{{ route('logout') }}" method="POST">
+              <p  class="dropdown-item disabled"><i class="ti-user text-primary"></i>{{ auth()->user()->name }}</p>  
+              <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item"><i class="ti-power-off text-primary"></i> Logout</button>
                 </form>

@@ -47,7 +47,7 @@ class ProfileRSController extends Controller
 
         $profile = ProfileRS::first();
 
-        Mail::to($profile->email)->send(new MailSend($details));
+        Mail::to('rafasepti@gmail.com')->send(new MailSend($details));
 
         return redirect()->back()->with('success', 'Pesan anda telah Dikirim!');
     }
