@@ -95,13 +95,17 @@ class ProfileRSController extends Controller
         
 		// menyimpan data file yang diupload ke variabel $file
 		$file = $request->file('logo_app');
- 
-		$nama_file = time()."_".$file->getClientOriginalName();
+
+        if($request->file('logo_app')){
+            $nama_file = time()."_".$file->getClientOriginalName();
  
       	        // isi dengan nama folder tempat kemana file diupload
-		$tujuan_upload = 'assets/images/logo';
-		$file->move($tujuan_upload,$nama_file);
-        $gambarPath = 'assets/images/logo/' . $nama_file;
+            $tujuan_upload = 'assets/images/logo';
+            $file->move($tujuan_upload,$nama_file);
+            $gambarPath = 'assets/images/logo/' . $nama_file;
+        }else{
+            $gambarPath = $profile->logo_app;
+        }
 
         ProfileRS::where('id', $request->id)->update([
             'nama_rs' => $request->nama_rs,

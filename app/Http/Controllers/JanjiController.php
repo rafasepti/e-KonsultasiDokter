@@ -148,15 +148,24 @@ class JanjiController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($b){
                     if(auth()->user()->hak_akses == 'dokter'){
-                        $actionBtn = 
-                        '
-                            <a href="/status-janji/detail/'.$b->id.'" class="btn btn-info">
-                                Detail
-                            </a>
-                            <a href="/status-janji/ubah-status/'.$b->id.'" class="btn btn-primary">
-                                Edit
-                            </a>
-                        ';
+                        if($b->status != 'dibatalkan'){
+                            $actionBtn = 
+                            '
+                                <a href="/status-janji/detail/'.$b->id.'" class="btn btn-info">
+                                    Detail
+                                </a>
+                                <a href="/status-janji/ubah-status/'.$b->id.'" class="btn btn-primary">
+                                    Edit
+                                </a>
+                            ';
+                        }else{
+                            $actionBtn = 
+                            '
+                                <a href="/status-janji/detail/'.$b->id.'" class="btn btn-info">
+                                    Detail
+                                </a>
+                            ';
+                        }
                     }else{
                         $actionBtn = 
                         '

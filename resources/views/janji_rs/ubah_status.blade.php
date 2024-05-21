@@ -30,7 +30,7 @@
                                                 <option value="" selected disabled>Pilih Status</option>
                                                 <option value="dikonfirmasi" {{ $janji->status == "dikonfirmasi" ? 'selected' : '' }}>Dikonfirmasi</option>
                                                 <option value="selesai" {{ $janji->status == "selesai" ? 'selected' : '' }}>Selesai</option>
-                                                <option value="dibatalkan" {{ $janji->status == "dibatalkan" ? 'dibatalkan' : '' }}>Dibatalkan</option>
+                                                <option value="dibatalkan" {{ $janji->status == "dibatalkan" ? 'selected' : '' }}>Dibatalkan</option>
                                             </select>
                                         </div>
                                     </div>

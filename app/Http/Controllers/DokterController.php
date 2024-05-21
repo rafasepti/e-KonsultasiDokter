@@ -203,13 +203,17 @@ class DokterController extends Controller
         
 		// menyimpan data file yang diupload ke variabel $file
 		$file = $request->file('foto');
+
+        if($request->file('foto')){
+            $nama_file = time()."_".$file->getClientOriginalName();
  
-		$nama_file = time()."_".$file->getClientOriginalName();
- 
-      	// isi dengan nama folder tempat kemana file diupload
-		$tujuan_upload = 'assets/images/foto_dokter';
-		$file->move($tujuan_upload,$nama_file);
-        $gambarPath = 'assets/images/foto_dokter/' . $nama_file;
+      	        // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'assets/images/logo';
+            $file->move($tujuan_upload,$nama_file);
+            $gambarPath = 'assets/images/logo/' . $nama_file;
+        }else{
+            $gambarPath = $dokter->foto;
+        }
 
         Dokter::where('id', $request->id)->update([
             'nama_dokter' => $request->nama_dokter,

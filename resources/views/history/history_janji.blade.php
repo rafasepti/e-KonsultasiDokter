@@ -66,9 +66,13 @@
                                 <button class="btn btn-danger mt-auto" disabled>Dibatalkan</button>
                             @endif
                             <div class="ml-auto">
-                                <a href="{{ route('historyJanji.surat', ['id' => $j->id]) }}" class="btn btn-primary mt-auto">Surat Konfirmasi</a>
                                 @if ($j->status == "dikonfirmasi")
+                                    <a href="{{ route('historyJanji.surat', ['id' => $j->id]) }}" class="btn btn-primary mt-auto">Surat Konfirmasi</a>
                                     <a href="#" class="btn btn-danger mt-auto" data-id="{{ $j->id }}" onclick="event.preventDefault(); confirmCancel(this);">Batalkan</a>
+                                @else
+                                    <a href="{{ route('status-janji.show', ['id' => $j->id]) }}" class="btn btn-info">
+                                        Detail
+                                    </a>
                                 @endif
                             </div>
                         </div>

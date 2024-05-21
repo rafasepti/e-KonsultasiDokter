@@ -19,7 +19,10 @@ class UserController extends Controller
 
     public function userGet(Request $request){
         if ($request->ajax()) {
-            $user = User::all();
+            $user = User::where('hak_akses', 'petugas')
+            ->orWhere('hak_akses', 'dokter')
+            ->orWhere('hak_akses', 'admin')
+            ->get();
             return DataTables::of($user)
                 ->addIndexColumn()
                 ->addColumn('action', function($b){
