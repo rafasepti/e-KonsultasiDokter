@@ -173,7 +173,7 @@ class MidtransController extends Controller
 
     public function prosesBayarJanji(Request $request){
         $pasien = Pasien::where('id', $request->pasien_id)->first();
-        if($pasien->jk == '' || $pasien->tgl_lahir == '' || $pasien->bb == '' || $pasien->tb == '' || $pasien->alamat){
+        if($pasien->jk == '' || $pasien->tgl_lahir == '' || $pasien->bb == '' || $pasien->tb == '' || $pasien->alamat == ''){
             $request->validate([
                 'jk1' => 'required',
                 'tgl_lahir1' => 'required',

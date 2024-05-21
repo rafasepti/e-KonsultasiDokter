@@ -147,7 +147,7 @@
         });
 
         var channel = pusher.subscribe('orders-channel');
-        channel.bind('new-order', function(data) {
+        channel.bind('new-order-janji', function(data) {
             // Perbarui tabel atau tampilan dengan data pesanan baru
             console.log('New Order: ', data);
             // Contoh perbarui DOM

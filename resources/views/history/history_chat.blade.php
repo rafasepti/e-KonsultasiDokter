@@ -38,7 +38,11 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="d-flex flex-column h-100">
+                                        @if ($c->dokter->foto != null)
                                         <img src="{{ $c->dokter->foto }}" alt="{{ $c->dokter->nama_dokter }}" class="rounded-circle" style="width: 60%;">
+                                        @else
+                                            <img src="{{  asset('assets/images/foto_dokter/default.png') }}" class="card-img" alt="Foto Dokter" style="width: 170px">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-9">

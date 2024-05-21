@@ -37,6 +37,20 @@
                             </div>
                         </div>
                     </div>
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form class="forms-sample" id="x-submit-form" action="{{ route('midtrans.proses-bayar') }}"
                         method="POST">
                         @csrf
@@ -48,20 +62,6 @@
                                         <p class="card-description">
                                             Masukan pasien yang perlu penanganan
                                         </p>
-                                        @if (session('status'))
-                                            <div class="alert alert-success">
-                                                {{ session('status') }}
-                                            </div>
-                                        @endif
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
                                         <div class="form-group">
                                             <label for="pasien_id">Nama Pasien</label>
                                             <button type="button" style="float: right; padding-right: 0px;"
@@ -120,11 +120,6 @@
                                         <p class="card-description">
                                             Dokter yang akan dichat
                                         </p>
-                                        @if (session('status'))
-                                            <div class="alert alert-success">
-                                                {{ session('status') }}
-                                            </div>
-                                        @endif
                                         <div class="card card-tale">
                                             <div class="row no-gutters">
                                                 <div class="col-md-4">
@@ -345,6 +340,21 @@
         //alert(document.getElementById('x_json').value);
         $('#x-submit-form').submit();
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Mendapatkan elemen input tanggal
+        var dateInput = document.getElementById('tgl_lahir');
+        if (dateInput) {
+                // Mendapatkan waktu saat ini
+                var today = new Date();
+                // Menyesuaikan waktu ke zona waktu Indonesia (WIB, GMT+7)
+                today.setHours(today.getHours() + 7 - today.getTimezoneOffset() / 60);
+                // Mendapatkan tanggal dalam format YYYY-MM-DD
+                var localDate = today.toISOString().split('T')[0];
+                // Mengatur atribut max pada elemen input tanggal
+                dateInput.setAttribute('max', localDate);
+            }
+    });
 </script>
 
 </html>

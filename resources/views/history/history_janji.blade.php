@@ -38,7 +38,11 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="d-flex flex-column h-100">
+                                        @if ($j->dokter->foto != null)
                                         <img src="{{ $j->dokter->foto }}" alt="{{ $j->dokter->nama_dokter }}" class="rounded-circle" style="width: 60%;">
+                                        @else
+                                            <img src="{{  asset('assets/images/foto_dokter/default.png') }}" class="card-img" alt="Foto Dokter" style="width: 170px">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-9">
@@ -57,20 +61,23 @@
                             @endif
                             @if ($j->status == "selesai")
                                 <button class="btn btn-success mt-auto" disabled>Selesai</button>
-                                <label class="badge badge-success">Selesai</label>
                             @endif
                             @if ($j->status == "dibatalkan")
                                 <button class="btn btn-danger mt-auto" disabled>Dibatalkan</button>
-                                <label class="badge badge-danger">Dibatalkan</label>
                             @endif
                             <div class="ml-auto">
                                 <a href="{{ route('historyJanji.surat', ['id' => $j->id]) }}" class="btn btn-primary mt-auto">Surat Konfirmasi</a>
-                                <a href="{{ route('historyJanji.batal', ['id' => $j->id]) }}" class="btn btn-danger mt-auto" onclick="return confirm('Apakah Anda yakin ingin membatalkan janji ini?');">Batalkan</a>
+                                @if ($j->status == "dikonfirmasi")
+                                    <a href="#" class="btn btn-danger mt-auto" data-id="{{ $j->id }}" onclick="event.preventDefault(); confirmCancel(this);">Batalkan</a>
+                                @endif
                             </div>
                         </div>
                     </div>
                     @endforeach
                 </div>
+                <form id="cancelForm" method="POST" style="display: none;">
+                    @csrf
+                </form>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
                 @include('pengguna/v_footer')
@@ -82,6 +89,18 @@
     </div>
     <!-- container-scroller -->
 </body>
-
+<script>
+    function confirmCancel(element) {
+        if (confirm('Apakah Anda yakin ingin membatalkan janji ini?')) {
+            // Mendapatkan ID dari atribut data-id
+            var id = element.getAttribute('data-id');
+            // Mengatur aksi formulir
+            var form = document.getElementById('cancelForm');
+            form.action = '/history-janji/batal/' + id;
+            // Mengirimkan formulir
+            form.submit();
+        }
+    }
+</script>
 </html>
 

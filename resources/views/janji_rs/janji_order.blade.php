@@ -86,6 +86,20 @@
                             </div>
                         </div>
                     </div>
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form class="forms-sample" id="x-submit-form" action="{{ route('midtrans.proses-bayar-janji') }}"
                         method="POST">
                         @csrf
@@ -97,20 +111,6 @@
                                         <p class="card-description">
                                             Masukan pasien yang perlu penanganan
                                         </p>
-                                        @if (session('status'))
-                                            <div class="alert alert-success">
-                                                {{ session('status') }}
-                                            </div>
-                                        @endif
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
                                         <div class="form-group">
                                             <label for="pasien_id">Nama Pasien</label>
                                             <button type="button" style="float: right; padding-right: 0px;"
@@ -124,7 +124,7 @@
                                                     <option value="{{ $p->id }}" data-jk="{{ $p->jk }}"
                                                         data-bb="{{ $p->bb }}" data-tb="{{ $p->tb }}"
                                                         data-tgl="{{ date('d/m/Y', strtotime($p->tgl_lahir)) }}
-                                                    ">
+                                                    " data-alamat="{{ $p->alamat }}">
                                                         ({{ $p->relasi }})
                                                         {{ $p->nama_pasien }}</option>
                                                 @endforeach
@@ -181,11 +181,6 @@
                                         <p class="card-description">
                                             Dokter yang akan ditemui
                                         </p>
-                                        @if (session('status'))
-                                            <div class="alert alert-success">
-                                                {{ session('status') }}
-                                            </div>
-                                        @endif
                                         <div class="card card-tale">
                                             <div class="row no-gutters">
                                                 <div class="col-md-4">
@@ -256,7 +251,7 @@
                                             @endif
                                         <div class="row">
                                             <div class="col-md-6 mt-3">
-                                                <h5>Biaya sesi 30 menit</h5>
+                                                <h5>Biaya</h5>
                                                 <h5 class="mt-3">Biaya Layanan</h5>
                                                 <h5 class="mt-3">Total Pembayaran</h5>
                                             </div>
@@ -402,6 +397,8 @@
     $(document).ready(function() {
         // Handle day button click
         $('.day-button').click(function() {
+            $("#datepicker").val('');
+            $('#datePickerText').text('Pilih');
             $('.day-button').removeClass('selected');
             $(this).addClass('selected');
 
@@ -459,6 +456,8 @@
 
             if(alamat != ''){
                 $('#alamat').val(alamat);
+            }else{
+                $('#alamat').val('');
             }
         });
 
@@ -598,6 +597,21 @@
 
         return formattedDate;
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Mendapatkan elemen input tanggal
+        var dateInput = document.getElementById('tgl_lahir');
+        if (dateInput) {
+                // Mendapatkan waktu saat ini
+                var today = new Date();
+                // Menyesuaikan waktu ke zona waktu Indonesia (WIB, GMT+7)
+                today.setHours(today.getHours() + 7 - today.getTimezoneOffset() / 60);
+                // Mendapatkan tanggal dalam format YYYY-MM-DD
+                var localDate = today.toISOString().split('T')[0];
+                // Mengatur atribut max pada elemen input tanggal
+                dateInput.setAttribute('max', localDate);
+            }
+    });
 </script>
 
 </html>

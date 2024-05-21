@@ -15,15 +15,17 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     public function viewStatus(){
-        $id_pengguna = Auth::id();
-        $pembayaran = OrderChat::where('user_id',$id_pengguna);
+        $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
+        $pembayaran = OrderChat::where('user_id',$dokter_id->id);
         return view('chat/status_chat',
                     compact('pembayaran')
                   );
     }
     public function statusGet(Request $request){
         if ($request->ajax()) {
+            $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
             $orderChats = OrderChat::with(['pasien', 'user'])
+                ->where('dokter_id',$dokter_id->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
             return DataTables::of($orderChats)
