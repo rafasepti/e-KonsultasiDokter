@@ -101,10 +101,14 @@ class SpesialisasiController extends Controller
      */
     public function update(Request $request)
     {
-        $spesialisasi = Spesialisasi::where('id', $request->id)->first();
+        $spesialisasi = Spesialisasi::findOrFail($request->id);
 
-        if($spesialisasi->logo != null){
-            Storage::delete($spesialisasi->logo);
+        // Hapus logo lama jika ada dan ada logo baru yang diunggah
+        if ($spesialisasi->logo && $request->hasFile('logo')) {
+            if (file_exists($spesialisasi->logo)) {
+                // Hapus file
+                unlink($spesialisasi->logo);
+            }
         }
 
         $request->validate([
@@ -113,13 +117,17 @@ class SpesialisasiController extends Controller
         
 		// menyimpan data file yang diupload ke variabel $file
 		$file = $request->file('logo');
+
+        if($request->file('logo')){
+            $nama_file = time()."_".$file->getClientOriginalName();
  
-		$nama_file = time()."_".$file->getClientOriginalName();
- 
-        // isi dengan nama folder tempat kemana file diupload
-		$tujuan_upload = 'assets/images/logo_spesialisasi';
-		$file->move($tujuan_upload,$nama_file);
-        $gambarPath = 'assets/images/logo_spesialisasi/' . $nama_file;
+      	        // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'assets/images/logo_spesialisasi';
+            $file->move($tujuan_upload,$nama_file);
+            $gambarPath = 'assets/images/logo_spesialisasi/' . $nama_file;
+        }else{
+            $gambarPath = $spesialisasi->logo;
+        }
         
         Spesialisasi::where('id', $request->id)->update([
             'nama_spesialisasi' => $request->nama_spesialisasi,
@@ -136,11 +144,12 @@ class SpesialisasiController extends Controller
     {
         $spesialisasi = Spesialisasi::where('id', $id)->first();
 
-        if($spesialisasi->logo != null){
-            Storage::delete($spesialisasi->logo);
+        if (file_exists($spesialisasi->logo)) {
+            // Hapus file
+            unlink($spesialisasi->logo);
         }
 
-       Spesialisasi::where('id',$id)->delete();
-       return redirect('/spesialisasi');
+        Spesialisasi::where('id',$id)->delete();
+        return redirect('/spesialisasi');
     }
 }

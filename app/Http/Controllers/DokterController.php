@@ -191,27 +191,31 @@ class DokterController extends Controller
      */
     public function update(Request $request)
     {
-        $dokter = Dokter::where('id', $request->id)->first();
+        $dokter = Dokter::findOrFail($request->id);
 
-        if($dokter->foto != null){
-            Storage::delete($dokter->foto);
+        // Hapus foto lama jika ada dan ada foto baru yang diunggah
+        if ($dokter->foto && $request->hasFile('foto')) {
+            if (file_exists($dokter->foto)) {
+                // Hapus file
+                unlink($dokter->foto);
+            }
         }
 
         $request->validate([
             'foto' => 'image|mimes:jpeg,png,jpg,gif|max:3048', // Sesuaikan dengan kebutuhan Anda
         ]);
         
-		// menyimpan data file yang diupload ke variabel $file
-		$file = $request->file('foto');
+        // menyimpan data file yang diupload ke variabel $file
+        $file = $request->file('foto');
 
         if($request->file('foto')){
             $nama_file = time()."_".$file->getClientOriginalName();
- 
-      	        // isi dengan nama folder tempat kemana file diupload
-            $tujuan_upload = 'assets/images/logo';
+    
+            // Isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'assets/images/foto_dokter';
             $file->move($tujuan_upload,$nama_file);
-            $gambarPath = 'assets/images/logo/' . $nama_file;
-        }else{
+            $gambarPath = 'assets/images/foto_dokter/' . $nama_file;
+        } else {
             $gambarPath = $dokter->foto;
         }
 
@@ -233,11 +237,14 @@ class DokterController extends Controller
     public function destroy($id)
     {
         $dokter = Dokter::where('id', $id)->first();
-
-        if($dokter->foto != null){
-            Storage::delete($dokter->foto);
+        
+        if (file_exists($dokter->foto)) {
+            // Hapus file
+            unlink($dokter->foto);
         }
+        
         Dokter::where('id',$id)->delete();
+        JadwalDokter::where('dokter_id',$id)->delete();
         return redirect('/dokter');
     }
 }

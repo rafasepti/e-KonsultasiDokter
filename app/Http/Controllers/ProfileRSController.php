@@ -86,8 +86,11 @@ class ProfileRSController extends Controller
     {
         $profile = ProfileRS::where('id', $request->id)->first();
 
-        if($profile->logo_app != null){
-            Storage::delete($profile->logo_app);
+        if ($profile->logo_app && $request->hasFile('logo_app')) {
+            if (file_exists($profile->logo_app)) {
+                // Hapus file
+                unlink($profile->logo_app);
+            }
         }
         $request->validate([
             'logo_app' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan kebutuhan Anda
