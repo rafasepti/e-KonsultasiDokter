@@ -25,7 +25,7 @@
 
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-      <a class="navbar-brand brand-logo mr-5" tyle="font-size: 20px" href="/">E-Konsultasi Dokter</a>
+      <a class="navbar-brand brand-logo ml-5 mr-5" tyle="font-size: 18px" href="/">E-Konsultasi Dokter</a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end" style="padding-left: 0px;">
       <ul class="navbar-nav mr-lg-2">
@@ -63,13 +63,13 @@
         @if (auth()->check())
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="{{  asset('assets') }}/images/faces/face28.jpg" alt="profile"/>
+              <img src="{{  asset('assets') }}/images/logo/profile.png" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a href="{{ route('profile') }}" class="dropdown-item">
+              {{-- <a href="{{ route('profile') }}" class="dropdown-item">
                 <i class="ti-user text-primary"></i>
                 Profile
-              </a>
+              </a> --}}
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item"><i class="ti-power-off text-primary"></i> Logout</button>
