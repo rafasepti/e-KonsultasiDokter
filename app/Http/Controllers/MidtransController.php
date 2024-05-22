@@ -173,13 +173,12 @@ class MidtransController extends Controller
 
     public function prosesBayarJanji(Request $request){
         $pasien = Pasien::where('id', $request->pasien_id)->first();
-        if($pasien->jk == '' || $pasien->tgl_lahir == '' || $pasien->bb == '' || $pasien->tb == '' || $pasien->alamat == ''){
+        if($pasien->jk == '' || $pasien->tgl_lahir == '' || $pasien->bb == '' || $pasien->tb == ''){
             $request->validate([
                 'jk1' => 'required',
                 'tgl_lahir1' => 'required',
                 'bb1' => 'required',
                 'tb1' => 'required',
-                'alamat' => 'required',
                 'penyakit_derita' => 'required',
                 'keterangan' => 'required',
             ]);
@@ -189,7 +188,14 @@ class MidtransController extends Controller
                 'tgl_lahir' => $request->tgl_lahir1,
                 'bb' => $request->bb1,
                 'tb' => $request->tb1,
-                'alamat'=> $request->alamat,
+            ]);
+        }
+        if($pasien->alamat == ''){
+            $request->validate([
+                'alamat' => 'required',
+            ]);
+            Pasien::where('id', $request->pasien_id)->update([
+                'alamat' => $request->alamat,
             ]);
         }
         $order_janji = Janji::create([
