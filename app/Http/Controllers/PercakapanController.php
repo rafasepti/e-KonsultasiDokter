@@ -23,7 +23,10 @@ class PercakapanController extends Controller
 
     public function spesialisasi($id){
         $spesialisasi = Spesialisasi::where('id', $id)->first();
-        $dokter = Dokter::where('spesialisasi_id', $id)->get();
+        $dokter = Dokter::with('user')
+            ->where('spesialisasi_id', $id)
+            ->has('user')
+            ->get();
         return view('chat/chat_spesialisasi', compact('dokter', 'spesialisasi'));
     }
 
