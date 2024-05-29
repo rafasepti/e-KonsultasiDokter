@@ -136,8 +136,12 @@ class JanjiController extends Controller
     public function historyJanjiGet(Request $request){
         if(auth()->user()->hak_akses == "dokter"){
             $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
-            $orderJanji = Janji::with(['pasien', 'user'])
+            $orderJanji = Janji::with(['pasien', 'user', 'pgPenjualan'])
                 ->where('dokter_id', $dokter_id->id)
+                ->whereHas('pgPenjualan', function ($query) {
+                    $query->where('jenis_order', 'janji_dokter');
+                    $query->where('transaction_status', 'settlement');
+                })
                 ->orderBy('created_at', 'desc')
                 ->get();
         }else{

@@ -16,7 +16,7 @@ class OrderController extends Controller
 {
     public function viewStatus(){
         $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
-        $pembayaran = OrderChat::where('user_id',$dokter_id->id);
+        $pembayaran = OrderChat::where('dokter_id',$dokter_id->id);
         return view('chat/status_chat',
                     compact('pembayaran')
                   );
@@ -24,10 +24,14 @@ class OrderController extends Controller
     public function statusGet(Request $request){
         if ($request->ajax()) {
             $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
-            $orderChats = OrderChat::with(['pasien', 'user'])
-                ->where('dokter_id',$dokter_id->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $orderChats = OrderChat::with(['pasien', 'user', 'pgPenjualan'])
+            ->where('dokter_id', $dokter_id->id)
+            ->whereHas('pgPenjualan', function ($query) {
+                $query->where('jenis_order', 'chat_dokter');
+                $query->where('transaction_status', 'settlement');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
             return DataTables::of($orderChats)
                 ->addIndexColumn()
                 ->addColumn('action', function($b){

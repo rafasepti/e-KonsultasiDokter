@@ -25,4 +25,9 @@ class Janji extends Model
     {
         return $this->belongsTo(Dokter::class, 'dokter_id');
     }
+
+    public function PGPenjualan()
+    {
+        return $this->hasMany(PGPenjualan::class, 'order_dokter_id');
+    }
 }

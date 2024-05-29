@@ -64,9 +64,7 @@
                                 <button class="btn btn-success mt-auto" disabled>Selesai</button>
                             @endif
                             <div class="ml-auto">
-                                @if ($c->status_chat == "accepted" || $c->status_chat == "ended")
-                                    <a href="/ChatDokter/{{ $c->dokter->id }}" class="btn btn-success mt-auto">Chat</a>
-                                @endif
+                                <a href="/ChatDokter/{{ $c->dokter->id }}" class="btn btn-success mt-auto">Chat</a>
                             </div>
                         </div>
                     </div>

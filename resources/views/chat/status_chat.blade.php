@@ -78,44 +78,29 @@
             processing: true,
             serverSide: true,
             ajax: "{{ url('status-chat/list') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'user.name',
-                    name: 'user.name'
-                },
-                {
-                    data: 'pasien.nama_pasien',
-                    name: 'pasien.nama_pasien'
-                },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'user.name', name: 'user.name' },
+                { data: 'pasien.nama_pasien', name: 'pasien.nama_pasien' },
                 {
                     data: 'status_chat',
                     name: 'status_chat',
-                    render: function(data, type, full, meta) {
-                        if (data == "not_accepted") {
-                            return `<label class="badge badge-danger">Belum Diterima</label>`
+                    render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data === "not_accepted") {
+                                return `<label class="badge badge-danger">Belum Diterima</label>`;
+                            } else if (data === "accepted") {
+                                return `<label class="badge badge-info">Diterima</label>`;
+                            } else if (data === "ended") {
+                                return `<label class="badge badge-success">Selesai</label>`;
+                            }
                         }
-
-                        if (data == "accepted") {
-                            return `<label class="badge badge-info">Diterima</label>`
-                        }
-
-                        if (data == "ended") {
-                            return `<label class="badge badge-success">Selesai</label>`
-                        }
+                        return data;
                     }
                 },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: true,
-                    searchable: true,
-                }
+                { data: 'action', name: 'action', orderable: true, searchable: true }
             ]
         });
-
     });
 
     $(document).ready(function() {
