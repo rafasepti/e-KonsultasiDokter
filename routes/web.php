@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\HeartbeatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\JanjiController;
@@ -36,6 +37,7 @@ Route::get('/janji-rs/{id}', [JanjiController::class, 'spesialisasi'])->name('ja
 //     return response()->json(['status' => $user->active_status]);
 // });
 Route::get('/user-status/{id}', [UserController::class, 'getStatus'])->name('user-stat');
+Route::post('/heartbeat', [HeartbeatController::class, 'update']);
 
 Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::get('/chat-rs/order/{id}', [PercakapanController::class, 'order'])->name('chat-rs.order');

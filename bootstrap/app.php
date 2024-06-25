@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\CheckSession;
 use App\Http\Middleware\CorsMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'checkRole' => CheckRole::class,
+            'check.session' => CheckSession::class,
             'corsMiddleware' => CorsMiddleware::class,
         ]);
     })

@@ -34,3 +34,27 @@
  <script src="{{  asset('assets') }}/js/select2.js"></script>
  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.16.1/echo.min.js"></script>
  <!-- End custom js for this page--> 
+
+ <script>
+  function sendHeartbeat() {
+      fetch('/heartbeat', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          },
+          body: JSON.stringify({})
+      }).then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok.');
+          }
+          return response.json();
+      }).then(data => {
+          console.log(data);
+      }).catch(error => {
+          console.error('Error:', error);
+      });
+  }
+
+  setInterval(sendHeartbeat, 30000); // Kirim heartbeat setiap 30 detik
+</script>

@@ -141,13 +141,13 @@ class OrderController extends Controller
         $status = $request->query('status');
 
         if ($status) {
-            $chat = OrderChat::with(['pasien', 'dokter'])
+            $chat = OrderChat::with(['pasien', 'dokter.user'])
                 ->where('user_id', Auth::id())
                 ->where('status_chat', $status)
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
-            $chat = OrderChat::with(['pasien', 'dokter'])
+            $chat = OrderChat::with(['pasien', 'dokter.user'])
                 ->where('user_id', Auth::id())
                 ->orderBy('created_at', 'desc')
                 ->get();

@@ -64,7 +64,7 @@
                                 <button class="btn btn-success mt-auto" disabled>Selesai</button>
                             @endif
                             <div class="ml-auto">
-                                <a href="/ChatDokter/{{ $c->dokter->id }}" class="btn btn-success mt-auto">Chat</a>
+                                <a href="/ChatDokter/{{ $c->dokter->user->id }}" class="btn btn-success mt-auto">Chat</a>
                             </div>
                         </div>
                     </div>

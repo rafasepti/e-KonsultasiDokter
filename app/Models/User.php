@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'user_id',
         'hak_akses',
-        'active_status'
+        'active_status',
+        'chat_pasien',
     ];
 
     /**
