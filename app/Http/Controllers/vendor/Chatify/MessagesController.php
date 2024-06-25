@@ -44,11 +44,16 @@ class MessagesController extends Controller
      */
     public function index( $id = null)
     {
+        // Ambil pengguna yang akan diajak chat
+        $user = Auth::user();
+        $chatWithUser = $id ? User::find($id) : null;
         $messenger_color = Auth::user()->messenger_color;
         return view('Chatify::pages.app', [
             'id' => $id ?? 0,
             'messengerColor' => $messenger_color ? $messenger_color : Chatify::getFallbackColor(),
             'dark_mode' => Auth::user()->dark_mode < 1 ? 'light' : 'dark',
+            'chatWithUser' => $chatWithUser,
+            'user' => $user,
         ]);
     }
 
@@ -460,6 +465,16 @@ class MessagesController extends Controller
 
         // Cari record terakhir berdasarkan created_at
         $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();
+        $user = User::where('id', Auth::id())->first();
+
+        if ($user->chat_pasien > 0) {
+            $user->chat_pasien -= 1;
+        } else {
+            $user->chat_pasien = 0; // Optional, redundant because it can't be negative
+        }
+
+        $user->save();
+        
         $orderChat = OrderChat::where('user_id', $request['id'])
             ->where('dokter_id', $dokter_id->id)
             ->orderBy('created_at', 'desc')

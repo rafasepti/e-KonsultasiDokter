@@ -145,4 +145,10 @@ class UserController extends Controller
         User::where('id',$id)->delete();
         return redirect('/akun');
     }
+
+    public function getStatus($id)
+    {
+        $user = User::find($id);
+        return response()->json(['status' => $user->active_status]);
+    }
 }

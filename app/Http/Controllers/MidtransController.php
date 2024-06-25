@@ -8,10 +8,12 @@ use App\Models\Janji;
 use App\Models\OrderChat;
 use App\Models\Pasien;
 use App\Models\PGPenjualan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Pusher\Pusher;
+use Chatify\Facades\ChatifyMessenger as Chatify;
 
 class MidtransController extends Controller
 {
@@ -168,6 +170,26 @@ class MidtransController extends Controller
         $dokter = Dokter::with('user')
             ->where('id', $request->dokter_id)
             ->first();
+
+        $user_dokter = User::where('user_id', $dokter->kode_dokter)->first();
+        if($user_dokter->chat_pasien >= 1){
+            // Add a message "Chat time is 30 minutes"
+            $message = Chatify::newMessage([
+                'from_id' => $dokter->user->id,
+                'to_id' => Auth::id(),
+                'body' => "Mohon Tunggu, dokter sedang chat pasien lain",
+                'attachment' => null,
+            ]);
+            $messageData = Chatify::parseMessage($message);
+            if (Auth::user()->id != $dokter->user->id) {
+                Chatify::push("private-chatify." . $dokter->user->id, 'messaging', [
+                    'from_id' => $dokter->user->id,
+                    'to_id' => Auth::user()->id,
+                    'message' => Chatify::messageCard($messageData, true)
+                ]);
+            }
+        }
+
         return redirect('/ChatDokter/'.$dokter->user->id);
     }
 

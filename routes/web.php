@@ -14,6 +14,8 @@ use App\Http\Controllers\ProfileRSController;
 use App\Http\Controllers\SpesialisasiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\vendor\Chatify\MessagesController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IndexController::class, 'pengguna'])->name('index');
@@ -28,6 +30,12 @@ Route::get('/chat-rs/{id}', [PercakapanController::class, 'spesialisasi'])->name
 
 Route::get('/janji-rs', [JanjiController::class, 'index'])->name('janji-rs');
 Route::get('/janji-rs/{id}', [JanjiController::class, 'spesialisasi'])->name('janji-rs.spesialisasi');
+
+// Route::get('/user-status/{userId}', function ($userId) {
+//     $user = User::find($userId);
+//     return response()->json(['status' => $user->active_status]);
+// });
+Route::get('/user-status/{id}', [UserController::class, 'getStatus'])->name('user-stat');
 
 Route::middleware('auth', 'checkRole:pasien')->group(function () {
     Route::get('/chat-rs/order/{id}', [PercakapanController::class, 'order'])->name('chat-rs.order');

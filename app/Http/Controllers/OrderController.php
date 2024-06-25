@@ -56,9 +56,7 @@ class OrderController extends Controller
             'status_chat' => 'accepted'
         ]);
 
-        $user = User::where('id', Auth::id())->update([
-            'chat_pasien' => 1
-        ]);
+        $user = User::where('id', Auth::id())->increment('chat_pasien');
 
         $dokter_id = Dokter::where('kode_dokter', auth()->user()->user_id)->first();  
         $orderChat = OrderChat::where('dokter_id', $dokter_id->id)

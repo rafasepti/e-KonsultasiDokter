@@ -78,6 +78,8 @@ function updateSelectedContact(user_id) {
       ".messenger-list-item[data-contact=" + (user_id || getMessengerId()) + "]"
     )
     .addClass("m-list-active");
+
+    updateStatus(user_id || getMessengerId());
 }
 /**
  *-------------------------------------------------------------
@@ -1362,7 +1364,43 @@ document.addEventListener('DOMContentLoaded', function () {
         sendReminderMessage(orderChatId);
     }
   }
+
+  document.querySelectorAll('.user-list-item').forEach(item => {
+    item.addEventListener('click', function () {
+        var userId = this.dataset.userId;
+        chatWithUserId = userId; // Update global variable
+        updateStatus(userId); // Fetch and update status
+    });
+  });
+
+  console.log('chatWithUserId:', chatWithUserId);
+  updateStatus(chatWithUserId); // Initial call to update status
+
+  // Refresh status every 30 seconds (for example)
+  setInterval(function () {
+      updateStatus(chatWithUserId);
+  }, 30000);
 });
+
+function updateStatus(userId) {
+  fetch('/user-status/' + userId)
+      .then(response => response.json())
+      .then(data => {
+          var statusIndicator = document.querySelector('.status-indicator');
+          var statusText = document.querySelector('.status-text');
+
+          if (data.status === 1) {
+              statusIndicator.classList.add('online');
+              statusIndicator.classList.remove('offline');
+              statusText.textContent = 'Online';
+          } else {
+              statusIndicator.classList.add('offline');
+              statusIndicator.classList.remove('online');
+              statusText.textContent = 'Offline';
+          }
+      })
+      .catch(error => console.error('Error fetching user status:', error));
+}
 
 function sendReminderMessage(orderChatId) {
   let xhr = new XMLHttpRequest();
