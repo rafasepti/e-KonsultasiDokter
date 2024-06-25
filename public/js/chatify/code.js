@@ -1350,7 +1350,7 @@ document.addEventListener('DOMContentLoaded', function () {
     chatStartTime = moment.utc(chatStartTime).toDate().getTime();
     var currentTime = new Date().getTime();
     var timeElapsed = currentTime - chatStartTime;
-    var remainingTime = 35 * 60 * 1000 - timeElapsed; // 30 minutes in milliseconds
+    var remainingTime = 31 * 60 * 1000 - timeElapsed; // 30 minutes in milliseconds
 
     console.log('currentTime:', currentTime); // Debug
     console.log('timeElapsed:', timeElapsed); // Debug
