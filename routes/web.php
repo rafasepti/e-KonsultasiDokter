@@ -55,6 +55,9 @@ Route::middleware('auth', 'checkRole:dokter')->group(function () {
     Route::get('/check-for-new-data', [OrderController::class, 'checkData'])->name('check-for-new-data');
     Route::get('/status-chat/list', [OrderController::class, 'statusGet']);
     Route::get('/status-chat/konfirmasi/{id}', [OrderController::class, 'update']);
+    Route::post('/sendReminderMessage', [OrderController::class, 'sendReminderMessage'])->name('sendReminderMessage');
+    Route::get('/sendReminderMessage', [OrderController::class, 'sendReminderMessage'])->name('sendReminderMessage');
+
 
     Route::get('/status-janji/ubah-status/{id}', [JanjiController::class, 'editStatus'])->name('status-janji.ubah-status');
     Route::post('/status-janji/update-status', [JanjiController::class, 'updateStatus'])->name('status-janji.update-status');

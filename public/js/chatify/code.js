@@ -1336,6 +1336,53 @@ function setActiveStatus(status) {
   });
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+  // Check if chat start time and order chat ID are set in session
+  // var chatStartTime = `{{ session('chat_start_time') }}`;
+  // var orderChatId = `{{ session('order_chat_id') }}`;
+  console.log('orderChatId:', orderChatId);
+  console.log('chatStartTime:', chatStartTime);
+
+  if (chatStartTime && orderChatId) {
+    // Use moment.js to parse and handle time
+    chatStartTime = moment.utc(chatStartTime).toDate().getTime();
+    var currentTime = new Date().getTime();
+    var timeElapsed = currentTime - chatStartTime;
+    var remainingTime = 35 * 60 * 1000 - timeElapsed; // 30 minutes in milliseconds
+
+    console.log('currentTime:', currentTime); // Debug
+    console.log('timeElapsed:', timeElapsed); // Debug
+    console.log('remainingTime:', remainingTime); // Debug
+
+    if (remainingTime > 0) {
+        setTimeout(function () {
+            sendReminderMessage(orderChatId);
+        }, remainingTime);
+    } else {
+        sendReminderMessage(orderChatId);
+    }
+  }
+});
+
+function sendReminderMessage(orderChatId) {
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", "/sendReminderMessage", true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log('Reminder message sent');
+          alert('Chat Sudah berjalan selama 30 menit.');
+      }
+  };
+
+  xhr.send(JSON.stringify({
+      user_id: "{{ Auth::id() }}",
+      order_chat_id: orderChatId
+  }));
+}
+
 /**
  *-------------------------------------------------------------
  * On DOM ready

@@ -13,5 +13,11 @@
     };
     window.chatify.allAllowedExtensions = chatify.allowedImages.concat(chatify.allowedFiles);
 </script>
+<script>
+    var chatStartTime = '{{ session("chat_start_time") }}';
+    var orderChatId = '{{ session("order_chat_id") }}';
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="{{ asset('js/chatify/utils.js') }}"></script>
 <script src="{{ asset('js/chatify/code.js') }}"></script>
